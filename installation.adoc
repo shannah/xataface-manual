@@ -1,0 +1,45 @@
+= Xataface Installation
+
+Over the years I have developed several different installation mechanisms for Xataface.  At the end of the day, installation only requires that you copy the *xataface* directory onto your web server.  To update it, you simply replace that directory with the new version.
+
+Creating an application with Xataface, however, involves more than just *installing* Xataface.  You need to, at minimum create a config file with your database connection settings, and a 2-line PHP script (usually named "index.php") to serve as an entry point for your application.
+
+And this all assumes that you already have a web server set up with PHP and MySQL, and that you've created a database for your application to use.
+
+With version 3.0, Xataface now includes a command line (CLI) utilty to automate common tasks like creating new apps, generating delegate classes, enabling authentication, etc...  This tutorial describes the installation and usage of this CLI script for creating and maintaining Xataface applications.  If you would prefer to do things manually, you can skip to the "Manual Installation" section.
+
+== Prerequisites
+
+Before you install Xataface, you should have a PHP and MySQL installed. I recommend XAMPP 
+
+== Installation using the Xataface CLI
+
+.Paste the following into macOS Terminal or Linux shell prompt
+[source,bash]
+----
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/shannah/install-xataface/master/install.sh)"
+----
+
+NOTE: This command will install Xataface at `~/xataface` (i.e. inside your home directory).
+
+The output of this script will look like:
+
+[source,console]
+----
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/shannah/install-xataface/master/install.sh)"
+Cloning into 'xataface'...
+remote: Enumerating objects: 180, done.
+remote: Counting objects: 100% (180/180), done.
+remote: Compressing objects: 100% (125/125), done.
+remote: Total 12947 (delta 105), reused 110 (delta 50), pack-reused 12767
+Receiving objects: 100% (12947/12947), 19.50 MiB | 11.95 MiB/s, done.
+Resolving deltas: 100% (7814/7814), done.
+Adding /Users/shannah/xataface/bin to your path in /Users/shannah/.bash_profile
+----
+
+This installs the `xataface` CLI script at `~/xataface/bin/xataface`.
+
+
+
+
+

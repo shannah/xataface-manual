@@ -1,0 +1,123 @@
+= Introduction
+
+Xataface is a simple framework for building data-driven web applications in PHP and MySQL. This section introduces some of the concepts and applications of Dataface.
+To fully understand what Xataface is, we must first define a few key terms:
+
+**Framework** - A set of software routines that provide a foundation structure for an application. Frameworks take the tedium out of writing an application from scratch. (From Answers.com)
+
+**Data-driven design** - Designing an application around the data that it will store.
+
+Xataface is a Framework in the sense that it is a set of classes and libraries that take the tedium out of writing web applications. It provides a simple web interface to a MySQL database enabling users to update, delete, and find data in the underlying database. The interface is targeted at secretaries and end-users as opposed to database administrators.
+
+Xataface enables data-driven design because it allows developers to develop web sites by first designing the database that will be used to store the data on the website, and then design the pages used to display the data. The developer can focus on the data because he or she does not have to worry about having to build forms to update the data. If the requirements of the application change, the developer can simply add a field to the database table and all associated web forms will be updated automatically (because they are all dynamically generated using the database schema).
+
+== Requirements
+
+. PHP >= 4.3 (for Xataface 1.1.x and lower);  PHP >= 5 for Xataface 1.2 and higher
+. MySQL >= 3.2.3  (Some features require 4.1 or higher).
+
+== License
+
+. GPLv2
+
+== Development Procedures
+
+Identify the data that will need to be stored for a web site.
+
+.ERD diagram describing a simple database with two tables, "Program" and "Courses", with a relationship between them.
+image::images/Image-290320-093727.459.png[]
+
+Design the database using your favorite database administration program (e.g., PHPMyAdmin)
+
+.PHPMyAdmin is a popular tool for creating databases on MySQL/MariaDB.  You can use any tool you like for creating your database, or no tool at all (i.e. raw SQL).
+image::images/Image-290320-093844.702.png[]
+
+Tell Xataface some DB connection info, and voila! You have an application:
+
+.Bare-bones Xataface application out of the box with no customizations.
+image::images/Image-290320-094309.877.png[]
+
+== Why Use Xataface?
+
+Some simple examples similar to those that are frequently encountered by web developers, and how dataface can be used to acheive a solution.
+
+As a web services developer would frequently getting requests to build websites that were manageable by the site owner.  Most of these requests also specify certain types of content that must be stored on the website, and much of this content needs to be n-ary (i.e., there will be multiple instances of each type of content).  Let me give you an example.
+
+
+=== Example 1: Website for Faculty of Widgetry
+
+The Faculty of Widgetry needs a website to publish information about its undergraduate programs.  It is important for them to be able to publish admission requirements, and program overviews for each program.  It is also important to have course outlines and timetables for each course. The Faculty of Widgetry has 12 undergraduate programs and over 100 courses offered. 
+
+==== Solution 1: Static HTML
+
+To build this web site using only static HTML pages using Dreamweaver or some other HTML editor would require at least 112 pages to be created (one for each course and program).  However, once we recognize that there are only 2 types of pages required (one for courses and one for programs), we can reduce the task down to creating 2 templates and filling in the main content for each program and course individually.  Most HTML editors have some templating ability so you can make changes to the template and have the changes propogated to all pages that use that template with the click of a button.
+
+This works great, but courses are added frequently, and outlines are changed.  Do you really want to receive requests to update all of these pages every time there are changes to make?  (If your answer is 'yes', then you probably won't be interested in reading the rest of this tutorial).  Whether the Dean of the faculty knows it or not, it is very important for the program assistants to be able to update these web pages on their own.  To acheive these goals you can:
+
+. Install Dreamweaver on the Program Assistants' computers, teach them how to use it, and allow them to perform updates.
+. Install Contribute, which is a scaled down version of Dreamweaver to make it easier for the Program Assistants to edit the content.
+. Use another solution that is equivalent to one of the above 2 solutions.
+
+Installing Dreamweaver for each Program Assistant is a little overkill, and since it has the ability to do much more than just update content.  In addition,  Dreamweaver is really a developer's tool - not a secretary's tool, so it can be difficult to learn at first.  The best reason NOT to install Dreamweaver on the Program Assistant's computer, however, is that it enables him/her to muck things up by accident (believe me, I has happened to me more times than I care to count).
+
+Admittedly, Contribute is a viable option as it controls access to only certain portions of web pages to be edited, and it is targetted at secretaries (not developers) so it is easier to use.  In fact, given the requirements for this web site (as stated above), this is a perfectly good solution.  However you better hope that none of the following requirements are added:
+
+. Each program web page should contain an up-to-date list of all of the courses required for the program, along with a link to the course outline for that course.
+. Course outlines should be available in PDF format as well as HTML format.
+. An index page showing all of the courses available should be added.  This page must allow courses to be organized by program, course subject, or course number.
+. Any other requirement that would have information formatted in more than one way.
+
+If any of these requirements are likely to be added (EVER) then you would be well-advised to look into solutions that  use a database back-end.
+
+==== Solution 2: Use a Content Management System (CMS)
+
+There are hundreds of content management systems available that will allow you to store and update content through the web (TTW).  Some of them even have an assortment of add-ons that will allow you to store more specific types of information.  Some good CMS's include Plone, Drupal, and Xoops.  Suppose we want to develop the Faculty of Widgetry website using one of these CMS's.  Any good CMS will allow you to create and edit HTML documents easily (without having to write any custom products).  However, it is often the case that our documents require the content to be structured.  For example, each program has some common data associated with it: Program Name, Admission Deadline, Program Description, Outline, Courses, etc...  If we want to properly separate data from presentation, we would need to build a special content-type to store our programs.  Most CMS's allow you to develop custom content-types using the underlying programming language and an API (Application Programming Interface).  Some API's are easier to use than others and some are documented better than others.  The common element is that each has its own proprietary interface for writing these add-ons.
+
+If you are using a CMS and you are proficient in the creation of add-on content-types, then you will be able to build the Faculty of Widgetry website without great difficulty.  However there are a number of reasons why you may choose NOT to use a CMS:
+
+. Steep learning curve: Depending on the CMS it can be very time consuming and difficult to learn how to use and modify the CMS to suit you purposes.
+. It is over-kill: Most CMS's are filled with features and modules that you will never need.  In fact it can even be a pain to turn them off if you don't want them.
+. You can get tied into the CMS:  When you are using a CMS, you will start developing for the CMS.  With all of your content in the CMS it may be difficult to migrate to a different solution later on.  (The truth of this statement will vary for different CMS's).  Choose your CMS carefully.
+
+==== Solution 3: Use an existing Application
+
+OK, OK, let's not get too carried away with trying to develop the website until we have checked the market to see if someone else has already done it better.  Maybe there is already a PHP application that makes websites for Faculties easy.  I mean, I can't be the first person that needed to build a website for a Faculty.  In fact if you do a search or go to Hotscripts.com, you will probably find a handful of applications or scripts that almost do what you need.  If you're lucky, maybe you can find an application that does exactly what you need (but frankly, I've never been that lucky).  If you find one, maybe it's worth taking it for a test drive.  But beware. Using a system that almost does what you need but is difficult to modify to your needs can be worse than building it by scratch.  Make sure that you are able to modify the application to suit your needs exactly.
+
+==== Solution 4: Use PHP and MySQL
+
+If all we want to do is separate the data from the presentation and allow the Program Assistants to update data on the website, why not just design a MySQL database with the appropriate tables and fields to store the required data.  In our case we will need 2 tables:
+
+[source,text]
+----
+Programs
+    Fields:
+        ProgramID : int
+        ProgramName : varchar
+        ProgramDescription: text
+        AdmissionDeadline: date
+        Outline_HTML : text
+        Outline_PDF : blob
+Courses
+    Fields:
+        CourseID : int
+        CourseSubject : varchar
+        CourseTitle : varchar
+        CourseNumber : int
+        ProgramID : int
+        CourseDescription : text
+        Outline_HTML : text
+        Outline_PDF : blob
+----
+
+Now it's easy to create a few web pages that extract data from the database and displays it as HTML.  In fact if there is an existing page template that you can use for the header and footer, you can develop the entire Faculty website in under an hour (you just have to create 3 pages).
+
+**Question**: How will the Program Assistants update the information in the database?
+
+**Answer**: OK, let's assume that you're not going to teach them SQL and that a DB Admin tool will also be too difficult to learn.  Then you have to create HTML forms to update records in the database.
+
+Ouch!  What was easy just became hard.  Making HTML forms is a real pain, because you have to validate the input, deal with file uploads, and also make sure that everything is stored to the database OK without losing any information.  Such a basic task, but it can be very difficult.  This is when it is time to use Xataface.
+
+==== Solution 5: Use Xataface
+
+OK, this isn't really its own solution.  It is more like "Solution 4 Part II", because Xataface is intended to complement your custom application you built with solution 4, by providing an easy-to-use, configurable user interface that is targeted at secretaries and normal users (as opposed to database administrators).  A Xataface application takes only seconds to set up and it will provide you with a full user interface for your users to edit information in the database. 
+
