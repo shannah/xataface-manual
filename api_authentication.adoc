@@ -1,0 +1,47 @@
+== API Authentication
+
+.Login sequence using example curl HTTP request.
+image::images/Image-140420-113308.724.png[]
+
+Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you'll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.
+
+=== Login
+
+To log in using the API, simply perform a POST request to `?-action=login&--no-prompt=1`
+
+1. `UserName` - The username to log in with.
+2. `Password` - The password to log in with.
+
+If login succeeds, you'll receive a JSON response with a token.  E.g.
+
+[source,json]
+----
+{
+  "code":200,
+  "token":"576646...2dDRuOGUycGI=",
+  "message":"Logged in"
+}
+----
+
+An unsuccessful login will look something like:
+
+[source,json]
+----
+{"code":500,"message":"No UserName provided."}
+----
+
+=== Making Authenticated Requests
+
+Once you have obtained a token, you should include this token in the `Authorization` header of HTTP requests.  E.g.
+
+[source,bash]
+----
+curl -H 'Authorization: Bearer {TOKEN}' https://example.com?index.php
+----
+
+But replace `{TOKEN}` with your token received during login.
+
+=== Logging Out
+
+To log out, simply perform a POST or GET request to `?-action=logout&--no-prompt=1`
+

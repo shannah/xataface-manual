@@ -1,0 +1,7 @@
+[security]
+= Security
+
+The following chapters cover all things security-related in Xataface.
+
+include::api_authentication.adoc[]
+

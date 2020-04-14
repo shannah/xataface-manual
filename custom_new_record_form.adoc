@@ -1,0 +1,110 @@
+== Delegating "New Record Form" to a Different Table
+
+Xataface allows you to delegate "new record" input to a different table.  E.g. Given a Table `A`, you can configure Xataface to use the "new record" form for a different table `B` for inserting new records.
+
+**Why might you want to do this?**
+
+Xataface forms are built around the data model of the underlying table.  It generates input fields for each column of the underlying table.  In some cases, the "new record" form may want to take data in a different form that allows you to generate the underlying data.
+
+For example, if you have a "Contacts" table, but you want the user to be able to insert contacts by simply entering their employee ID - and this will be used in the back-end to fetch some initial data about the user from another database.  In this case, your "new record" form should really just include a single field: "Employee ID".
+
+=== Instructions: Short Version
+
+**Definitions**
+
+. `SOURCE_TABLE` - The source table into which you wish to insert records.
+. `TARGET_TABLE` - The target table whose "New Record" form you wish to use for the UI.
+
+
+**Steps:**
+
+1. Add the `new_record_table=TARGET_TABLE` directive to the beginning of the fields.ini file of the SOURCE_TABLE.
+2. Add a column named `xf_inserted_record_id` of type `TEXT` into the TARGET_TABLE.
+3. In either the `beforeInsert()` or `afterInsert()` hooks of the TARGET_TABLE, process the inputs, and programmatically insert the appropriate record into the SOURCE_TABLE.
+4. Also inside the `beforeInsert()` or `afterInsert()` hooks of TARGET_TABLE, set the value of the `xf_inserted_record_id` to the record ID of the SOURCE table that you programmatically inserted in step 3.
+
+=== Instructions By Example
+
+Let's take the example I mentioned above.  We have a "contacts" table with lots of details about a contact, including `employee_id`.  When the user inserts a record, all they need to do is enter the "employee_id" and it will pull the rest of the data in from an external database.  So we will create a second "dummy" table that is only here to facilitate the creation of a new contact.  It includes only a single field "employee_id".
+
+Our two tables might have the following definitions.
+
+[source,sql]
+----
+CREATE TABLE contacts (
+  employee_id VARCHAR(32) PRIMARY KEY,
+  first_name VARCHAR(64),
+  last_name VARCHAR(64), 
+  ....
+ )
+ 
+ CREATE TABLE new_contact_form (
+   employee_id VARCHAR(32) PRIMARY KEY,
+   xf_inserted_record_id TEXT <1>
+ )
+
+----
+<1> The `xf_inserted_record_id` field is a special field that will be used to pass the record ID of the corresponding contact record after insertion.
+
+**Step 1: Set `new_record_table`**
+
+At the beginning of the fields.ini file for the "contacts_table", add:
+
+.tables/contacts/fields.ini file
+[source,ini]
+----
+new_record_table=new_contact_form
+----
+
+This tells Xataface that the "new" action for the "contacts" table should redirect to the "new" action of the "new_contact_form" table.
+
+**Step 2: Implement `beforeInsert()` Hook**
+
+If we simply defined the `new_record_table` directive, it would result in the user being redirected to the `new_contact_form` table when they want to insert a new record into the `contacts` table, but it wouldn't actually insert anything into the contacts table.  Nor would it return them back to the contacts table when done.  It would just leave the user in the "new_contacts_form" table - and would insert the record there only.
+
+If we want to actually insert a record into the "contacts" table, we just do this programmatically.  Preferably inside the `beforeInsert()` or `afterInsert()` hooks of the `new_contact_form` table.
+
+In the delegate class for the `new_contact_form`, we'll do:
+
+.tables/new_contact_form/new_contact_form.php file (Delegate class for the "new_contact_form" table).
+[source,php]
+----
+<?php
+class tables_new_contact_form {
+    function beforeInsert(Dataface_Record $record) { <1>
+        $employeeData = fetchEmployeeData($record->val('employee_id');
+        // Assume that you've implemented fetchEmployeeData() elsewhere to get
+        // the employee info from another database
+        
+        if (!$employeeData) {
+            XFException::throwValidationFailure("Failed to find employee data for given employee ID.");
+        }
+        
+        
+        // Create a new contact record
+        $contact = new Dataface_Record('contacts', array()); <2>
+        $contact->setValues(array(
+            'employee_id' => $employeeData['empid'],
+            'first_name' => $employeeData['empFirstName'];
+            ...
+        ));
+        $res = $contact->save(); <3>
+        if (PEAR::isError($res)) {
+            XFException::throwValidationFailure("Failed to insert contact: ".$res->getMessage());
+        }
+        
+        // Store the record ID of the new contact record
+        $record->setValue('xf_inserted_record_id', $contact->getId()); <4>
+    }
+}
+----
+<1> We implement the `beforeInsert()` callback, which is executed before the "new_contact_form" record is inserted.
+<2> We create a new `Dataface_Record` object for the "contacts" table, and insert data for the contact.
+<3> We call `save()` to store the "contacts" record.
+<4> Get the ID of the newly inserted contact, and add it to the `xf_inserted_record_id` field of the "new_contact_form" record.  This will be used by Xataface after to redirect back to the original contact table record when it is done.
+
+
+.Sequence diagram for inserting a new record in the Contacts table
+image::images/Image-140420-010101.342.png[]
+
+

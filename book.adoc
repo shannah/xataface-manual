@@ -5,29 +5,11 @@ Steve Hannah
 :lang: en
 :toc: left
 :numbered:
-:leveloffset: +1
 
 include::preface.adoc[]
 
-include::introduction.adoc[]
+include::part_fundamentals.adoc[]
 
-include::installation.adoc[]
+include::part_security.adoc[]
 
-include::Hello-World.adoc[]
-
-include::faculty-of-widgetry-tutorial.adoc[]
-
-[plantuml, png]
-----
-@startuml
-
-[*] --> State1
-State1 --> [*]
-State1 : this is a string
-State1 : this is another string
-
-State1 -> State2
-State2 --> [*]
-
-@enduml
-----
+include::part_form_customization.adoc[]

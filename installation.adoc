@@ -1,4 +1,4 @@
-= Xataface Installation
+== Xataface Installation
 
 Over the years I have developed several different installation mechanisms for Xataface.  At the end of the day, installation only requires that you copy the *xataface* directory onto your web server.  To update it, you simply replace that directory with the new version.
 
@@ -8,11 +8,11 @@ And this all assumes that you already have a web server set up with PHP and MySQ
 
 With version 3.0, Xataface now includes a command line (CLI) utilty to automate common tasks like creating new apps, generating delegate classes, enabling authentication, etc...  This tutorial describes the installation and usage of this CLI script for creating and maintaining Xataface applications.  If you would prefer to do things manually, you can skip to the "Manual Installation" section.
 
-== Prerequisites
+=== Prerequisites
 
 Before you install Xataface, you should have a PHP and MySQL installed. I recommend XAMPP 
 
-== Installation using the Xataface CLI
+=== Installation using the Xataface CLI
 
 .Paste the following into macOS Terminal or Linux shell prompt
 [source,bash]

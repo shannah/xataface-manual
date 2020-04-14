@@ -1,0 +1,12 @@
+[fundamentals]
+= Fundmentals
+
+This section covers the fundamentals of Xataface
+
+include::introduction.adoc[]
+
+include::installation.adoc[]
+
+include::Hello-World.adoc[]
+
+include::faculty-of-widgetry-tutorial.adoc[]

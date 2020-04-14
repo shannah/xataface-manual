@@ -1,4 +1,4 @@
-= Introduction
+== Introduction
 
 Xataface is a simple framework for building data-driven web applications in PHP and MySQL. This section introduces some of the concepts and applications of Dataface.
 To fully understand what Xataface is, we must first define a few key terms:
@@ -11,16 +11,16 @@ Xataface is a Framework in the sense that it is a set of classes and libraries t
 
 Xataface enables data-driven design because it allows developers to develop web sites by first designing the database that will be used to store the data on the website, and then design the pages used to display the data. The developer can focus on the data because he or she does not have to worry about having to build forms to update the data. If the requirements of the application change, the developer can simply add a field to the database table and all associated web forms will be updated automatically (because they are all dynamically generated using the database schema).
 
-== Requirements
+=== Requirements
 
 . PHP >= 4.3 (for Xataface 1.1.x and lower);  PHP >= 5 for Xataface 1.2 and higher
 . MySQL >= 3.2.3  (Some features require 4.1 or higher).
 
-== License
+=== License
 
 . GPLv2
 
-== Development Procedures
+=== Development Procedures
 
 Identify the data that will need to be stored for a web site.
 
@@ -37,18 +37,18 @@ Tell Xataface some DB connection info, and voila! You have an application:
 .Bare-bones Xataface application out of the box with no customizations.
 image::images/Image-290320-094309.877.png[]
 
-== Why Use Xataface?
+=== Why Use Xataface?
 
 Some simple examples similar to those that are frequently encountered by web developers, and how dataface can be used to acheive a solution.
 
 As a web services developer would frequently getting requests to build websites that were manageable by the site owner.  Most of these requests also specify certain types of content that must be stored on the website, and much of this content needs to be n-ary (i.e., there will be multiple instances of each type of content).  Let me give you an example.
 
 
-=== Example 1: Website for Faculty of Widgetry
+==== Example 1: Website for Faculty of Widgetry
 
 The Faculty of Widgetry needs a website to publish information about its undergraduate programs.  It is important for them to be able to publish admission requirements, and program overviews for each program.  It is also important to have course outlines and timetables for each course. The Faculty of Widgetry has 12 undergraduate programs and over 100 courses offered. 
 
-==== Solution 1: Static HTML
+===== Solution 1: Static HTML
 
 To build this web site using only static HTML pages using Dreamweaver or some other HTML editor would require at least 112 pages to be created (one for each course and program).  However, once we recognize that there are only 2 types of pages required (one for courses and one for programs), we can reduce the task down to creating 2 templates and filling in the main content for each program and course individually.  Most HTML editors have some templating ability so you can make changes to the template and have the changes propogated to all pages that use that template with the click of a button.
 
@@ -69,7 +69,7 @@ Admittedly, Contribute is a viable option as it controls access to only certain 
 
 If any of these requirements are likely to be added (EVER) then you would be well-advised to look into solutions that  use a database back-end.
 
-==== Solution 2: Use a Content Management System (CMS)
+===== Solution 2: Use a Content Management System (CMS)
 
 There are hundreds of content management systems available that will allow you to store and update content through the web (TTW).  Some of them even have an assortment of add-ons that will allow you to store more specific types of information.  Some good CMS's include Plone, Drupal, and Xoops.  Suppose we want to develop the Faculty of Widgetry website using one of these CMS's.  Any good CMS will allow you to create and edit HTML documents easily (without having to write any custom products).  However, it is often the case that our documents require the content to be structured.  For example, each program has some common data associated with it: Program Name, Admission Deadline, Program Description, Outline, Courses, etc...  If we want to properly separate data from presentation, we would need to build a special content-type to store our programs.  Most CMS's allow you to develop custom content-types using the underlying programming language and an API (Application Programming Interface).  Some API's are easier to use than others and some are documented better than others.  The common element is that each has its own proprietary interface for writing these add-ons.
 
@@ -83,7 +83,7 @@ If you are using a CMS and you are proficient in the creation of add-on content-
 
 OK, OK, let's not get too carried away with trying to develop the website until we have checked the market to see if someone else has already done it better.  Maybe there is already a PHP application that makes websites for Faculties easy.  I mean, I can't be the first person that needed to build a website for a Faculty.  In fact if you do a search or go to Hotscripts.com, you will probably find a handful of applications or scripts that almost do what you need.  If you're lucky, maybe you can find an application that does exactly what you need (but frankly, I've never been that lucky).  If you find one, maybe it's worth taking it for a test drive.  But beware. Using a system that almost does what you need but is difficult to modify to your needs can be worse than building it by scratch.  Make sure that you are able to modify the application to suit your needs exactly.
 
-==== Solution 4: Use PHP and MySQL
+===== Solution 4: Use PHP and MySQL
 
 If all we want to do is separate the data from the presentation and allow the Program Assistants to update data on the website, why not just design a MySQL database with the appropriate tables and fields to store the required data.  In our case we will need 2 tables:
 
@@ -117,7 +117,7 @@ Now it's easy to create a few web pages that extract data from the database and 
 
 Ouch!  What was easy just became hard.  Making HTML forms is a real pain, because you have to validate the input, deal with file uploads, and also make sure that everything is stored to the database OK without losing any information.  Such a basic task, but it can be very difficult.  This is when it is time to use Xataface.
 
-==== Solution 5: Use Xataface
+===== Solution 5: Use Xataface
 
 OK, this isn't really its own solution.  It is more like "Solution 4 Part II", because Xataface is intended to complement your custom application you built with solution 4, by providing an easy-to-use, configurable user interface that is targeted at secretaries and normal users (as opposed to database administrators).  A Xataface application takes only seconds to set up and it will provide you with a full user interface for your users to edit information in the database. 
 

@@ -1,0 +1,6 @@
+[form_customization]
+= Form Customization
+
+The following chapters form a sort of cook book with recipes for customizing forms in Xataface.
+
+include::custom_new_record_form.adoc[]

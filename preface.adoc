@@ -1,3 +1,4 @@
+[preface]
 = Preface
 
 == Pre-history of Xataface
