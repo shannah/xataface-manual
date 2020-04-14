@@ -446,43 +446,70 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_preface">1. Preface</a>
+<li><a href="#_preface">Preface</a></li>
+<li><a href="#_pre_history_of_xataface">1. Pre-history of Xataface</a>
 <ul class="sectlevel2">
-<li><a href="#_pre_history_of_xataface">1.1. Pre-history of Xataface</a></li>
-<li><a href="#_the_evolution_of_xataface">1.2. The Evolution of Xataface</a></li>
+<li><a href="#_the_vision">1.1. The Vision</a></li>
 </ul>
 </li>
-<li><a href="#_introduction">2. Introduction</a>
+<li><a href="#_the_evolution_of_xataface">2. The Evolution of Xataface</a>
 <ul class="sectlevel2">
-<li><a href="#_requirements">2.1. Requirements</a></li>
-<li><a href="#_license">2.2. License</a></li>
-<li><a href="#_development_procedures">2.3. Development Procedures</a></li>
-<li><a href="#_why_use_xataface">2.4. Why Use Xataface?</a></li>
+<li><a href="#_influence_of_plone_on_xataface">2.1. Influence of Plone on Xataface</a></li>
+<li><a href="#_influence_of_filemaker_on_xataface">2.2. Influence of FileMaker on Xataface</a></li>
+<li><a href="#_outgrowing_the_mould">2.3. Outgrowing the Mould</a></li>
 </ul>
 </li>
-<li><a href="#_xataface_installation">3. Xataface Installation</a>
+<li><a href="#_fundmentals">Fundmentals</a></li>
+<li><a href="#_introduction">3. Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#_prerequisites">3.1. Prerequisites</a></li>
-<li><a href="#_installation_using_the_xataface_cli">3.2. Installation using the Xataface CLI</a></li>
+<li><a href="#_requirements">3.1. Requirements</a></li>
+<li><a href="#_license">3.2. License</a></li>
+<li><a href="#_development_procedures">3.3. Development Procedures</a></li>
+<li><a href="#_why_use_xataface">3.4. Why Use Xataface?</a></li>
 </ul>
 </li>
-<li><a href="#_creating_your_first_xataface_app">4. Creating your first Xataface app</a>
+<li><a href="#_xataface_installation">4. Xataface Installation</a>
 <ul class="sectlevel2">
-<li><a href="#_creating_a_new_table">4.1. Creating A New Table</a></li>
-<li><a href="#_development_environment">4.2. Development Environment</a></li>
-<li><a href="#_changing_field_labels">4.3. Changing Field Labels</a></li>
+<li><a href="#_prerequisites">4.1. Prerequisites</a></li>
+<li><a href="#_installation_using_the_xataface_cli">4.2. Installation using the Xataface CLI</a></li>
 </ul>
 </li>
-<li><a href="#_a_more_complex_example_faculty_of_widgetry_app">5. A More Complex Example: Faculty of Widgetry App</a></li>
+<li><a href="#_creating_your_first_xataface_app">5. Creating your first Xataface app</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_a_new_table">5.1. Creating A New Table</a></li>
+<li><a href="#_development_environment">5.2. Development Environment</a></li>
+<li><a href="#_changing_field_labels">5.3. Changing Field Labels</a></li>
+</ul>
+</li>
+<li><a href="#_a_more_complex_example_faculty_of_widgetry_app">6. A More Complex Example: Faculty of Widgetry App</a></li>
+<li><a href="#_security">Security</a></li>
+<li><a href="#_api_authentication">7. API Authentication</a>
+<ul class="sectlevel2">
+<li><a href="#_login">7.1. Login</a></li>
+<li><a href="#_making_authenticated_requests">7.2. Making Authenticated Requests</a></li>
+<li><a href="#_logging_out">7.3. Logging Out</a></li>
+</ul>
+</li>
+<li><a href="#_form_customization">Form Customization</a></li>
+<li><a href="#_delegating_new_record_form_to_a_different_table">8. Delegating "New Record Form" to a Different Table</a>
+<ul class="sectlevel2">
+<li><a href="#_instructions_short_version">8.1. Instructions: Short Version</a></li>
+<li><a href="#_instructions_by_example">8.2. Instructions By Example</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_preface">1. Preface</h2>
+<h2 id="_preface">Preface</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_pre_history_of_xataface">1.1. Pre-history of Xataface</h3>
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pre_history_of_xataface">1. Pre-history of Xataface</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Xataface was first released in 2005.  I had just been hired as a web services developer in the Faculty of Applied Sciences at Simon Fraser University, and I was inheriting resposibility for the maintenance and development of a relatively large content management system that had been built in-house, originally in PERL, and later ported to PHP.</p>
 </div>
@@ -531,8 +558,8 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_the_vision">1.1.1. The Vision</h4>
+<div class="sect2">
+<h3 id="_the_vision">1.1. The Vision</h3>
 <div class="paragraph">
 <p>Most applications that I was building for the faculty had two parts:</p>
 </div>
@@ -608,8 +635,10 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_the_evolution_of_xataface">1.2. The Evolution of Xataface</h3>
+</div>
+<div class="sect1">
+<h2 id="_the_evolution_of_xataface">2. The Evolution of Xataface</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The first project that Xataface was applied to was the Group content management system (GCMS) of the Faculty of Applied Sciences.  This was the system that was used to manage the websites for faculty members, research groups, and publications.  The database was already built, and there was an existing administrative back-end that was, in my opinion, hard to work with.  I replaced this administrative back-end entirely using Xataface.  The application itself (not counting the code inside Xataface), contained almost no PHP code, and handful of configuration files.  The underlying database was left untouched.  The result was an application that was orders of magnitude easier to maintain, and, at the same time yielded a better user experience.</p>
 </div>
@@ -640,8 +669,8 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 <div class="paragraph">
 <p>After unrolling this "rewrite" of GCMS, I decided to release Xataface (then Dataface) to the world as an open source project.  I created a project on SourceForge, set up a website for it, wrote a "Getting Started" tutorial, and then returned to my day job, developing web applications or the faculty.</p>
 </div>
-<div class="sect3">
-<h4 id="_influence_of_plone_on_xataface">1.2.1. Influence of Plone on Xataface</h4>
+<div class="sect2">
+<h3 id="_influence_of_plone_on_xataface">2.1. Influence of Plone on Xataface</h3>
 <div class="paragraph">
 <p>At the time that I was developing the first version of Dataface, we were using the  <a href="https://www.plone.org">Plone</a> content management system for the faculty&#8217;s website.  If you&#8217;re familiar with Plone (circa 2005) you&#8217;ll recognize the tabs, lists, and navigation menus from the GCMS screenshots.  That&#8217;s because I used the plone stylesheet as a basis for Xataface&#8217;s styles.  I really liked the way Plone looked, and the stylesheet had many of the UI elements that I needed for Xataface.  I needed tabs - Plone had nice looking tabs.  I needed tabular lists.  Plone has nice looking sortable lists.  I needed navigation menus.  Etc&#8230;&#8203;  Some of these elements have persisted to present day.  Xataface 2.0 included a new default theme, "g2", that introduced a totally new stylesheet, but developers could still "opt out" of the "g2" theme and use the original plone theme.
 Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you dig you can likely still find some elements of that original Plone theme.</p>
@@ -673,8 +702,8 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 <p>Aside from the stylesheet, Plone also inspired some other aspects of Xataface&#8217;s design.  In particular, Xataface&#8217;s use of actions (e.g. the actions.ini file) to inject menus, buttons, and functionality into the UI are directly pulled from Plone.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_influence_of_filemaker_on_xataface">1.2.2. Influence of FileMaker on Xataface</h4>
+<div class="sect2">
+<h3 id="_influence_of_filemaker_on_xataface">2.2. Influence of FileMaker on Xataface</h3>
 <div class="paragraph">
 <p>I&#8217;ve already discussed the fact that FileMaker was a key inspiration for Xataface.  I liked the way that FileMaker allowed mere mortals to both create and manage relatively complex databases. It was impressive that an office assistant,  with no programming skills whatsoever, could build a fully-functional database application with a nice user interface in a few hours.  To do the same thing with PHP and MySQL would take a software developer weeks, and it likely still would have been missing features that the FileMaker app provides out of the box.</p>
 </div>
@@ -688,8 +717,8 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 <p>One day, I&#8217;d like to add such a tool to Xataface, but, frankly, it&#8217;s difficult to do well, and time is almost always better spent extending Xataface&#8217;s other features.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_outgrowing_the_mould">1.2.3. Outgrowing the Mould</h4>
+<div class="sect2">
+<h3 id="_outgrowing_the_mould">2.3. Outgrowing the Mould</h3>
 <div class="paragraph">
 <p>At the beginning, Xataface was just intended to be an open source alternative to FileMaker.  It didn&#8217;t take long, however to start growing in its own direction.  Today it has become a full-featured platform on which arbitrary data-driven web applications can be built.</p>
 </div>
@@ -754,9 +783,16 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_fundmentals">Fundmentals</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section covers the fundamentals of Xataface</p>
+</div>
+</div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">2. Introduction</h2>
+<h2 id="_introduction">3. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Xataface is a simple framework for building data-driven web applications in PHP and MySQL. This section introduces some of the concepts and applications of Dataface.
@@ -775,7 +811,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 <p>Xataface enables data-driven design because it allows developers to develop web sites by first designing the database that will be used to store the data on the website, and then design the pages used to display the data. The developer can focus on the data because he or she does not have to worry about having to build forms to update the data. If the requirements of the application change, the developer can simply add a field to the database table and all associated web forms will be updated automatically (because they are all dynamically generated using the database schema).</p>
 </div>
 <div class="sect2">
-<h3 id="_requirements">2.1. Requirements</h3>
+<h3 id="_requirements">3.1. Requirements</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -788,7 +824,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_license">2.2. License</h3>
+<h3 id="_license">3.2. License</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -798,7 +834,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development_procedures">2.3. Development Procedures</h3>
+<h3 id="_development_procedures">3.3. Development Procedures</h3>
 <div class="paragraph">
 <p>Identify the data that will need to be stored for a web site.</p>
 </div>
@@ -828,7 +864,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_why_use_xataface">2.4. Why Use Xataface?</h3>
+<h3 id="_why_use_xataface">3.4. Why Use Xataface?</h3>
 <div class="paragraph">
 <p>Some simple examples similar to those that are frequently encountered by web developers, and how dataface can be used to acheive a solution.</p>
 </div>
@@ -836,7 +872,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 <p>As a web services developer would frequently getting requests to build websites that were manageable by the site owner.  Most of these requests also specify certain types of content that must be stored on the website, and much of this content needs to be n-ary (i.e., there will be multiple instances of each type of content).  Let me give you an example.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_1_website_for_faculty_of_widgetry">2.4.1. Example 1: Website for Faculty of Widgetry</h4>
+<h4 id="_example_1_website_for_faculty_of_widgetry">3.4.1. Example 1: Website for Faculty of Widgetry</h4>
 <div class="paragraph">
 <p>The Faculty of Widgetry needs a website to publish information about its undergraduate programs.  It is important for them to be able to publish admission requirements, and program overviews for each program.  It is also important to have course outlines and timetables for each course. The Faculty of Widgetry has 12 undergraduate programs and over 100 courses offered.</p>
 </div>
@@ -909,11 +945,11 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </ol>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_solution_3_use_an_existing_application">Solution 3: Use an existing Application</h5>
+</div>
+<div class="sect3">
+<h4 id="_solution_3_use_an_existing_application">3.4.2. Solution 3: Use an existing Application</h4>
 <div class="paragraph">
 <p>OK, OK, let&#8217;s not get too carried away with trying to develop the website until we have checked the market to see if someone else has already done it better.  Maybe there is already a PHP application that makes websites for Faculties easy.  I mean, I can&#8217;t be the first person that needed to build a website for a Faculty.  In fact if you do a search or go to Hotscripts.com, you will probably find a handful of applications or scripts that almost do what you need.  If you&#8217;re lucky, maybe you can find an application that does exactly what you need (but frankly, I&#8217;ve never been that lucky).  If you find one, maybe it&#8217;s worth taking it for a test drive.  But beware. Using a system that almost does what you need but is difficult to modify to your needs can be worse than building it by scratch.  Make sure that you are able to modify the application to suit your needs exactly.</p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="_solution_4_use_php_and_mysql">Solution 4: Use PHP and MySQL</h5>
@@ -966,7 +1002,7 @@ Courses
 </div>
 </div>
 <div class="sect1">
-<h2 id="_xataface_installation">3. Xataface Installation</h2>
+<h2 id="_xataface_installation">4. Xataface Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Over the years I have developed several different installation mechanisms for Xataface.  At the end of the day, installation only requires that you copy the <strong>xataface</strong> directory onto your web server.  To update it, you simply replace that directory with the new version.</p>
@@ -981,13 +1017,13 @@ Courses
 <p>With version 3.0, Xataface now includes a command line (CLI) utilty to automate common tasks like creating new apps, generating delegate classes, enabling authentication, etc&#8230;&#8203;  This tutorial describes the installation and usage of this CLI script for creating and maintaining Xataface applications.  If you would prefer to do things manually, you can skip to the "Manual Installation" section.</p>
 </div>
 <div class="sect2">
-<h3 id="_prerequisites">3.1. Prerequisites</h3>
+<h3 id="_prerequisites">4.1. Prerequisites</h3>
 <div class="paragraph">
 <p>Before you install Xataface, you should have a PHP and MySQL installed. I recommend XAMPP</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installation_using_the_xataface_cli">3.2. Installation using the Xataface CLI</h3>
+<h3 id="_installation_using_the_xataface_cli">4.2. Installation using the Xataface CLI</h3>
 <div class="listingblock">
 <div class="title">Paste the following into macOS Terminal or Linux shell prompt</div>
 <div class="content">
@@ -1029,7 +1065,7 @@ Adding /Users/shannah/xataface/bin to your path in /Users/shannah/.bash_profile<
 </div>
 </div>
 <div class="sect1">
-<h2 id="_creating_your_first_xataface_app">4. Creating your first Xataface app</h2>
+<h2 id="_creating_your_first_xataface_app">5. Creating your first Xataface app</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now that you have xataface installed, we can proceed to create our first app.</p>
@@ -1152,7 +1188,7 @@ Did start apache server</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_a_new_table">4.1. Creating A New Table</h3>
+<h3 id="_creating_a_new_table">5.1. Creating A New Table</h3>
 <div class="paragraph">
 <p>Xataface provides an installation of PHPMyAdmin to assist you in building a database for your application.  You can access PHPMyAdmin at the URL:  <code><a href="http://localhost:9090/phpmyadmin" class="bare">http://localhost:9090/phpmyadmin</a></code></p>
 </div>
@@ -1268,7 +1304,7 @@ __include__=conf.db.ini.php
 </div>
 </div>
 <div class="sect3">
-<h4 id="_filtering_the_list">4.1.1. Filtering the List</h4>
+<h4 id="_filtering_the_list">5.1.1. Filtering the List</h4>
 <div class="paragraph">
 <p>Xataface provides a few different ways to filter the list view.  We can:</p>
 </div>
@@ -1309,7 +1345,7 @@ __include__=conf.db.ini.php
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development_environment">4.2. Development Environment</h3>
+<h3 id="_development_environment">5.2. Development Environment</h3>
 <div class="paragraph">
 <p>At this point we have a fully-functional database application, and you didn&#8217;t have to write a single line of code.  Let&#8217;s pull the curtain back a little and see what&#8217;s going on in our application under the hood.</p>
 </div>
@@ -1360,7 +1396,7 @@ __include__=conf.db.ini.php
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_application_structure">4.2.1. Application Structure</h4>
+<h4 id="_application_structure">5.2.1. Application Structure</h4>
 <div class="paragraph">
 <p>As mentioned above, the "www" directory contains the meat of our application.  Let&#8217;s take a look at its contents now.</p>
 </div>
@@ -1413,7 +1449,7 @@ In this tutorial you&#8217;ll notice that all .ini files have a .php extension. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_changing_field_labels">4.3. Changing Field Labels</h3>
+<h3 id="_changing_field_labels">5.3. Changing Field Labels</h3>
 <div class="paragraph">
 <p>Out of the box, Xataface will assign appropriate labels to its form fields based on the underlying columns.  However, you can override these labels very easily.</p>
 </div>
@@ -1494,21 +1530,260 @@ Created tables/notes/fields.ini.php</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_a_more_complex_example_faculty_of_widgetry_app">5. A More Complex Example: Faculty of Widgetry App</h2>
+<h2 id="_a_more_complex_example_faculty_of_widgetry_app">6. A More Complex Example: Faculty of Widgetry App</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>sf</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_security">Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following chapters cover all things security-related in Xataface.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_authentication">7. API Authentication</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
+</div>
+<div class="title">Figure 22. Login sequence using example curl HTTP request.</div>
+</div>
+<div class="paragraph">
+<p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
+</div>
+<div class="sect2">
+<h3 id="_login">7.1. Login</h3>
+<div class="paragraph">
+<p>To log in using the API, simply perform a POST request to <code>?-action=login&amp;--no-prompt=1</code></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>UserName</code> - The username to log in with.</p>
+</li>
+<li>
+<p><code>Password</code> - The password to log in with.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If login succeeds, you&#8217;ll receive a JSON response with a token.  E.g.</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre>@startuml
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "code":200,
+  "token":"576646...2dDRuOGUycGI=",
+  "message":"Logged in"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An unsuccessful login will look something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"code":500,"message":"No UserName provided."}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_making_authenticated_requests">7.2. Making Authenticated Requests</h3>
+<div class="paragraph">
+<p>Once you have obtained a token, you should include this token in the <code>Authorization</code> header of HTTP requests.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -H 'Authorization: Bearer {TOKEN}' https://example.com?index.php</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But replace <code>{TOKEN}</code> with your token received during login.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logging_out">7.3. Logging Out</h3>
+<div class="paragraph">
+<p>To log out, simply perform a POST or GET request to <code>?-action=logout&amp;--no-prompt=1</code></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_form_customization">Form Customization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following chapters form a sort of cook book with recipes for customizing forms in Xataface.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_delegating_new_record_form_to_a_different_table">8. Delegating "New Record Form" to a Different Table</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Xataface allows you to delegate "new record" input to a different table.  E.g. Given a Table <code>A</code>, you can configure Xataface to use the "new record" form for a different table <code>B</code> for inserting new records.</p>
+</div>
+<div class="paragraph">
+<p><strong>Why might you want to do this?</strong></p>
+</div>
+<div class="paragraph">
+<p>Xataface forms are built around the data model of the underlying table.  It generates input fields for each column of the underlying table.  In some cases, the "new record" form may want to take data in a different form that allows you to generate the underlying data.</p>
+</div>
+<div class="paragraph">
+<p>For example, if you have a "Contacts" table, but you want the user to be able to insert contacts by simply entering their employee ID - and this will be used in the back-end to fetch some initial data about the user from another database.  In this case, your "new record" form should really just include a single field: "Employee ID".</p>
+</div>
+<div class="sect2">
+<h3 id="_instructions_short_version">8.1. Instructions: Short Version</h3>
+<div class="paragraph">
+<p><strong>Definitions</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>SOURCE_TABLE</code> - The source table into which you wish to insert records.</p>
+</li>
+<li>
+<p><code>TARGET_TABLE</code> - The target table whose "New Record" form you wish to use for the UI.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Steps:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add the <code>new_record_table=TARGET_TABLE</code> directive to the beginning of the fields.ini file of the SOURCE_TABLE.</p>
+</li>
+<li>
+<p>Add a column named <code>xf_inserted_record_id</code> of type <code>TEXT</code> into the TARGET_TABLE.</p>
+</li>
+<li>
+<p>In either the <code>beforeInsert()</code> or <code>afterInsert()</code> hooks of the TARGET_TABLE, process the inputs, and programmatically insert the appropriate record into the SOURCE_TABLE.</p>
+</li>
+<li>
+<p>Also inside the <code>beforeInsert()</code> or <code>afterInsert()</code> hooks of TARGET_TABLE, set the value of the <code>xf_inserted_record_id</code> to the record ID of the SOURCE table that you programmatically inserted in step 3.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instructions_by_example">8.2. Instructions By Example</h3>
+<div class="paragraph">
+<p>Let&#8217;s take the example I mentioned above.  We have a "contacts" table with lots of details about a contact, including <code>employee_id</code>.  When the user inserts a record, all they need to do is enter the "employee_id" and it will pull the rest of the data in from an external database.  So we will create a second "dummy" table that is only here to facilitate the creation of a new contact.  It includes only a single field "employee_id".</p>
+</div>
+<div class="paragraph">
+<p>Our two tables might have the following definitions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE contacts (
+  employee_id VARCHAR(32) PRIMARY KEY,
+  first_name VARCHAR(64),
+  last_name VARCHAR(64),
+  ....
+ )
 
-[*] --&gt; State1
-State1 --&gt; [*]
-State1 : this is a string
-State1 : this is another string
+ CREATE TABLE new_contact_form (
+   employee_id VARCHAR(32) PRIMARY KEY,
+   xf_inserted_record_id TEXT <b class="conum">(1)</b>
+ )</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>xf_inserted_record_id</code> field is a special field that will be used to pass the record ID of the corresponding contact record after insertion.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Step 1: Set <code>new_record_table</code></strong></p>
+</div>
+<div class="paragraph">
+<p>At the beginning of the fields.ini file for the "contacts_table", add:</p>
+</div>
+<div class="listingblock">
+<div class="title">tables/contacts/fields.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">new_record_table=new_contact_form</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This tells Xataface that the "new" action for the "contacts" table should redirect to the "new" action of the "new_contact_form" table.</p>
+</div>
+<div class="paragraph">
+<p><strong>Step 2: Implement <code>beforeInsert()</code> Hook</strong></p>
+</div>
+<div class="paragraph">
+<p>If we simply defined the <code>new_record_table</code> directive, it would result in the user being redirected to the <code>new_contact_form</code> table when they want to insert a new record into the <code>contacts</code> table, but it wouldn&#8217;t actually insert anything into the contacts table.  Nor would it return them back to the contacts table when done.  It would just leave the user in the "new_contacts_form" table - and would insert the record there only.</p>
+</div>
+<div class="paragraph">
+<p>If we want to actually insert a record into the "contacts" table, we just do this programmatically.  Preferably inside the <code>beforeInsert()</code> or <code>afterInsert()</code> hooks of the <code>new_contact_form</code> table.</p>
+</div>
+<div class="paragraph">
+<p>In the delegate class for the <code>new_contact_form</code>, we&#8217;ll do:</p>
+</div>
+<div class="listingblock">
+<div class="title">tables/new_contact_form/new_contact_form.php file (Delegate class for the "new_contact_form" table).</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class tables_new_contact_form {
+    function beforeInsert(Dataface_Record $record) { <b class="conum">(1)</b>
+        $employeeData = fetchEmployeeData($record-&gt;val('employee_id');
+        // Assume that you've implemented fetchEmployeeData() elsewhere to get
+        // the employee info from another database
 
-State1 -&gt; State2
-State2 --&gt; [*]
+        if (!$employeeData) {
+            XFException::throwValidationFailure("Failed to find employee data for given employee ID.");
+        }
 
-@enduml</pre>
+
+        // Create a new contact record
+        $contact = new Dataface_Record('contacts', array()); <b class="conum">(2)</b>
+        $contact-&gt;setValues(array(
+            'employee_id' =&gt; $employeeData['empid'],
+            'first_name' =&gt; $employeeData['empFirstName'];
+            ...
+        ));
+        $res = $contact-&gt;save(); <b class="conum">(3)</b>
+        if (PEAR::isError($res)) {
+            XFException::throwValidationFailure("Failed to insert contact: ".$res-&gt;getMessage());
+        }
+
+        // Store the record ID of the new contact record
+        $record-&gt;setValue('xf_inserted_record_id', $contact-&gt;getId()); <b class="conum">(4)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>We implement the <code>beforeInsert()</code> callback, which is executed before the "new_contact_form" record is inserted.</p>
+</li>
+<li>
+<p>We create a new <code>Dataface_Record</code> object for the "contacts" table, and insert data for the contact.</p>
+</li>
+<li>
+<p>We call <code>save()</code> to store the "contacts" record.</p>
+</li>
+<li>
+<p>Get the ID of the newly inserted contact, and add it to the <code>xf_inserted_record_id</code> field of the "new_contact_form" record.  This will be used by Xataface after to redirect back to the original contact table record when it is done.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-140420-010101.342.png" alt="Image 140420 010101.342">
+</div>
+<div class="title">Figure 23. Sequence diagram for inserting a new record in the Contacts table</div>
 </div>
 </div>
 </div>
@@ -1516,7 +1791,7 @@ State2 --&gt; [*]
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-03-29 10:28:56 -0700
+Last updated 2020-04-14 11:48:16 -0700
 </div>
 </div>
 </body>

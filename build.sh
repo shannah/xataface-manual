@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 asciidoctor book.adoc
-rm -rf docroot
-mkdir docroot
-cp book.html docroot/index.html
-cp -rp images docroot/images
+rm -rf docs
+mkdir docs
+cp book.html docs/index.html
+cp -rp images docs/images
