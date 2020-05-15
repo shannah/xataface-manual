@@ -1,0 +1,84 @@
+== Preferences Directives
+
+[discrete]
+=== How to Set Preferences
+
+Xataface preferences can be defined in 3 ways:
+
+. In the `[_prefs]` section of the conf.ini file for global static preferences.
+. Implementing the `getPreferences()` method in the Application Delegate Class
+. In the `__prefs__` section of the fields.ini file for a table for static preferences on that table. (Limited to only certain preferences).
+
+.Example [_prefs] section in the conf.ini
+[source,ini]
+----
+[_prefs]
+    hide_updated=1
+    hide_posted_by=1
+----
+
+.Example getPreferences? method in the Application Delegate Class:
+[source,ini]
+----
+function getPreferences(){
+    return array('hide_update'=>1, 'hide_posted_by'=>1);
+
+}
+----
+
+[discrete]
+=== Available Preferences
+
+.Available Preferences
+[width="100%",options="header"]
+|====================
+| Preference | Description  | Default | Version
+| show_result_stats |	Show the result statistics (e.g. found x of y records in table z) |	1 |	0.6
+| show_jump_menu	|Show he drop-down menu that allows you to "jump" to any record in the found set. |	1 |	0.6
+| show_result_controller |	Show Next, previous, page number .. links... |	1 |	0.6
+|show_table_tabs |	Show Details, List, Find, etc... tabs. |	1 |	0.6
+|show_actions_menu	|Show New record, Show all, delete, etc..	|1	|0.6
+|show_logo	|Show logo at top of app	|1	|0.6
+|show_tables_menu	|Show the tabs to select a table.	|1	|0.6
+|show_search |	Show search field in upper right.	|1	|0.6
+|show_record_actions	|Show actions related to particular record	|1	|0.6
+|show_bread_crumbs	|Show bread crumbs at top of page to show where you are.	|1	|0.6
+|show_record_tabs	|View, Edit, Translate, History, etc...	|1	|0.6
+|show_record_tree	|Show tree to navigate the relationships of this record.	|1	|0.6
+|list_view_scroll_horizontal	|Whether to scroll list horizontal if it exceeds page width	|1	|0.6
+|list_view_scroll_vertical	|Whether to scroll list vertical if it exceeds page height.	|1	|0.6
+|hide_posted_by	|Whether to hide the posted by text in glance lists (e.g. in the view tab, the related records are shown in the left column. This hides the posted by text next to each related record.	|0	|1.0b4
+|hide_updated	|Whether to hide the updated text in the glance lists (e.g. in the view tab, the related records are shown in the left column. This hides the updated text next to each related record.	|0	|1.0b4
+|SummaryList_logo_width	|The width of the logo to be used as the preview image in summary lists.	|null	|0.7
+|SummaryList_hideSort	|Hides the sort control for a summary list (the box that allows users to sort by column).	|0	|0.7
+|hide_user_status	|Hides the user's status (e.g. "You are logged in as ..."	|0	|0.7
+|hide_personal_tools	|Hides the personal tool links in upper right. This includes likes such as "Control Panel" and "My Profile"	|0	|0.7
+|hide_resultlist_controller	|Hides the controller for a result list (E.g. next/back/results per page etc...).	|0	|0.7
+|hide_related_sections	|Hides the sections of the view tab that show the related records. These are the sortable section boxes. Not the related tabs.	|0	|1.3
+|hide_record_search	|Hides the record search form that appears in the view tab. Not to be confused with the find tab.	|0	|1.3
+|show_resultlist_controller_only_when_needed	|Sets the resultlist controller (e.g. back/next/results per page/etc...) to only show up if paging is required (i.e. if there are more records than can be shown on one page (according to the '-limit' parameter).	|0	|1.0
+|hide_record_view_logo	|Hides the logo for a record that appears in the upper left of the view tab for each record.	|0	|0.7
+|horizontal_tables_menu	|Whether to force the tables menu to appear as tabs along the top of the page (alternative is as a menu on the left). If there are 10 or fewer allowed tables, then the default is 1, otherwise the default is set to 0.	|1	|0.6
+|hide_result_filters	|In list view, setting this value to 1 will cause the column filters to be hidden (the select lists to filter the results).	|0	|0.7
+|show_filter_counts | A value of 0 will hide the result filter counts. | 1 | 3.0
+|disable_select_rows	|A value of 1 causes the checkboxes in each row of the list view to be hidden.	|0	|0.7
+|result_list_use_geturl	|Use the getURL() method to link to records in the list view rather than the default (which uses the -cursor parameter).	|0	|0.7
+|disable_ajax_record_details	|Whether to disable the ajax record details (the '+' sign beside each record in list view that expands to show the record details.	|1	|0.7
+|use_old_resultlist_controller	As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.	|0	|1.1
+|====================
+
+[discrete]
+=== Inverse Preferences
+
+The following preferences perform the inverse of some of the options above. When these options are set to 1, their respective option is set to 0.
+
+.Inverse Preferences
+[width="100%",options="header"]
+|====================
+|Name	|Inverse
+|hide_nav_menu	|show_tables_menu
+|hide_view_tabs	|show_table_tabs
+|hide_result_controller	|show_result_controller
+|hide_table_result_stats	|show_result_stats
+|hide_search	|show_search
+|====================

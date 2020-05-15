@@ -497,6 +497,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_instructions_by_example">8.2. Instructions By Example</a></li>
 </ul>
 </li>
+<li><a href="#_list_customization">List Customization</a></li>
+<li><a href="#_adding_option_to_filter_result_list">9. Adding Option to Filter Result LIst</a>
+<ul class="sectlevel2">
+<li><a href="#_solution">9.1. Solution</a></li>
+</ul>
+</li>
+<li><a href="#_hiding_filter_counts">10. Hiding Filter Counts</a></li>
+<li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
+<li><a href="#_preferences_directives">11. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1788,10 +1797,385 @@ class tables_new_contact_form {
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_list_customization">List Customization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following chapters form a sort of cook book with recipes for customizing result lists in Xataface.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_option_to_filter_result_list">9. Adding Option to Filter Result LIst</h2>
+<div class="sectionbody">
+<h3 id="_problem" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to add a drop-down list for the user to select filters for the result set.</p>
+</div>
+<div class="sect2">
+<h3 id="_solution">9.1. Solution</h3>
+<div class="paragraph">
+<p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
+</div>
+<div class="listingblock">
+<div class="title">Field definition in fields.ini file using the filter directive.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[test_field]
+  filter=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, if you navigate to this table&#8217;s list view, you&#8217;ll see a drop-down list at the top of the results where you can select all of the distinct values in the <code>test_field</code> column.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-150520-070017.404.png" alt="Image 150520 070017.404">
+</div>
+<div class="title">Figure 24. List View when a filter field defined.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-150520-070032.226.png" alt="Image 150520 070032.226">
+</div>
+<div class="title">Figure 25. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
+</div>
+<div class="paragraph">
+<p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hiding_filter_counts">10. Hiding Filter Counts</h2>
+<div class="sectionbody">
+<h3 id="_problem_2" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-150520-065039.669.png" alt="Image 150520 065039.669">
+</div>
+<div class="title">Figure 26. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
+</div>
+<div class="paragraph">
+<p>We want to hide this.</p>
+</div>
+<h3 id="_solution_2" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">show_filter_counts=0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After this change, the filter lists will look like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-150520-065357.583.png" alt="Image 150520 065357.583">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_1_configuration_directives">Appendix 1: Configuration Directives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following chapters serve as reference to show all of the various configuration directives available in Xataface apps.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preferences_directives">11. Preferences Directives</h2>
+<div class="sectionbody">
+<h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
+<div class="paragraph">
+<p>Xataface preferences can be defined in 3 ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <code>[_prefs]</code> section of the conf.ini file for global static preferences.</p>
+</li>
+<li>
+<p>Implementing the <code>getPreferences()</code> method in the Application Delegate Class</p>
+</li>
+<li>
+<p>In the <code><em>prefs</em></code> section of the fields.ini file for a table for static preferences on that table. (Limited to only certain preferences).</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Example [_prefs] section in the conf.ini</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_prefs]
+    hide_updated=1
+    hide_posted_by=1</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example getPreferences? method in the Application Delegate Class:</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">function getPreferences(){
+    return array('hide_update'=&gt;1, 'hide_posted_by'=&gt;1);
+
+}</code></pre>
+</div>
+</div>
+<h3 id="_available_preferences" class="discrete">Available Preferences</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Available Preferences</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Preference</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_result_stats</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show the result statistics (e.g. found x of y records in table z)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_jump_menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show he drop-down menu that allows you to "jump" to any record in the found set.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_result_controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show Next, previous, page number .. links&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_table_tabs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show Details, List, Find, etc&#8230;&#8203; tabs.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_actions_menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show New record, Show all, delete, etc..</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_logo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show logo at top of app</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_tables_menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show the tabs to select a table.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show search field in upper right.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_record_actions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show actions related to particular record</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_bread_crumbs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show bread crumbs at top of page to show where you are.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_record_tabs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">View, Edit, Translate, History, etc&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_record_tree</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Show tree to navigate the relationships of this record.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list_view_scroll_horizontal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to scroll list horizontal if it exceeds page width</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list_view_scroll_vertical</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to scroll list vertical if it exceeds page height.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_posted_by</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to hide the posted by text in glance lists (e.g. in the view tab, the related records are shown in the left column. This hides the posted by text next to each related record.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0b4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_updated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to hide the updated text in the glance lists (e.g. in the view tab, the related records are shown in the left column. This hides the updated text next to each related record.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0b4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SummaryList_logo_width</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The width of the logo to be used as the preview image in summary lists.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SummaryList_hideSort</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the sort control for a summary list (the box that allows users to sort by column).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_user_status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the user&#8217;s status (e.g. "You are logged in as &#8230;&#8203;"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_personal_tools</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the personal tool links in upper right. This includes likes such as "Control Panel" and "My Profile"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_resultlist_controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the controller for a result list (E.g. next/back/results per page etc&#8230;&#8203;).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_related_sections</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the sections of the view tab that show the related records. These are the sortable section boxes. Not the related tabs.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_record_search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the record search form that appears in the view tab. Not to be confused with the find tab.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_resultlist_controller_only_when_needed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the resultlist controller (e.g. back/next/results per page/etc&#8230;&#8203;) to only show up if paging is required (i.e. if there are more records than can be shown on one page (according to the '-limit' parameter).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_record_view_logo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hides the logo for a record that appears in the upper left of the view tab for each record.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">horizontal_tables_menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to force the tables menu to appear as tabs along the top of the page (alternative is as a menu on the left). If there are 10 or fewer allowed tables, then the default is 1, otherwise the default is set to 0.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_result_filters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In list view, setting this value to 1 will cause the column filters to be hidden (the select lists to filter the results).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_filter_counts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value of 0 will hide the result filter counts.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disable_select_rows</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A value of 1 causes the checkboxes in each row of the list view to be hidden.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">result_list_use_geturl</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use the getURL() method to link to records in the list view rather than the default (which uses the -cursor parameter).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">disable_ajax_record_details</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to disable the ajax record details (the '+' sign beside each record in list view that expands to show the record details.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_inverse_preferences" class="discrete">Inverse Preferences</h3>
+<div class="paragraph">
+<p>The following preferences perform the inverse of some of the options above. When these options are set to 1, their respective option is set to 0.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Inverse Preferences</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Inverse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_nav_menu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_tables_menu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_view_tabs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_table_tabs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_result_controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_result_controller</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_table_result_stats</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_result_stats</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hide_search</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">show_search</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-04-14 11:48:16 -0700
+Last updated 2020-05-15 06:54:38 -0700
 </div>
 </div>
 </body>

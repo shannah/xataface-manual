@@ -1,0 +1,8 @@
+[list_customization]
+= List Customization
+
+The following chapters form a sort of cook book with recipes for customizing result lists in Xataface.
+
+include::recipe_filters.adoc[]
+
+include::recipe_hide_filter_counts.adoc[]

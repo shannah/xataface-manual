@@ -1,0 +1,25 @@
+== Hiding Filter Counts
+
+[discrete]
+=== Problem
+
+You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the `filter` directive, each row has the "count" displayed beside it:
+
+.A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.
+image::images/Image-150520-065039.669.png[]
+
+We want to hide this.
+
+[discrete]
+=== Solution
+
+Use the `show_filter_counts` preferences directive to hide these counts as follows.  In the `_prefs` section of the `conf.ini` file, add:
+
+[source,ini]
+----
+show_filter_counts=0
+----
+
+After this change, the filter lists will look like:
+
+image::images/Image-150520-065357.583.png[]
