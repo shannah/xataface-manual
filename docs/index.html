@@ -497,15 +497,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_instructions_by_example">8.2. Instructions By Example</a></li>
 </ul>
 </li>
+<li><a href="#_using_ownerstamp_to_mark_record_ownership">9. Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
 <li><a href="#_list_customization">List Customization</a></li>
-<li><a href="#_adding_option_to_filter_result_list">9. Adding Option to Filter Result LIst</a>
+<li><a href="#_adding_option_to_filter_result_list">10. Adding Option to Filter Result LIst</a>
 <ul class="sectlevel2">
-<li><a href="#_solution">9.1. Solution</a></li>
+<li><a href="#_solution_2">10.1. Solution</a></li>
 </ul>
 </li>
-<li><a href="#_hiding_filter_counts">10. Hiding Filter Counts</a></li>
+<li><a href="#_hiding_filter_counts">11. Hiding Filter Counts</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">11. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">12. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1798,6 +1799,48 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_using_ownerstamp_to_mark_record_ownership">9. Using <code>ownerstamp</code> to Mark Record Ownership</h2>
+<div class="sectionbody">
+<h3 id="_problem" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
+</div>
+<h3 id="_solution" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider a table "posts" that stores posts that users of the system make.  This table has a <code>posted_by</code> field to record the user that posted it.  You want this field to automatically populated with the user ID of the user that is currently logged in, so you can add the <code>ownerstamp</code> directive in the fields.ini file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[posted_by]
+  ownerstamp=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Adding this directive does a number of things simulataneously:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It will set the user ID of the currently logged in user at the time that the record is inserted.</p>
+</li>
+<li>
+<p>It will prevent the field from being updated later.</p>
+</li>
+<li>
+<p>It will hide the "posted_by" field from all forms.</p>
+</li>
+</ol>
+</div>
+<h3 id="_discussion" class="discrete">Discussion</h3>
+<div class="paragraph">
+<p>Before the "ownerstamp" directive existed, you could accomplish the same thing by implementing a <code>beforeSave()</code> trigger and setting the field value to the currently logged in user, changing the field permissions so it can&#8217;t be changed after the fact, and setting the widget type to "hidden".  But since this is such a common requirement, it is much simpler to just set <code>ownerstamp=1</code> and be done with it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_list_customization">List Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1806,14 +1849,14 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_option_to_filter_result_list">9. Adding Option to Filter Result LIst</h2>
+<h2 id="_adding_option_to_filter_result_list">10. Adding Option to Filter Result LIst</h2>
 <div class="sectionbody">
-<h3 id="_problem" class="discrete">Problem</h3>
+<h3 id="_problem_2" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
 <div class="sect2">
-<h3 id="_solution">9.1. Solution</h3>
+<h3 id="_solution_2">10.1. Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -1846,9 +1889,9 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hiding_filter_counts">10. Hiding Filter Counts</h2>
+<h2 id="_hiding_filter_counts">11. Hiding Filter Counts</h2>
 <div class="sectionbody">
-<h3 id="_problem_2" class="discrete">Problem</h3>
+<h3 id="_problem_3" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -1861,7 +1904,7 @@ class tables_new_contact_form {
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h3 id="_solution_2" class="discrete">Solution</h3>
+<h3 id="_solution_3" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -1889,7 +1932,7 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">11. Preferences Directives</h2>
+<h2 id="_preferences_directives">12. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">

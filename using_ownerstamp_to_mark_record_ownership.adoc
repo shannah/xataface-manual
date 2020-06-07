@@ -1,0 +1,31 @@
+== Using `ownerstamp` to Mark Record Ownership
+
+[discrete]
+=== Problem
+
+You want to "stamp" a record with the username or user ID of the user who created a record automatically.
+
+
+[discrete]
+=== Solution
+
+Use the `ownerstamp` fields.ini directive on the field that you wish to store the userid in.
+
+For example, consider a table "posts" that stores posts that users of the system make.  This table has a `posted_by` field to record the user that posted it.  You want this field to automatically populated with the user ID of the user that is currently logged in, so you can add the `ownerstamp` directive in the fields.ini file.
+
+[source,ini]
+----
+[posted_by]
+  ownerstamp=1
+----
+
+Adding this directive does a number of things simulataneously:
+
+. It will set the user ID of the currently logged in user at the time that the record is inserted.
+. It will prevent the field from being updated later.
+. It will hide the "posted_by" field from all forms.
+
+[discrete]
+=== Discussion
+
+Before the "ownerstamp" directive existed, you could accomplish the same thing by implementing a `beforeSave()` trigger and setting the field value to the currently logged in user, changing the field permissions so it can't be changed after the fact, and setting the widget type to "hidden".  But since this is such a common requirement, it is much simpler to just set `ownerstamp=1` and be done with it.
