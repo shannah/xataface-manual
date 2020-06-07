@@ -507,12 +507,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_hiding_filter_counts">12. Hiding Filter Counts</a></li>
 <li><a href="#_sorting_filter_results">13. Sorting Filter Results</a></li>
+<li><a href="#_searching">Searching</a></li>
+<li><a href="#_case_sensitive_searches">14. Case-Sensitive Searches</a></li>
+<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">15. Explicitly Specifying Case-sensitivity of a Search</a></li>
 <li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">14. Specifying Content Disposition of File Download</a></li>
+<li><a href="#_specifying_content_disposition_of_file_download">16. Specifying Content Disposition of File Download</a></li>
 <li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">15. Accessing an SQL query like a Table</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">17. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">16. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">18. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1987,6 +1990,76 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_searching">Searching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following section include tips on configuring search support in Xataface application.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_case_sensitive_searches">14. Case-Sensitive Searches</h2>
+<div class="sectionbody">
+<h3 id="_problem_6" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
+</div>
+<h3 id="_solution_6" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="paragraph">
+<div class="title">fields.ini file, specifying that searches of the "name" field should be case sensitive.</div>
+<p>[source,ini</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[name]
+   collate=utf8_general_cs</pre>
+</div>
+</div>
+<h3 id="_discussion_2" class="discrete">Discussion</h3>
+<div class="paragraph">
+<p>By default, the case-sensitivity of searches depends on the collation of the underlying table and column in MySQL.  If the column was defined with a case-sensitive collation (e.g. <code>utf8_general_cs</code>), then all searches on this column will be case-sensitive.  If, however, it was defined with a case-insensitive collaction (e.g. <code>utf8_general_ci</code>), all searches will be case-insensitive.  If you want to change the behaviour of the app, you could simply change the underlying collation.  But in some cases you may not want to modify the table structure (or you won&#8217;t have access to the table structure).  In such cases, the "collate" directive is helpful.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">15. Explicitly Specifying Case-sensitivity of a Search</h2>
+<div class="sectionbody">
+<h3 id="_problem_7" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
+</div>
+<h3 id="_solution_7" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="paragraph">
+<p>If you want to search for "Bob" in the name field, enter the following in the search field for "Bob".</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#Bob#cs</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you, instead wanted to explicitly perform a case-insensitive search you would enter</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>#Bob#ci</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_file_uploads">File Uploads</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1995,13 +2068,13 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">14. Specifying Content Disposition of File Download</h2>
+<h2 id="_specifying_content_disposition_of_file_download">16. Specifying Content Disposition of File Download</h2>
 <div class="sectionbody">
-<h3 id="_problem_6" class="discrete">Problem</h3>
+<h3 id="_problem_8" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h3 id="_solution_6" class="discrete">Solution</h3>
+<h3 id="_solution_8" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -2037,13 +2110,13 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 <div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">15. Accessing an SQL query like a Table</h2>
+<h2 id="_accessing_an_sql_query_like_a_table">17. Accessing an SQL query like a Table</h2>
 <div class="sectionbody">
-<h3 id="_problem_7" class="discrete">Problem</h3>
+<h3 id="_problem_9" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h3 id="_solution_7" class="discrete">Solution</h3>
+<h3 id="_solution_9" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -2136,7 +2209,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">16. Preferences Directives</h2>
+<h2 id="_preferences_directives">18. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
@@ -2422,7 +2495,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-07 08:48:32 -0700
+Last updated 2020-06-07 09:07:34 -0700
 </div>
 </div>
 </body>
