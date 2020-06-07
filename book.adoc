@@ -16,4 +16,6 @@ include::part_form_customization.adoc[]
 
 include::part_list_customization.adoc[]
 
+include::part_tables_views_and_queries.adoc[]
+
 include::part_appendix_configuration.adoc[]

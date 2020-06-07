@@ -1,0 +1,67 @@
+[tables_views_queries]
+= Tables, Views, and Queries
+
+The following chapters pertain tables, views, and queries.  It includes tips on how to set up your tables, views, and queries for optimal performance and flexibility.
+
+== Accessing an SQL query like a Table
+
+[discrete]
+=== Problem
+
+You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.
+
+[discrete]
+=== Solution
+
+There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.
+
+You can create a dynamic query as follows:
+
+1. Add a directory to your application's "tables" directory named `\_tmp_{NAME}` where `{NAME}` is the name of your query. 
+2. Create a `fields.ini.php` (or fields.ini) file inside this directory with at least a `\\__sql__` directive.  This `\\__sql__` directive is were you specify the SQL query that should be used for the contents of the table.
+3. Specify the primary key for the table by adding a `Key=PRI` directive to one of the fields in the fields.ini file.  You can inject the user id of the currently logged in user with the `{{USER_ID}}` string.  This will be replaced by the user ID.
+
+For example, let's add a dynamic query called "my_posts", which is basically just a list of posts that the current user has posted.  This provides an easy way for the user to generate a feed of his own posts.
+
+First we'll create the `_tmp_my_posts` directory, inside the "tables" directory.  Then we'll add our `fileds.ini.php` file:
+
+.fields.ini.php file
+[source,ini]
+----
+;<?php exit; // To prevent this file from being served
+__sql__ = "select * from posts where posted_by='{{USER_ID}}'"
+
+[post_id]
+   Key=PRI
+----
+
+[TIP] 
+====
+You can alternatively create a delegate class for your table by creating a delegate class (`_tmp_my_posts.php`) and define an `\__sql__()` method.
+
+E.g.
+
+[source,php]
+----
+<?php
+class tables__tmp_my_posts {
+    function __sql__() {
+        return "select * from posts where posted_by='{{USER_ID}}'";
+    }
+}
+----
+
+====
+
+You can access this "table" just as you would, a normal table.  Just remember that the full table name is "_tmp_my_posts".  E.g. If you go to "index.php?-table=_tmp_my_posts", it will show you these results.
+
+[discrete]
+=== How Dynamic Queries Work
+
+When xataface receives a request for a table whose name starts with "_tmp_" it begins by performing the `\\__sql__` and loading the results into a temporary table.  This operation is very fast because temporary tables are typically stored in RAM, and they are only usable in the current session (i.e. other users cannot see this table).
+
+IMPORTANT: Dynamic query tables are ephemeral, so any changes you make to is will disappear at the end of the request.  This means that you cannot insert or update records into these tables.  
+
+
+
+

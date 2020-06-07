@@ -506,8 +506,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_hiding_filter_counts">11. Hiding Filter Counts</a></li>
 <li><a href="#_sorting_filter_results">12. Sorting Filter Results</a></li>
+<li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">13. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">13. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">14. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1949,6 +1951,105 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_tables_views_and_queries">Tables, Views, and Queries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following chapters pertain tables, views, and queries.  It includes tips on how to set up your tables, views, and queries for optimal performance and flexibility.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessing_an_sql_query_like_a_table">13. Accessing an SQL query like a Table</h2>
+<div class="sectionbody">
+<h3 id="_problem_5" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
+</div>
+<h3 id="_solution_5" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
+</div>
+<div class="paragraph">
+<p>You can create a dynamic query as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add a directory to your application&#8217;s "tables" directory named <code>_tmp_{NAME}</code> where <code>{NAME}</code> is the name of your query.</p>
+</li>
+<li>
+<p>Create a <code>fields.ini.php</code> (or fields.ini) file inside this directory with at least a <code>__sql__</code> directive.  This <code>__sql__</code> directive is were you specify the SQL query that should be used for the contents of the table.</p>
+</li>
+<li>
+<p>Specify the primary key for the table by adding a <code>Key=PRI</code> directive to one of the fields in the fields.ini file.  You can inject the user id of the currently logged in user with the <code>{{USER_ID}}</code> string.  This will be replaced by the user ID.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For example, let&#8217;s add a dynamic query called "my_posts", which is basically just a list of posts that the current user has posted.  This provides an easy way for the user to generate a feed of his own posts.</p>
+</div>
+<div class="paragraph">
+<p>First we&#8217;ll create the <code>_tmp_my_posts</code> directory, inside the "tables" directory.  Then we&#8217;ll add our <code>fileds.ini.php</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini.php file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit; // To prevent this file from being served
+__sql__ = "select * from posts where posted_by='{{USER_ID}}'"
+
+[post_id]
+   Key=PRI</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can alternatively create a delegate class for your table by creating a delegate class (<code><em>tmp_my_posts.php</code>) and define an <code>__sql_</em>()</code> method.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class tables__tmp_my_posts {
+    function __sql__() {
+        return "select * from posts where posted_by='{{USER_ID}}'";
+    }
+}</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can access this "table" just as you would, a normal table.  Just remember that the full table name is "_tmp_my_posts".  E.g. If you go to "index.php?-table=_tmp_my_posts", it will show you these results.</p>
+</div>
+<h3 id="_how_dynamic_queries_work" class="discrete">How Dynamic Queries Work</h3>
+<div class="paragraph">
+<p>When xataface receives a request for a table whose name starts with "<em>tmp</em>" it begins by performing the <code>__sql__</code> and loading the results into a temporary table.  This operation is very fast because temporary tables are typically stored in RAM, and they are only usable in the current session (i.e. other users cannot see this table).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Dynamic query tables are ephemeral, so any changes you make to is will disappear at the end of the request.  This means that you cannot insert or update records into these tables.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_appendix_1_configuration_directives">Appendix 1: Configuration Directives</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1957,7 +2058,7 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">13. Preferences Directives</h2>
+<h2 id="_preferences_directives">14. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
@@ -2243,7 +2344,7 @@ class tables_new_contact_form {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-15 06:54:38 -0700
+Last updated 2020-06-07 08:31:05 -0700
 </div>
 </div>
 </body>
