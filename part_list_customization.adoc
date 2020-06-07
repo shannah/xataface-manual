@@ -6,3 +6,28 @@ The following chapters form a sort of cook book with recipes for customizing res
 include::recipe_filters.adoc[]
 
 include::recipe_hide_filter_counts.adoc[]
+
+== Sorting Filter Results
+
+[discrete]
+=== Problem
+
+Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.
+
+[discrete]
+=== Solution
+
+Use the `filter.sort.` fields.ini directive to specify the field that the filter should sort on.
+
+E.g.
+
+.Sort the "city" filter in descending order
+[source,ini]
+----
+[city]
+  filter=1
+  filter.sort="city desc"  
+----
+
+
+

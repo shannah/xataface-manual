@@ -505,8 +505,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_hiding_filter_counts">11. Hiding Filter Counts</a></li>
+<li><a href="#_sorting_filter_results">12. Sorting Filter Results</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">12. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">13. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1924,6 +1925,30 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_sorting_filter_results">12. Sorting Filter Results</h2>
+<div class="sectionbody">
+<h3 id="_problem_4" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
+</div>
+<h3 id="_solution_4" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Sort the "city" filter in descending order</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[city]
+  filter=1
+  filter.sort="city desc"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_appendix_1_configuration_directives">Appendix 1: Configuration Directives</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1932,7 +1957,7 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">12. Preferences Directives</h2>
+<h2 id="_preferences_directives">13. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
