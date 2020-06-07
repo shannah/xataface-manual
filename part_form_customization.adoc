@@ -91,3 +91,26 @@ When it receives the response, it will take the `ProgramTitle` attribute of the 
 ====
 You can use the `widget:atts:data-xf-update-condition=empty` directive to *only* update the field value if it is currently empty.  
 ====
+
+
+== Disabling Client-side Validation
+
+[discrete]
+=== Problem
+
+You want to disable client-side validation for a particular field, but keep the server-side validaton. 
+
+[discrete]
+=== Solution
+
+Use the `widget:validation=server` fields.ini directive.
+
+E.g.
+
+[source,java]
+----
+[myfield]
+  widget:validation=server
+----
+
+
