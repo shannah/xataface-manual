@@ -500,25 +500,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_using_ownerstamp_to_mark_record_ownership">9. Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
 <li><a href="#_redirecting_user_to_different_page_after_saving_record">10. Redirecting User to Different Page After Saving Record</a></li>
 <li><a href="#_auto_updating_a_field_when_other_fields_are_changed">11. Auto-Updating a Field When Other Fields are Changed</a></li>
-<li><a href="#_disabling_client_side_validation">12. Disabling Client-side Validation</a></li>
-<li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">13. Setting Fixed Number of Rows in the Grid Widget</a></li>
+<li><a href="#_displaying_field_preview_using_ajax">12. Displaying Field Preview using AJAX</a></li>
+<li><a href="#_disabling_client_side_validation">13. Disabling Client-side Validation</a></li>
+<li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">14. Setting Fixed Number of Rows in the Grid Widget</a></li>
 <li><a href="#_list_customization">List Customization</a></li>
-<li><a href="#_adding_option_to_filter_result_list">14. Adding Option to Filter Result LIst</a>
+<li><a href="#_adding_option_to_filter_result_list">15. Adding Option to Filter Result LIst</a>
 <ul class="sectlevel2">
-<li><a href="#_solution_6">14.1. Solution</a></li>
+<li><a href="#_solution_7">15.1. Solution</a></li>
 </ul>
 </li>
-<li><a href="#_hiding_filter_counts">15. Hiding Filter Counts</a></li>
-<li><a href="#_sorting_filter_results">16. Sorting Filter Results</a></li>
+<li><a href="#_hiding_filter_counts">16. Hiding Filter Counts</a></li>
+<li><a href="#_sorting_filter_results">17. Sorting Filter Results</a></li>
 <li><a href="#_searching">Searching</a></li>
-<li><a href="#_case_sensitive_searches">17. Case-Sensitive Searches</a></li>
-<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">18. Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_case_sensitive_searches">18. Case-Sensitive Searches</a></li>
+<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">19. Explicitly Specifying Case-sensitivity of a Search</a></li>
 <li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">19. Specifying Content Disposition of File Download</a></li>
+<li><a href="#_specifying_content_disposition_of_file_download">20. Specifying Content Disposition of File Download</a></li>
 <li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">20. Accessing an SQL query like a Table</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">21. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">21. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">22. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1894,19 +1895,31 @@ class tables_new_contact_form {
 </div>
 <h3 id="_solution_3" class="discrete">Solution</h3>
 <div class="paragraph">
-<p>You can use the <code>widget:atts:data-xf-update-url</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
+<p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
 <div class="paragraph">
 <p><strong>Syntax:</strong></p>
 </div>
 <div class="paragraph">
-<p><code>widget:atts:data-xf-update-url=&lt;url-template&gt;#&lt;json-path-query&gt;</code></p>
+<p><code>ajax_value=&lt;url-template&gt;#&lt;json-path-query&gt;</code></p>
 </div>
 <div class="paragraph">
 <p><code>&lt;url-template&gt;</code> is a string that is used as a template for the URL to the web service from which to load the field&#8217;s content.  The template should contain one or more placeholders of the form <code>{fieldname}</code> which are replaced by the form value of the corresponding field.</p>
 </div>
 <div class="paragraph">
 <p><code>&lt;json-path-query&gt;</code> is a <a href="http://jsonpath.com/">jsonPath</a> query describing which part of the JSON response should be used as the new field value.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+You can omit the json path query (everything from <code>#</code>), if the HTTP request will just return plain text or HTML.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><strong>Triggers</strong></p>
@@ -1930,7 +1943,7 @@ widget:type=select
 vocabulary=programs
 
 [ProgramTitle]
-widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0.ProgramTitle</pre>
+ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0.ProgramTitle</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1964,13 +1977,191 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_disabling_client_side_validation">12. Disabling Client-side Validation</h2>
+<h2 id="_displaying_field_preview_using_ajax">12. Displaying Field Preview using AJAX</h2>
 <div class="sectionbody">
 <h3 id="_problem_4" class="discrete">Problem</h3>
 <div class="paragraph">
-<p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
+<p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
 <h3 id="_solution_4" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
+</div>
+<div class="paragraph">
+<p>Consider the scenario where you have the following table structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE posts (
+    post_id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    page_url TEXT,
+    article_title TEXT,
+    article_description
+)
+
+CREATE TABLE user_posts (
+    user_post_id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    post_id INT(11),
+    comment TEXT
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The "posts" table is central repository of posts.  The user_posts table is for a user to "post" a comment about a post. The idea is that a particular URL should only be imported into the "posts" table once, but many users can post comments around a "post" in the "users_posts" table.  We will only give the user direct access to the "user_posts" table, where they will provide the URL they want to post along with a comment about the post.</p>
+</div>
+<div class="paragraph">
+<p>The challenge here is that the user_posts table doesn&#8217;t have a "page_url" field - just a post_id field.  We could use the depselect widget here, but this adds a step.  It would be better to hide the post_id field, and just provide a page_url field, which will automatically populate the "post_id" field with the correct post ID from the posts table.</p>
+</div>
+<div class="paragraph">
+<p>So for our first step, we&#8217;ll hide the "post_id" field and add a page_url transient field:</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding a transient field for the post_url in the users_posts fields.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[post_id]
+    widget:type=hidden
+
+[post_url]
+    transient=1
+    order=-1
+    widget:description="Please enter the URL to the article you wish to post"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the user enters a URL into the post_url field we want to trigger an AJAX request to a custom action that will:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>See if a post has already been added at that URL, and return the ID of the post if found.</p>
+</li>
+<li>
+<p>If the post hasn&#8217;t been added yet, we add it, and return the ID.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In either case the AJAX request should obtain a post ID which can be inserted into the post_id field.</p>
+</div>
+<div class="paragraph">
+<p>Such a custom action might look like the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">Sample Action (defined in actions/get_post_id.php) to get a Post ID for a given page url.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class actions_get_post_id {
+    function handle($params) {
+        header('Content-Type:text/plain');
+        if (!@$_GET['page_url']) {
+            return;
+        }
+        //echo $_GET['page_url'];exit;
+        $user = getUser();
+        $post = df_get_record('posts', array('page_url' =&gt; '='.$_GET['page_url']));
+
+        if (!$post) {
+            $post = new Dataface_Record('posts', array());
+            $post-&gt;setValues(array(
+                'posted_by' =&gt; $user-&gt;val('user_id'),
+                'page_url' =&gt; $_GET['page_url']
+            ));
+            $res = $post-&gt;save();
+        }
+        echo $post-&gt;val('post_id');
+    }
+}
+?&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We will use the <code>ajax_value</code> directive on the <code>post_id</code> field to automatically populate it from that AJAX action when the value of <code>page_url</code> changes.</p>
+</div>
+<div class="listingblock">
+<div class="title">Add the ajax_value directive to populate the post_id field when post_url is updated.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[post_id]
+    widget:type=hidden
+    ajax_value="?-action=get_post_id&amp;page_url={post_url}"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lastly, we want to display a preview of the page content below the page_url field.  We will use the <code>ajax_preview</code> directive for this.  First we&#8217;ll create an AJAX action to display this preview, given the post ID.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class actions_ajax_post_preview {
+
+    function handle($params) {
+        if (!@$_GET['post_id']) {
+            return;
+        }
+        $post = df_get_record('posts', array('post_id' =&gt; '='.$_GET['post_id']));
+        if ($post) {
+            df_display(array('post' =&gt; $post), 'ajax_post_preview.html'); <b class="conum">(1)</b>
+        }
+    }
+}
+?&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>"ajax_post_preview.html" template should be in the application&#8217;s templates directory.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now we can use this from our `ajax_preview directive:</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding the ajax_preview directive to update the preview automatically with post_id is changed.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[post_url]
+    transient=1
+    order=-1
+    widget:description="Please enter the URL to the article you wish to post"
+    ajax_preview="?-action=ajax_post_preview&amp;post_id={post_id}"</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-070620-011602.097.png" alt="Image 070620 011602.097">
+</div>
+<div class="title">Figure 24. Ajax preview displayed below the post_url field.</div>
+</div>
+<div class="paragraph">
+<p><strong>Bonus Points</strong></p>
+</div>
+<div class="paragraph">
+<p>We&#8217;re not quite done.  Our current setup works great for the new record form, because the user will be adding the URL.  But if they&#8217;re editing an existing record, the post_id value will already by set, but the user hasn&#8217;t entered anything the post_url field (because it is transient).  We need to add an <code>ajax_value</code> directive to the post_url field so that it auto-populates based on the value of the post_id field.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll use the export_json action as our AJAX action so we don&#8217;t need to create a custom action.</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding the ajax_value directive to the post_url field so that it auto-populates on the edit form.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[post_url]
+    transient=1
+    order=-1
+    widget:description="Please enter the URL to the article you wish to post"
+    ajax_preview="?-action=ajax_post_preview&amp;post_id={post_id}"
+    ajax_value="?-table=posts&amp;-action=export_json&amp;post_id=={post_id}&amp;-mode=browse&amp;-limit=1&amp;--fields=page_url#0.page_url"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_disabling_client_side_validation">13. Disabling Client-side Validation</h2>
+<div class="sectionbody">
+<h3 id="_problem_5" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
+</div>
+<h3 id="_solution_5" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -1986,13 +2177,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_setting_fixed_number_of_rows_in_the_grid_widget">13. Setting Fixed Number of Rows in the Grid Widget</h2>
+<h2 id="_setting_fixed_number_of_rows_in_the_grid_widget">14. Setting Fixed Number of Rows in the Grid Widget</h2>
 <div class="sectionbody">
-<h3 id="_problem_5" class="discrete">Problem</h3>
+<h3 id="_problem_6" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h3 id="_solution_5" class="discrete">Solution</h3>
+<h3 id="_solution_6" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -2031,14 +2222,14 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_option_to_filter_result_list">14. Adding Option to Filter Result LIst</h2>
+<h2 id="_adding_option_to_filter_result_list">15. Adding Option to Filter Result LIst</h2>
 <div class="sectionbody">
-<h3 id="_problem_6" class="discrete">Problem</h3>
+<h3 id="_problem_7" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
 <div class="sect2">
-<h3 id="_solution_6">14.1. Solution</h3>
+<h3 id="_solution_7">15.1. Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -2056,13 +2247,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 <div class="content">
 <img src="images/Image-150520-070017.404.png" alt="Image 150520 070017.404">
 </div>
-<div class="title">Figure 24. List View when a filter field defined.</div>
+<div class="title">Figure 25. List View when a filter field defined.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-150520-070032.226.png" alt="Image 150520 070032.226">
 </div>
-<div class="title">Figure 25. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
+<div class="title">Figure 26. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
 </div>
 <div class="paragraph">
 <p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
@@ -2071,9 +2262,9 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hiding_filter_counts">15. Hiding Filter Counts</h2>
+<h2 id="_hiding_filter_counts">16. Hiding Filter Counts</h2>
 <div class="sectionbody">
-<h3 id="_problem_7" class="discrete">Problem</h3>
+<h3 id="_problem_8" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -2081,12 +2272,12 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 <div class="content">
 <img src="images/Image-150520-065039.669.png" alt="Image 150520 065039.669">
 </div>
-<div class="title">Figure 26. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
+<div class="title">Figure 27. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
 </div>
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h3 id="_solution_7" class="discrete">Solution</h3>
+<h3 id="_solution_8" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -2106,13 +2297,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sorting_filter_results">16. Sorting Filter Results</h2>
+<h2 id="_sorting_filter_results">17. Sorting Filter Results</h2>
 <div class="sectionbody">
-<h3 id="_problem_8" class="discrete">Problem</h3>
+<h3 id="_problem_9" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h3 id="_solution_8" class="discrete">Solution</h3>
+<h3 id="_solution_9" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -2138,13 +2329,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_case_sensitive_searches">17. Case-Sensitive Searches</h2>
+<h2 id="_case_sensitive_searches">18. Case-Sensitive Searches</h2>
 <div class="sectionbody">
-<h3 id="_problem_9" class="discrete">Problem</h3>
+<h3 id="_problem_10" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h3 id="_solution_9" class="discrete">Solution</h3>
+<h3 id="_solution_10" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -2168,13 +2359,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">18. Explicitly Specifying Case-sensitivity of a Search</h2>
+<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">19. Explicitly Specifying Case-sensitivity of a Search</h2>
 <div class="sectionbody">
-<h3 id="_problem_10" class="discrete">Problem</h3>
+<h3 id="_problem_11" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h3 id="_solution_10" class="discrete">Solution</h3>
+<h3 id="_solution_11" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -2208,13 +2399,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">19. Specifying Content Disposition of File Download</h2>
+<h2 id="_specifying_content_disposition_of_file_download">20. Specifying Content Disposition of File Download</h2>
 <div class="sectionbody">
-<h3 id="_problem_11" class="discrete">Problem</h3>
+<h3 id="_problem_12" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h3 id="_solution_11" class="discrete">Solution</h3>
+<h3 id="_solution_12" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -2250,13 +2441,13 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 <div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">20. Accessing an SQL query like a Table</h2>
+<h2 id="_accessing_an_sql_query_like_a_table">21. Accessing an SQL query like a Table</h2>
 <div class="sectionbody">
-<h3 id="_problem_12" class="discrete">Problem</h3>
+<h3 id="_problem_13" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h3 id="_solution_12" class="discrete">Solution</h3>
+<h3 id="_solution_13" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -2349,7 +2540,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">21. Preferences Directives</h2>
+<h2 id="_preferences_directives">22. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
