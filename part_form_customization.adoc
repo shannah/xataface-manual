@@ -6,3 +6,34 @@ The following chapters form a sort of cook book with recipes for customizing for
 include::custom_new_record_form.adoc[]
 
 include::using_ownerstamp_to_mark_record_ownership.adoc[]
+
+== Redirecting User to Different Page After Saving Record
+
+[discrete]
+=== Problem
+
+By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.
+
+[discrete]
+=== Solution
+
+Override the "edit" action in your actions.ini file to specify the "after_action" directive.
+
+E.g. Add the following to your application's actions.ini (or actions.ini.php) file.
+
+.the actions.ini file. Specifying that user should be directed back to the "view" action after editing the record.
+[source,ini]
+----
+[edit > edit]
+    after_action=view
+----
+
+If you only want to apply this rule to a particular table, you can use the `after_action.{TABLENAME}` instead.  E.g.
+
+.Specifying an after_action directive that only applies to editing records of the "users" table.
+[source,ini]
+----
+[edit > edit]
+    after_action.users=view
+----
+
