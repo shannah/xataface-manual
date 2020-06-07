@@ -113,4 +113,40 @@ E.g.
   widget:validation=server
 ----
 
+== Setting Fixed Number of Rows in the Grid Widget
+
+[discrete]
+=== Problem
+
+You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.
+
+[discrete]
+=== Solution
+
+Use the `widget:fixedrows` directive to a specific number of rows, and you can implement the `fieldname__prepareGridData($record, $cols, $data)` delegate method to return the data to prepopulate the grid with.
+
+
+.fields.ini file
+[source,ini]
+----
+[exam_results]
+  relationship=exam_results
+  widget:type=grid
+  widget:fixedrows=3
+  widget:cols="exam_name,exam_grade"
+----
+
+.Delegate class
+[source,php]
+----
+class tables_students {
+    function exam_results__prepareGridData($record, $cols, &$data) {
+        if (count($data) == 0) {
+            $data[] = array('exam_name' => 'Midterm 1', 'exam_grade' => '');
+            $data[] = array('exam_name' => 'Midterm 2', 'exam_grade' => '');
+            $data[] = array('exam_name' => 'Final', 'exam_grade' => ''); 
+        }
+    }
+}
+----
 

@@ -501,23 +501,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_redirecting_user_to_different_page_after_saving_record">10. Redirecting User to Different Page After Saving Record</a></li>
 <li><a href="#_auto_updating_a_field_when_other_fields_are_changed">11. Auto-Updating a Field When Other Fields are Changed</a></li>
 <li><a href="#_disabling_client_side_validation">12. Disabling Client-side Validation</a></li>
+<li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">13. Setting Fixed Number of Rows in the Grid Widget</a></li>
 <li><a href="#_list_customization">List Customization</a></li>
-<li><a href="#_adding_option_to_filter_result_list">13. Adding Option to Filter Result LIst</a>
+<li><a href="#_adding_option_to_filter_result_list">14. Adding Option to Filter Result LIst</a>
 <ul class="sectlevel2">
-<li><a href="#_solution_5">13.1. Solution</a></li>
+<li><a href="#_solution_6">14.1. Solution</a></li>
 </ul>
 </li>
-<li><a href="#_hiding_filter_counts">14. Hiding Filter Counts</a></li>
-<li><a href="#_sorting_filter_results">15. Sorting Filter Results</a></li>
+<li><a href="#_hiding_filter_counts">15. Hiding Filter Counts</a></li>
+<li><a href="#_sorting_filter_results">16. Sorting Filter Results</a></li>
 <li><a href="#_searching">Searching</a></li>
-<li><a href="#_case_sensitive_searches">16. Case-Sensitive Searches</a></li>
-<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">17. Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_case_sensitive_searches">17. Case-Sensitive Searches</a></li>
+<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">18. Explicitly Specifying Case-sensitivity of a Search</a></li>
 <li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">18. Specifying Content Disposition of File Download</a></li>
+<li><a href="#_specifying_content_disposition_of_file_download">19. Specifying Content Disposition of File Download</a></li>
 <li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">19. Accessing an SQL query like a Table</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">20. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">20. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">21. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1985,6 +1986,43 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
+<h2 id="_setting_fixed_number_of_rows_in_the_grid_widget">13. Setting Fixed Number of Rows in the Grid Widget</h2>
+<div class="sectionbody">
+<h3 id="_problem_5" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
+</div>
+<h3 id="_solution_5" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[exam_results]
+  relationship=exam_results
+  widget:type=grid
+  widget:fixedrows=3
+  widget:cols="exam_name,exam_grade"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Delegate class</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">class tables_students {
+    function exam_results__prepareGridData($record, $cols, &amp;$data) {
+        if (count($data) == 0) {
+            $data[] = array('exam_name' =&gt; 'Midterm 1', 'exam_grade' =&gt; '');
+            $data[] = array('exam_name' =&gt; 'Midterm 2', 'exam_grade' =&gt; '');
+            $data[] = array('exam_name' =&gt; 'Final', 'exam_grade' =&gt; '');
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_list_customization">List Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1993,14 +2031,14 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_option_to_filter_result_list">13. Adding Option to Filter Result LIst</h2>
+<h2 id="_adding_option_to_filter_result_list">14. Adding Option to Filter Result LIst</h2>
 <div class="sectionbody">
-<h3 id="_problem_5" class="discrete">Problem</h3>
+<h3 id="_problem_6" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
 <div class="sect2">
-<h3 id="_solution_5">13.1. Solution</h3>
+<h3 id="_solution_6">14.1. Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -2033,9 +2071,9 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hiding_filter_counts">14. Hiding Filter Counts</h2>
+<h2 id="_hiding_filter_counts">15. Hiding Filter Counts</h2>
 <div class="sectionbody">
-<h3 id="_problem_6" class="discrete">Problem</h3>
+<h3 id="_problem_7" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -2048,7 +2086,7 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h3 id="_solution_6" class="discrete">Solution</h3>
+<h3 id="_solution_7" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -2068,13 +2106,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sorting_filter_results">15. Sorting Filter Results</h2>
+<h2 id="_sorting_filter_results">16. Sorting Filter Results</h2>
 <div class="sectionbody">
-<h3 id="_problem_7" class="discrete">Problem</h3>
+<h3 id="_problem_8" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h3 id="_solution_7" class="discrete">Solution</h3>
+<h3 id="_solution_8" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -2100,13 +2138,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_case_sensitive_searches">16. Case-Sensitive Searches</h2>
+<h2 id="_case_sensitive_searches">17. Case-Sensitive Searches</h2>
 <div class="sectionbody">
-<h3 id="_problem_8" class="discrete">Problem</h3>
+<h3 id="_problem_9" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h3 id="_solution_8" class="discrete">Solution</h3>
+<h3 id="_solution_9" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -2130,13 +2168,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">17. Explicitly Specifying Case-sensitivity of a Search</h2>
+<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">18. Explicitly Specifying Case-sensitivity of a Search</h2>
 <div class="sectionbody">
-<h3 id="_problem_9" class="discrete">Problem</h3>
+<h3 id="_problem_10" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h3 id="_solution_9" class="discrete">Solution</h3>
+<h3 id="_solution_10" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -2170,13 +2208,13 @@ widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Program
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">18. Specifying Content Disposition of File Download</h2>
+<h2 id="_specifying_content_disposition_of_file_download">19. Specifying Content Disposition of File Download</h2>
 <div class="sectionbody">
-<h3 id="_problem_10" class="discrete">Problem</h3>
+<h3 id="_problem_11" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h3 id="_solution_10" class="discrete">Solution</h3>
+<h3 id="_solution_11" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -2212,13 +2250,13 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 <div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">19. Accessing an SQL query like a Table</h2>
+<h2 id="_accessing_an_sql_query_like_a_table">20. Accessing an SQL query like a Table</h2>
 <div class="sectionbody">
-<h3 id="_problem_11" class="discrete">Problem</h3>
+<h3 id="_problem_12" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h3 id="_solution_11" class="discrete">Solution</h3>
+<h3 id="_solution_12" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -2311,7 +2349,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">20. Preferences Directives</h2>
+<h2 id="_preferences_directives">21. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
