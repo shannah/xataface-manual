@@ -37,3 +37,57 @@ If you only want to apply this rule to a particular table, you can use the `afte
     after_action.users=view
 ----
 
+== Auto-Updating a Field When Other Fields are Changed
+
+[discrete]
+=== Problem
+
+You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.
+
+[discrete]
+=== Solution
+
+You can use the `widget:atts:data-xf-update-url` fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.
+
+**Syntax:**
+
+`widget:atts:data-xf-update-url=<url-template>#<json-path-query>`
+
+`<url-template>` is a string that is used as a template for the URL to the web service from which to load the field's content.  The template should contain one or more placeholders of the form `{fieldname}` which are replaced by the form value of the corresponding field.  
+
+`<json-path-query>` is a http://jsonpath.com/[jsonPath] query describing which part of the JSON response should be used as the new field value.
+
+**Triggers**
+
+The field will be updated whenever the URL would be changed.  The URL template may include variables with the syntax `{fieldname}` that will be replaced by the corresponding field when generating the web service URL.  If the values of any of the fields marked as variables changes, it will trigger an update.
+
+**Example**
+
+Consider the following fields.ini file:
+
+[source,ini
+----
+[ProgramID]
+widget:type=select
+vocabulary=programs
+
+[ProgramTitle]
+widget:atts:data-xf-update-url="index.php?-action=export_json&-table=Programs&ProgramID={ProgramID}#0.ProgramTitle
+----
+
+In the above example, whenever the `ProgramID` field is changed (say to a value of "1"), it will trigger an AJAX request to `index.php?-action=export_json&-table=Programs&ProgamID=1`.
+
+The JSON response will look like:
+
+[source,json]
+----
+[{"ProgramID":"1", "ProgramTitle":"Some program", ....}]
+----
+
+When it receives the response, it will take the `ProgramTitle` attribute of the first result in the JSON response, and place it in the ProgramTitle field.  In the above example, it would be "Some program".
+ 
+
+[TIP]
+====
+You can use the `widget:atts:data-xf-update-condition=empty` directive to *only* update the field value if it is currently empty.  
+====

@@ -499,23 +499,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_using_ownerstamp_to_mark_record_ownership">9. Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
 <li><a href="#_redirecting_user_to_different_page_after_saving_record">10. Redirecting User to Different Page After Saving Record</a></li>
+<li><a href="#_auto_updating_a_field_when_other_fields_are_changed">11. Auto-Updating a Field When Other Fields are Changed</a></li>
 <li><a href="#_list_customization">List Customization</a></li>
-<li><a href="#_adding_option_to_filter_result_list">11. Adding Option to Filter Result LIst</a>
+<li><a href="#_adding_option_to_filter_result_list">12. Adding Option to Filter Result LIst</a>
 <ul class="sectlevel2">
-<li><a href="#_solution_3">11.1. Solution</a></li>
+<li><a href="#_solution_4">12.1. Solution</a></li>
 </ul>
 </li>
-<li><a href="#_hiding_filter_counts">12. Hiding Filter Counts</a></li>
-<li><a href="#_sorting_filter_results">13. Sorting Filter Results</a></li>
+<li><a href="#_hiding_filter_counts">13. Hiding Filter Counts</a></li>
+<li><a href="#_sorting_filter_results">14. Sorting Filter Results</a></li>
 <li><a href="#_searching">Searching</a></li>
-<li><a href="#_case_sensitive_searches">14. Case-Sensitive Searches</a></li>
-<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">15. Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_case_sensitive_searches">15. Case-Sensitive Searches</a></li>
+<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">16. Explicitly Specifying Case-sensitivity of a Search</a></li>
 <li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">16. Specifying Content Disposition of File Download</a></li>
+<li><a href="#_specifying_content_disposition_of_file_download">17. Specifying Content Disposition of File Download</a></li>
 <li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">17. Accessing an SQL query like a Table</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">18. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">18. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">19. Preferences Directives</a></li>
 </ul>
 </div>
 </div>
@@ -1883,6 +1884,84 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_auto_updating_a_field_when_other_fields_are_changed">11. Auto-Updating a Field When Other Fields are Changed</h2>
+<div class="sectionbody">
+<h3 id="_problem_3" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
+</div>
+<h3 id="_solution_3" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>You can use the <code>widget:atts:data-xf-update-url</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
+</div>
+<div class="paragraph">
+<p><strong>Syntax:</strong></p>
+</div>
+<div class="paragraph">
+<p><code>widget:atts:data-xf-update-url=&lt;url-template&gt;#&lt;json-path-query&gt;</code></p>
+</div>
+<div class="paragraph">
+<p><code>&lt;url-template&gt;</code> is a string that is used as a template for the URL to the web service from which to load the field&#8217;s content.  The template should contain one or more placeholders of the form <code>{fieldname}</code> which are replaced by the form value of the corresponding field.</p>
+</div>
+<div class="paragraph">
+<p><code>&lt;json-path-query&gt;</code> is a <a href="http://jsonpath.com/">jsonPath</a> query describing which part of the JSON response should be used as the new field value.</p>
+</div>
+<div class="paragraph">
+<p><strong>Triggers</strong></p>
+</div>
+<div class="paragraph">
+<p>The field will be updated whenever the URL would be changed.  The URL template may include variables with the syntax <code>{fieldname}</code> that will be replaced by the corresponding field when generating the web service URL.  If the values of any of the fields marked as variables changes, it will trigger an update.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="paragraph">
+<p>Consider the following fields.ini file:</p>
+</div>
+<div class="paragraph">
+<p>[source,ini</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[ProgramID]
+widget:type=select
+vocabulary=programs
+
+[ProgramTitle]
+widget:atts:data-xf-update-url="index.php?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0.ProgramTitle</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example, whenever the <code>ProgramID</code> field is changed (say to a value of "1"), it will trigger an AJAX request to <code>index.php?-action=export_json&amp;-table=Programs&amp;ProgamID=1</code>.</p>
+</div>
+<div class="paragraph">
+<p>The JSON response will look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[{"ProgramID":"1", "ProgramTitle":"Some program", ....}]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When it receives the response, it will take the <code>ProgramTitle</code> attribute of the first result in the JSON response, and place it in the ProgramTitle field.  In the above example, it would be "Some program".</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can use the <code>widget:atts:data-xf-update-condition=empty</code> directive to <strong>only</strong> update the field value if it is currently empty.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_list_customization">List Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1891,14 +1970,14 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_option_to_filter_result_list">11. Adding Option to Filter Result LIst</h2>
+<h2 id="_adding_option_to_filter_result_list">12. Adding Option to Filter Result LIst</h2>
 <div class="sectionbody">
-<h3 id="_problem_3" class="discrete">Problem</h3>
+<h3 id="_problem_4" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
 <div class="sect2">
-<h3 id="_solution_3">11.1. Solution</h3>
+<h3 id="_solution_4">12.1. Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -1931,9 +2010,9 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_hiding_filter_counts">12. Hiding Filter Counts</h2>
+<h2 id="_hiding_filter_counts">13. Hiding Filter Counts</h2>
 <div class="sectionbody">
-<h3 id="_problem_4" class="discrete">Problem</h3>
+<h3 id="_problem_5" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -1946,7 +2025,7 @@ class tables_new_contact_form {
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h3 id="_solution_4" class="discrete">Solution</h3>
+<h3 id="_solution_5" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -1966,13 +2045,13 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sorting_filter_results">13. Sorting Filter Results</h2>
+<h2 id="_sorting_filter_results">14. Sorting Filter Results</h2>
 <div class="sectionbody">
-<h3 id="_problem_5" class="discrete">Problem</h3>
+<h3 id="_problem_6" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h3 id="_solution_5" class="discrete">Solution</h3>
+<h3 id="_solution_6" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -1998,13 +2077,13 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_case_sensitive_searches">14. Case-Sensitive Searches</h2>
+<h2 id="_case_sensitive_searches">15. Case-Sensitive Searches</h2>
 <div class="sectionbody">
-<h3 id="_problem_6" class="discrete">Problem</h3>
+<h3 id="_problem_7" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h3 id="_solution_6" class="discrete">Solution</h3>
+<h3 id="_solution_7" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -2028,13 +2107,13 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">15. Explicitly Specifying Case-sensitivity of a Search</h2>
+<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">16. Explicitly Specifying Case-sensitivity of a Search</h2>
 <div class="sectionbody">
-<h3 id="_problem_7" class="discrete">Problem</h3>
+<h3 id="_problem_8" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h3 id="_solution_7" class="discrete">Solution</h3>
+<h3 id="_solution_8" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -2068,13 +2147,13 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">16. Specifying Content Disposition of File Download</h2>
+<h2 id="_specifying_content_disposition_of_file_download">17. Specifying Content Disposition of File Download</h2>
 <div class="sectionbody">
-<h3 id="_problem_8" class="discrete">Problem</h3>
+<h3 id="_problem_9" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h3 id="_solution_8" class="discrete">Solution</h3>
+<h3 id="_solution_9" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -2110,13 +2189,13 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 <div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">17. Accessing an SQL query like a Table</h2>
+<h2 id="_accessing_an_sql_query_like_a_table">18. Accessing an SQL query like a Table</h2>
 <div class="sectionbody">
-<h3 id="_problem_9" class="discrete">Problem</h3>
+<h3 id="_problem_10" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h3 id="_solution_9" class="discrete">Solution</h3>
+<h3 id="_solution_10" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -2209,7 +2288,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">18. Preferences Directives</h2>
+<h2 id="_preferences_directives">19. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
