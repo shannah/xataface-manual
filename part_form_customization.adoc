@@ -37,6 +37,17 @@ If you only want to apply this rule to a particular table, you can use the `afte
     after_action.users=view
 ----
 
+[TIP]
+====
+The "new" action also supports the `after_action` and `after_action.tablename` directives.  E.g.
+
+[source,ini]
+----
+[new > new]
+    after_action=view
+----
+====
+
 == Auto-Updating a Field When Other Fields are Changed
 
 [discrete]
