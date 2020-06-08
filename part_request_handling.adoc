@@ -1,0 +1,196 @@
+[http_request_handling]
+= HTTP Request Handling
+
+The following sections include tips for configuring how Xataface applications respond to HTTP requests.  This includes topics such as event routing, response types, etc...
+
+== Specifying a Default Action
+
+[discrete]
+=== Problem
+
+You want your application to use a default action other than the Xataface default, if the user doesn't explicitly provide an "-action" parameter.
+
+[discrete]
+=== Solution
+
+Use the `default_action` conf.ini directive.
+
+E.g.:
+
+.Setting a default action at the beginning of your conf.ini file.
+[source,ini]
+----
+default_action=find
+----
+
+This would result in the user being directed to the "find" action by default.
+
+NOTE: If "default_action" is not specified, then Xataface will use the "list" action as the default.
+
+== Using Different Default Action Depending on Table
+
+[discrete]
+=== Problem
+
+You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.
+
+[discrete]
+=== Solution
+
+Use the `default_action.tablename` directive in your conf.ini file.  (`tablename` should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:
+
+[source,ini]
+----
+default_action.posts=view
+----
+
+== Specifying Default Query Parameters for Default Actions
+
+[discrete]
+=== Problem
+
+You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.
+
+[discrete]
+=== Solution
+
+Use the `default_params.tablename` directive.  E.g.
+
+.Setting some default query parameters for when the default action is used on the posts table.
+[source,ini]
+----
+default_action.posts=view
+default_params.posts="post_id=2&foo=bar"
+----
+
+These default parameters will be used if the user requests a URL like:
+
+----
+index.php?-table=posts
+----
+
+The above would effectively be the same as:
+
+----
+index.php?-table=posts&-action=view&post_id&foo=bar
+----
+
+[IMPORTANT]
+====
+The `default_params.tablename` directive only applies when the default action is being used.  E.g. In the above example, if the user requests:
+
+----
+index.php?-table=posts&-action=view
+----
+
+The default params would not be applied because the "-action" has been specified explicitly by the user.
+====
+
+The above example shows the `default_params.posts` directive specified as a URL-encoded string.  However, you can also define the parameters as a section.
+
+E.g.
+
+[source,ini]
+----
+[default_params.posts]
+  post_id=2
+  foo=bar
+----
+
+This would be equivalent to 
+
+[source,ini]
+----
+default_params.posts="post_id=2&foo=bar"
+----
+
+== Showing the "Edit" Tab By Default for Record Details
+
+[discrete]
+=== Problem
+
+By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.
+
+[discrete]
+=== Solution
+
+Use the `default_browse_action` directive of the conf.ini file. This directive is analagous to the `default_action` directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.
+
+The direct solution to our problem would be the following at the beginning of the conf.ini file.
+
+[source,ini]
+----
+default_browse_action=edit
+----
+
+[TIP]
+====
+Just like the `default_action` directive, you can specify a different default browse action for different tables using the `default_browse_action.tablename` directive.  E.g.
+
+.Only setting the default browse action to edit on the "posts" table.
+[source,ini]
+----
+default_browse_action.posts=edit
+----
+====
+
+== Setting Default Query Parameters for the `browse` Action
+
+[discrete]
+=== Problem
+
+You have specified a custom action that you are using as the default "browse" action for your table via the `default_browse_action.mytable=myaction` directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.
+
+[discrete]
+=== Solution
+
+Use the `default_browse_params.tablename` directive to add parameters to the `browse` action. This directive works similarly to the `default_params.tablename` directive.  E.g. Let's add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.
+
+[source,ini]
+----
+default_browse_action.posts=myaction
+default_browse_params.posts="foo=bar"
+----
+
+[TIP]
+====
+The above example shows the `default_browse_params.posts` directive specified as a URL-encoded string.  However, you can also define the parameters as a section.
+
+E.g.
+
+[source,ini]
+----
+[default_browse_params.posts]
+  foo=bar
+  fuzz=bazz
+----
+
+This would be equivalent to 
+
+[source,ini]
+----
+default_browse_params.posts="foo=bar&fuzz=bazz"
+----
+====
+
+
+== Setting a Related Records Tab as the Default Browse Action
+
+[discrete]
+=== Problem
+
+When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.
+
+[discrete]
+=== Solution
+
+We can achieve this by way of the `default_browse_params.tablename` conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post's details are shown:
+
+.Specifying that the "authors" relationship should be shown by default when viewing a record in the posts table.
+[source,ini]
+----
+default_browse_params.posts="-relationship=authors"
+----
+
+Notice here, that we didn't actually need to use the `default_browse_action` parameter to specify that it should use the `related_records_list` action (which is the action used to display a related list).  Xataface infers this by the presence of the "-relationship" directive.
+
