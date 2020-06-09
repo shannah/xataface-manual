@@ -3,6 +3,102 @@
 
 The following chapters form a sort of cook book with recipes for customizing forms in Xataface.
 
+
+== Multiple Tabs in Forms
+
+[discrete]
+=== Problem
+
+You want to split your edit/new record forms into multiple tabs
+
+[discrete]
+=== Solution
+
+Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.
+
+The tab directive of the fields.ini file specifies which tab of the record edit form a field should be displayed on. Xataface supports multiple tabs on the edit form by way of this tab directive. If no fields contain the tab directive then all fields are displayed in a single tab (named `__main__`).
+
+**Example 1: Placing address info on separate tab**
+Consider the following people table:
+
+[source,sql]
+----
+CREATE TABLE `people` (
+    person_id int(11) not null auto_increment primary key,
+    first_name varchar(32) not null,
+    last_name varchar(32) not null,
+    address varchar(100),
+    city varchar(100),
+    province varchar(100),
+    country varchar(100),
+    postal_code varchar(20)
+)
+----
+
+
+We want to split the fields into two tabs: "Personal Info" and "Address Info"
+
+We'll do this in two steps. We use the `tab` directive to assign all address-related fields to the `address_info` tab.
+
+.fields.ini file.  Assigning fields to the "address_info" tab.
+[source,ini]
+----
+[address]
+    tab=address_info
+
+[city]
+    tab=address_info
+
+[province]
+    tab=address_info
+
+[country]
+    tab=address_info
+
+[postal_code]
+    tab=address_info
+----
+
+Now, when we load the edit form of the people table, we see two tabs: "\\__main__" and "address_info"
+
+image::images/Image-090620-092422.464.png[]
+
+image::images/Image-090620-092436.892.png[]
+
+TIP: `\\__main__` is the name assigned to the default tab (for all fields that don't have a tab defined explicitly.
+
+**Customizing the tab labels**
+
+Next we will customize the tab labels by adding the following to the beginning of the fields.ini file:
+
+.Defining the tabs in the fields.ini file.
+[source,ini]
+----
+[tab:__main__]
+    label="Personal Information"
+
+[tab:address_info]
+    label="Address Information"
+---- 
+
+image::images/Image-090620-092537.254.png[]
+
+http://media.weblite.ca/files/photos/Picture%2012.png?max_width=640
+
+**Reordering the tabs**
+
+If we want to reorder the tabs so that the "address_info" tab comes first, we would just reorder the definitions of the tabs:
+
+[source,ini]
+----
+[tab:address_info]
+    label="Address Information"
+
+[tab:__main__]
+    label="Personal Information"
+----
+
+
 include::custom_new_record_form.adoc[]
 
 include::using_ownerstamp_to_mark_record_ownership.adoc[]
