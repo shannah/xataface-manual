@@ -1,0 +1,45 @@
+[actions]
+= Actions
+
+The following sections pertain to actions in Xataface.  An action may either be a menu item, or an HTTP request handler.  Or it can be both.  They are defined in the actions.ini file (or actions.ini.php file) of your application, and their "handlers" are defined inside the "actions" directory of your application.
+
+== Using Material Icons
+
+[discrete]
+=== Problem
+
+You want to use a https://material.io/resources/icons/?style=baseline[material icon] for a menu-item in your application, instead of an image.
+
+[discrete]
+=== Solution
+
+The default theme of Xataface includes the material icons web font, so you can use any icons in that font on your actions via the `materialIcon` directive in your action.  For example, suppose we want to add a "Play" button to the rows of our table in list view.  We define our action as follows:
+
+.A play action for the "songs" table.
+[source,ini]
+----
+[play]
+    condition="$query['-table'] == 'songs'" <1>
+    category=list_row_actions <2>
+    materialIcon=play_circle_outline <3>
+    label="Play" <4>
+    description="Play narration" <5>
+    url="javascript:playSong()"
+----
+<1> The `condition` directive is used to limit our action so it only displays for the "songs" table.
+<2> The `category` directive makes the action appear in the "list_row_actions" menu (which is displayed as icons in each row of the list view.
+<3> The `materialIcon` directive specifies that we want to use the https://material.io/resources/icons/?search=play&icon=play_circle_outline&style=baseline[play_circle_outline] material icon.
+<4> The label, which is hidden for this menu type because the stylesheet is set to show only icons for the "list_row_actions" action.  It is still a good idea to define the label though in case this action is used in other contexts.
+<5> The description which is shown as tool-tip text if the user mouses over the action.
+
+
+[discrete]
+=== Finding the Right Material Icon
+
+You can browse the available material icons https://material.io/resources/icons/?style=baseline[here].
+
+.Material Icons website
+image::images/Image-130620-080448.218.png[Material Icons site]
+
+The label below the icon is the name of the icon, that you would use for your `materialIcon` directive.  If the lable is truncated, you can click the "Selected Icon" button in the lower left to get a more detailed view.
+

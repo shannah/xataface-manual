@@ -12,6 +12,8 @@ include::part_fundamentals.adoc[]
 
 include::part_security.adoc[]
 
+include::part_actions.adoc[]
+
 include::part_form_customization.adoc[]
 
 include::part_list_customization.adoc[]
