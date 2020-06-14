@@ -5,6 +5,7 @@
 
 You want to add a drop-down list for the user to select filters for the result set.
 
+[discrete]
 === Solution
 
 Use the `filter` directive in the fields.ini file on any field that you want the filter to be added for.
