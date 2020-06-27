@@ -394,7 +394,7 @@ function addtoPlaylist(el) {
             el = trTag;
         }
     }
-    $(el).addClass('on-playlist');
+    $(el).addClass('on-playlist'); <1>
     return new Promise(function(resolve, reject) { 
         // Do the actual playing here, and either call resolve() or reject()
         // when done.
@@ -404,7 +404,7 @@ function addtoPlaylist(el) {
             resolve(data);
         }).catch (function(data) {
             // Failed
-            $(el).removeClass('on-playlist');
+            $(el).removeClass('on-playlist'); <2>
             reject(data);
         });;
     });
@@ -421,7 +421,7 @@ function removeFromPlaylist(el) {
             el = trTag;
         }
     }
-    $(el).removeClass('on-playlist');
+    $(el).removeClass('on-playlist');<3>
     return new Promise(function(resolve, reject) {
         // Do the actual playing here, and either call resolve() or reject()
         // when done.
@@ -431,12 +431,16 @@ function removeFromPlaylist(el) {
             resolve(data);
         }).catch (function(data) {
             // Failed
-            $(el).addClass('on-playlist');
+            $(el).addClass('on-playlist'); <4>
             reject(data);
         });;
     });
 }
 ----
+<1> Optimistically add the 'on-playlist' CSS class when user clicks the "add" button.  This will toggle the actions immediately.  
+<2> If the action failed, we revert the CSS class back, by removing the "on-playlist" CSS class.
+<3> Optimistally remove the 'on-playlist' CSS class when user clicks the "remove" button.  This will toggle the actions immediately.
+<4> If the action failed, we revert the CSS class back, by re-adding the "on-playlist" CSS class.
 
 [#ajax-list-row-actions]
 == Using AJAX To Modify Row Records

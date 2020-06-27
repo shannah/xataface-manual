@@ -1,0 +1,108 @@
+[theme_customization]
+= Theme Customization
+
+The following chapters form a sort of cook book with recipes for customizing themes in Xataface.
+
+
+== Adding a Custom Stylesheet
+
+[discrete]
+=== Problem
+
+You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.
+
+[discrete]
+=== Solution
+
+The `xf_stylesheet()` function can be used to inject a stylesheet into either the `<head>` section of the app's page, or into the CSS bundle that is compiled by the `CSSTool`.  Let's start with the simplest case, where you want to include the stylesheet in the entire application (i.e. it should be loaded in every page of the app), and the stylesheet is hosted on a CDN (content-delivery network).  In this case, you should place the call to `xf_stylesheet()` inside the `beforeHandleRequest()` method of the application delegate class.
+
+e.g. 
+
+.The Application delegate class ("conf/ApplicationDelegate.php")
+[source,php]
+----
+<?php
+class conf_ApplicationDelegate {
+    function beforeHandleRequest() {
+        xf_stylesheet('https://example.com/styles.css');
+    }
+}
+----
+
+This will append a `<link rel="stylesheet"...>` tag  in the `<head>` section of every page.
+
+[discrete]
+==== Hosting Stylesheet
+
+If you want to host the stylesheet as part of the app, it is customary to create a `css` directory in your application's main directory where you place your CSS files.  So we can copy our stylesheet into this directory:
+
+----
+myapp/
+  css/
+    mystylesheet.css
+----
+
+And use embed it just as before in the `beforeHandleRequest()` method.
+
+[source,php]
+----
+<?php
+class conf_ApplicationDelegate {
+    function beforeHandleRequest() {
+        xf_stylesheet('mystylesheet.css');
+    }
+}
+----
+
+
+[discrete]
+==== The CSS Tool and Include Paths
+
+`xf_stylesheet()` takes an optional 2nd parameter which is a flag to indicate whether the stylesheet should be included directly in the `<head>` section, or bundled by the CSS tool, and injected dynamically on page load.
+
+[source,php]
+----
+xf_stylesheet('mystylesheet.css')
+----
+
+is the same as
+
+[source,php]
+----
+xf_stylesheet('mystylesheet.css', true)
+----
+
+Which means that the stylesheet will be bundled by the CSS tool. All stylesheets in a particular request that are included using the CSS tool are bundled together into a single minified file, which is added to the document on load.  The CSS tool has a set of include paths where it looks for CSS files to include, and these paths are treated as "roots" for all CSS files.  The "css" directory is one of these "roots" by default.  This is why we only need to specify "mystylesheet.css" in the path rather than "css/mystylesheet.css" - because all CSS files processed by the CSS tool are searched relative to the include path roots.
+
+You can set the 2nd argument to `false` to simply include the CSS file in the `<head> of the document, and not have the CSS tool process it.  In this case, you would need to include the full relative path to the CSS file.  E.g.
+
+[source,php]
+----
+xf_stylesheet('css/mystylesheet.css', false);
+----
+
+[discrete]
+==== When to use the CSS Tool
+
+With two different options for including stylesheets, you might be wondering when you should and should not use the CSS tool.  Generally, I'll use the CSS tool if I'm building a module and I want other modules and apps to be able to override the CSS file.  However, if I'm just including a CSS file that will be used for my application styles, I won't use the CSS tool.
+
+[TIP]
+====
+If you specify the CSS file using a full URL (e.g. "http://..." or "https://...." or "//..."), `xf_stylesheet()` won't use the CSS tool.  If you specify it as a relative path, it *will* use the CSS tool unless you explicitly add `false` as the 2nd argument.
+
+[source,php]
+----
+xf_stylesheet('mystylesheet.css');        // uses CSS tool
+    // Will use ./css/mystylesheet.css
+xf_stylesheet('mystylesheet.css', false); // does NOT use CSS tool
+    // Will use ./mystylesheet.css
+xf_stylesheet('//example.com/mystylesheet.css'); // does NOT use CSS tool
+xf_stylesheet('http://example.com/mystylesheet.css'); // does NOT use CSS tool
+xf_stylesheet('https://example.com/mystylesheet.css'); // does NOT use CSS tool
+xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't 
+    // 2nd arg is ignored if URL is absolute
+----
+
+====
+
+
