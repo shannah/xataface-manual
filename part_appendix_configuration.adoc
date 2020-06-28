@@ -4,3 +4,5 @@
 The following chapters serve as reference to show all of the various configuration directives available in Xataface apps.
 
 include::appendix_preferences_directives.adoc[]
+
+include::appendix_rss_directives.adoc[]

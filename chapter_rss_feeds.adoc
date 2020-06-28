@@ -1,0 +1,108 @@
+[#rss-feeds]
+== RSS Feeds
+
+A default Xataface application provides RSS feeds to any found set in your application. This article explains a little bit about RSS and how you can configure Xataface to give you the desired results for your RSS feed.
+
+[discrete]
+=== What is RSS?
+
+From http://en.wikipedia.org/wiki/RSS_(file_format)[Wikipedia's RSS article]:
+
+> "RSS is a family of Web feed formats used to publish frequently updated works such as blog entries, news headlines, audio, and videoin a standardized format.[2] An RSS document (which is called a "feed", "web feed",[3] or "channel") includes full or summarized text, plus metadata such as publishing dates and authorship. Web feeds benefit publishers by letting them syndicate content automatically. They benefit readers who want to subscribe to timely updates from favored websites or to aggregate feeds from many sites into one place. RSS feeds can be read using software called an "RSS reader", "feed reader", or "aggregator", which can be web-based or desktop-based. A standardized XML file format allows the information to be published once and viewed by many different programs. The user subscribes to a feed by entering the feed's URI (often referred to informally as a "URL", although technically, those two terms are not exactly synonymous) into the reader or by clicking an RSS icon in a browser that initiates the subscription process. The RSS reader checks the user's subscribed feeds regularly for new work, downloads any updates that it finds, and provides a user interface to monitor and read the feeds."
+
+In a way, RSS replaces email subscriptions so that you can subscribe to receive updates when content is added or changed on websites that you monitory. This way you can monitory these changes in your RSS reader so that your email box doesn't get clogged up.
+
+[discrete]
+=== Using RSS in Xataface
+
+Xataface allows you to subscribe to:
+
+. Entire tables
+. Any found set
+. Changes to a particular record
+. Related record lists
+
+[discrete]
+==== Example 1: Subscribing to receive news updates
+
+A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he'll receive alerts in his RSS reader.
+
+[discrete]
+==== Example 2: Subscribing to receive found set updates
+
+A user wants to be alerted whenever a new item is inserted into the news table that contains the phrase "Buffalo Bills", because he is a Buffalo Bills fan. So he navigates to the news table, and does a search for the phrase "Buffalo Bills". Then he clicks on the "RSS Feed" icon in the upper right of the result set list. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for news items containing the phrase "Buffalo Bills". Whenever a new item is posted with this phrase, he will be notified via RSS of the new record.
+
+[discrete]
+==== Example 3: Subscribing to a related list
+
+Suppose you want to receive updates whenever a particular author adds a book to his list of published works. Further suppose this is represented by a relationship between the authors table and the books table named publications. You can subscribe to the RSS feed for his publications by navigating to the publications tab for that author, then clicking on the "RSS Feed" icon in the upper right. Now whenever this author adds a new book to his publications list, you'll be notified via RSS.
+
+[discrete]
+==== Example usage in Xataface
+
+A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he'll receive alerts in his RSS reader.
+
+A user wants to be alerted whenever a new record about "Wayne Gretzky" is inserted in to the news table. He navigates to the news table, then performs a search for "Wayne Gretzky" using the top right search box. Then, he clicks on the "RSS Feed" icon in the upper right of the result list. Now, whenever a new item is inserted with the phrase "Wayne Gretzky", the user will be notified via RSS.
+
+=== Configuring RSS Feeds
+
+As with everything else in Xataface, you can configure your RSS feeds to appear just as you want them to. The following delegate class methods are available to be defined in the table delegate class for your feed:
+
+
+See <<appendix-rss-config>> for available configuration directives and delegate class methods related to RSS feeds.
+
+[discrete]
+==== Example Configuration
+
+There are 2 parts to configuring your RSS feeds:
+
+. Configuring the feed as a whole
+. Configuring the feed items (that is each record that will appear in your RSS feed).
+
+**Configuring the Feed as a whole**
+
+For configuring the feed as a whole, we have 2 options. We can specify the title, description, and link for the feed in the `[_feed]` section of your "conf.ini" file. This is sort of a "one size fits all" approach where all feeds generated from your application will share the same title. E.g.
+
+.Configuring RSS feed in conf.ini file
+[source,ini]
+----
+[_feed]
+    title="My Site News"
+    description="News updates from my site"
+    link="http://www.example.com"
+----
+
+However, if we want our feed's information to depend on the user's query (e.g. what the user was searching for, or which table the feed is generated on, we have more flexibility if we define the `getFeed` method in either the application delegate class or the table delegate class. E.g.
+
+.Configuring RSS feed in delegate class
+[source,php]
+----
+function getFeed($query=array()){
+    $params = array();
+    if ( @$query['-search'] ) $params['title'] = '"'.$query['-search'].'" results';
+    else $params['title'] = 'All records from my table';
+    return $params;
+}
+----
+
+Notice that I don't need to define all possible parameters. Any parameters that I don't define will be provided automatically by Xataface, or it will simply use the values specified in your `[_feed]` section of the "conf.ini" file.
+
+**Configuring Feed Items**
+
+Configuring the feed items is quite important for ensuring that subscribers are seeing what you want them to see in the RSS feed. Xataface tries to guess appropriate content for your feed items if you don't specify it explicitly, but you'll likely want to tweak it a little bit to make the feed look more polished for your purposes.
+
+Use the `getFeedItem` delegate class method to specify how a feed item behaves (e.g. the title, content, date, author, link).  E.g.
+
+.Configuring a feed item description in the delegate class.
+[source,php]
+----
+function getFeedItem(&$record)){
+    return array(
+        'description' => $record->val('body')
+    );
+}
+----
+
+Once again, notice that we don't need to specify all available options. Only those options that we want to override. In this case we want the description of the feed item to simply display the body of our news item. The description of an RSS feed item is effectively the body text that the user sees why they click on an item in their news reader, so this is quite important.
+
+

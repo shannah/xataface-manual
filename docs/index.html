@@ -522,19 +522,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_searching">Searching</a></li>
 <li><a href="#_case_sensitive_searches">28. Case-Sensitive Searches</a></li>
 <li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">29. Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_exporting_data">Exporting Data</a></li>
+<li><a href="#rss-feeds">30. RSS Feeds</a>
+<ul class="sectlevel2">
+<li><a href="#_configuring_rss_feeds">30.1. Configuring RSS Feeds</a></li>
+</ul>
+</li>
 <li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">30. Specifying Content Disposition of File Download</a></li>
+<li><a href="#_specifying_content_disposition_of_file_download">31. Specifying Content Disposition of File Download</a></li>
 <li><a href="#_http_request_handling">HTTP Request Handling</a></li>
-<li><a href="#_specifying_a_default_action">31. Specifying a Default Action</a></li>
-<li><a href="#_using_different_default_action_depending_on_table">32. Using Different Default Action Depending on Table</a></li>
-<li><a href="#_specifying_default_query_parameters_for_default_actions">33. Specifying Default Query Parameters for Default Actions</a></li>
-<li><a href="#_showing_the_edit_tab_by_default_for_record_details">34. Showing the "Edit" Tab By Default for Record Details</a></li>
-<li><a href="#_setting_default_query_parameters_for_the_browse_action">35. Setting Default Query Parameters for the <code>browse</code> Action</a></li>
-<li><a href="#_setting_a_related_records_tab_as_the_default_browse_action">36. Setting a Related Records Tab as the Default Browse Action</a></li>
+<li><a href="#_specifying_a_default_action">32. Specifying a Default Action</a></li>
+<li><a href="#_using_different_default_action_depending_on_table">33. Using Different Default Action Depending on Table</a></li>
+<li><a href="#_specifying_default_query_parameters_for_default_actions">34. Specifying Default Query Parameters for Default Actions</a></li>
+<li><a href="#_showing_the_edit_tab_by_default_for_record_details">35. Showing the "Edit" Tab By Default for Record Details</a></li>
+<li><a href="#_setting_default_query_parameters_for_the_browse_action">36. Setting Default Query Parameters for the <code>browse</code> Action</a></li>
+<li><a href="#_setting_a_related_records_tab_as_the_default_browse_action">37. Setting a Related Records Tab as the Default Browse Action</a></li>
 <li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">37. Accessing an SQL query like a Table</a></li>
+<li><a href="#_accessing_an_sql_query_like_a_table">38. Accessing an SQL query like a Table</a></li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">38. Preferences Directives</a></li>
+<li><a href="#_preferences_directives">39. Preferences Directives</a></li>
+<li><a href="#appendix-rss-config">40. RSS Configuration Directives</a>
+<ul class="sectlevel2">
+<li><a href="#rss-getfeed">40.1. <code>getFeed()</code> Delegate Method</a></li>
+<li><a href="#rss-getfeeditem">40.2. <code>getFeedItem()</code> Delegate Method</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -3486,6 +3498,171 @@ function removeFromPlaylist(el) {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_exporting_data">Exporting Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Xataface includes built-in support for exporting data in a variety of formats, including:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>RSS</p>
+</li>
+<li>
+<p>CSV</p>
+</li>
+<li>
+<p>XML</p>
+</li>
+<li>
+<p>JSON</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Additional formats are provided via modules.  The following chapters describe how to integrate these formats into your Xataface applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rss-feeds">30. RSS Feeds</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A default Xataface application provides RSS feeds to any found set in your application. This article explains a little bit about RSS and how you can configure Xataface to give you the desired results for your RSS feed.</p>
+</div>
+<h3 id="_what_is_rss" class="discrete">What is RSS?</h3>
+<div class="paragraph">
+<p>From <a href="http://en.wikipedia.org/wiki/RSS_(file_format)">Wikipedia&#8217;s RSS article</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>"RSS is a family of Web feed formats used to publish frequently updated works such as blog entries, news headlines, audio, and videoin a standardized format.[2] An RSS document (which is called a "feed", "web feed",[3] or "channel") includes full or summarized text, plus metadata such as publishing dates and authorship. Web feeds benefit publishers by letting them syndicate content automatically. They benefit readers who want to subscribe to timely updates from favored websites or to aggregate feeds from many sites into one place. RSS feeds can be read using software called an "RSS reader", "feed reader", or "aggregator", which can be web-based or desktop-based. A standardized XML file format allows the information to be published once and viewed by many different programs. The user subscribes to a feed by entering the feed&#8217;s URI (often referred to informally as a "URL", although technically, those two terms are not exactly synonymous) into the reader or by clicking an RSS icon in a browser that initiates the subscription process. The RSS reader checks the user&#8217;s subscribed feeds regularly for new work, downloads any updates that it finds, and provides a user interface to monitor and read the feeds."</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In a way, RSS replaces email subscriptions so that you can subscribe to receive updates when content is added or changed on websites that you monitory. This way you can monitory these changes in your RSS reader so that your email box doesn&#8217;t get clogged up.</p>
+</div>
+<h3 id="_using_rss_in_xataface" class="discrete">Using RSS in Xataface</h3>
+<div class="paragraph">
+<p>Xataface allows you to subscribe to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Entire tables</p>
+</li>
+<li>
+<p>Any found set</p>
+</li>
+<li>
+<p>Changes to a particular record</p>
+</li>
+<li>
+<p>Related record lists</p>
+</li>
+</ol>
+</div>
+<h4 id="_example_1_subscribing_to_receive_news_updates" class="discrete">Example 1: Subscribing to receive news updates</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
+</div>
+<h4 id="_example_2_subscribing_to_receive_found_set_updates" class="discrete">Example 2: Subscribing to receive found set updates</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table that contains the phrase "Buffalo Bills", because he is a Buffalo Bills fan. So he navigates to the news table, and does a search for the phrase "Buffalo Bills". Then he clicks on the "RSS Feed" icon in the upper right of the result set list. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for news items containing the phrase "Buffalo Bills". Whenever a new item is posted with this phrase, he will be notified via RSS of the new record.</p>
+</div>
+<h4 id="_example_3_subscribing_to_a_related_list" class="discrete">Example 3: Subscribing to a related list</h4>
+<div class="paragraph">
+<p>Suppose you want to receive updates whenever a particular author adds a book to his list of published works. Further suppose this is represented by a relationship between the authors table and the books table named publications. You can subscribe to the RSS feed for his publications by navigating to the publications tab for that author, then clicking on the "RSS Feed" icon in the upper right. Now whenever this author adds a new book to his publications list, you&#8217;ll be notified via RSS.</p>
+</div>
+<h4 id="_example_usage_in_xataface" class="discrete">Example usage in Xataface</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
+</div>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new record about "Wayne Gretzky" is inserted in to the news table. He navigates to the news table, then performs a search for "Wayne Gretzky" using the top right search box. Then, he clicks on the "RSS Feed" icon in the upper right of the result list. Now, whenever a new item is inserted with the phrase "Wayne Gretzky", the user will be notified via RSS.</p>
+</div>
+<div class="sect2">
+<h3 id="_configuring_rss_feeds">30.1. Configuring RSS Feeds</h3>
+<div class="paragraph">
+<p>As with everything else in Xataface, you can configure your RSS feeds to appear just as you want them to. The following delegate class methods are available to be defined in the table delegate class for your feed:</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#appendix-rss-config">RSS Configuration Directives</a> for available configuration directives and delegate class methods related to RSS feeds.</p>
+</div>
+<h4 id="_example_configuration" class="discrete">Example Configuration</h4>
+<div class="paragraph">
+<p>There are 2 parts to configuring your RSS feeds:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configuring the feed as a whole</p>
+</li>
+<li>
+<p>Configuring the feed items (that is each record that will appear in your RSS feed).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Configuring the Feed as a whole</strong></p>
+</div>
+<div class="paragraph">
+<p>For configuring the feed as a whole, we have 2 options. We can specify the title, description, and link for the feed in the <code>[_feed]</code> section of your "conf.ini" file. This is sort of a "one size fits all" approach where all feeds generated from your application will share the same title. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring RSS feed in conf.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_feed]
+    title="My Site News"
+    description="News updates from my site"
+    link="http://www.example.com"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, if we want our feed&#8217;s information to depend on the user&#8217;s query (e.g. what the user was searching for, or which table the feed is generated on, we have more flexibility if we define the <code>getFeed</code> method in either the application delegate class or the table delegate class. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring RSS feed in delegate class</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeed($query=array()){
+    $params = array();
+    if ( @$query['-search'] ) $params['title'] = '"'.$query['-search'].'" results';
+    else $params['title'] = 'All records from my table';
+    return $params;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that I don&#8217;t need to define all possible parameters. Any parameters that I don&#8217;t define will be provided automatically by Xataface, or it will simply use the values specified in your <code>[_feed]</code> section of the "conf.ini" file.</p>
+</div>
+<div class="paragraph">
+<p><strong>Configuring Feed Items</strong></p>
+</div>
+<div class="paragraph">
+<p>Configuring the feed items is quite important for ensuring that subscribers are seeing what you want them to see in the RSS feed. Xataface tries to guess appropriate content for your feed items if you don&#8217;t specify it explicitly, but you&#8217;ll likely want to tweak it a little bit to make the feed look more polished for your purposes.</p>
+</div>
+<div class="paragraph">
+<p>Use the <code>getFeedItem</code> delegate class method to specify how a feed item behaves (e.g. the title, content, date, author, link).  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring a feed item description in the delegate class.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeedItem(&amp;$record)){
+    return array(
+        'description' =&gt; $record-&gt;val('body')
+    );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once again, notice that we don&#8217;t need to specify all available options. Only those options that we want to override. In this case we want the description of the feed item to simply display the body of our news item. The description of an RSS feed item is effectively the body text that the user sees why they click on an item in their news reader, so this is quite important.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_file_uploads">File Uploads</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -3494,7 +3671,7 @@ function removeFromPlaylist(el) {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">30. Specifying Content Disposition of File Download</h2>
+<h2 id="_specifying_content_disposition_of_file_download">31. Specifying Content Disposition of File Download</h2>
 <div class="sectionbody">
 <h3 id="_problem_22" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3536,7 +3713,7 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_a_default_action">31. Specifying a Default Action</h2>
+<h2 id="_specifying_a_default_action">32. Specifying a Default Action</h2>
 <div class="sectionbody">
 <h3 id="_problem_23" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3573,7 +3750,7 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_different_default_action_depending_on_table">32. Using Different Default Action Depending on Table</h2>
+<h2 id="_using_different_default_action_depending_on_table">33. Using Different Default Action Depending on Table</h2>
 <div class="sectionbody">
 <h3 id="_problem_24" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3591,7 +3768,7 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 </div>
 <div class="sect1">
-<h2 id="_specifying_default_query_parameters_for_default_actions">33. Specifying Default Query Parameters for Default Actions</h2>
+<h2 id="_specifying_default_query_parameters_for_default_actions">34. Specifying Default Query Parameters for Default Actions</h2>
 <div class="sectionbody">
 <h3 id="_problem_25" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3670,7 +3847,7 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_showing_the_edit_tab_by_default_for_record_details">34. Showing the "Edit" Tab By Default for Record Details</h2>
+<h2 id="_showing_the_edit_tab_by_default_for_record_details">35. Showing the "Edit" Tab By Default for Record Details</h2>
 <div class="sectionbody">
 <h3 id="_problem_26" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3711,7 +3888,7 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_setting_default_query_parameters_for_the_browse_action">35. Setting Default Query Parameters for the <code>browse</code> Action</h2>
+<h2 id="_setting_default_query_parameters_for_the_browse_action">36. Setting Default Query Parameters for the <code>browse</code> Action</h2>
 <div class="sectionbody">
 <h3 id="_problem_27" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3762,7 +3939,7 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_setting_a_related_records_tab_as_the_default_browse_action">36. Setting a Related Records Tab as the Default Browse Action</h2>
+<h2 id="_setting_a_related_records_tab_as_the_default_browse_action">37. Setting a Related Records Tab as the Default Browse Action</h2>
 <div class="sectionbody">
 <h3 id="_problem_28" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3792,7 +3969,7 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">37. Accessing an SQL query like a Table</h2>
+<h2 id="_accessing_an_sql_query_like_a_table">38. Accessing an SQL query like a Table</h2>
 <div class="sectionbody">
 <h3 id="_problem_29" class="discrete">Problem</h3>
 <div class="paragraph">
@@ -3891,7 +4068,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">38. Preferences Directives</h2>
+<h2 id="_preferences_directives">39. Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
@@ -4174,10 +4351,288 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="appendix-rss-config">40. RSS Configuration Directives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section describes the configuration directives and delegate methods that can be used to configure RSS feeds.  See <a href="#rss-feeds">RSS Feeds</a> for an introduction to Xataface&#8217;s RSS feed support.</p>
+</div>
+<table id="rss-delegate-class-methods" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. RSS Delegate Class Methods</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#rss-getfeeditem"><code>getFeedItem</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For RSS Feeds, overrides the defaults and returns an associative array with feed elements for a particular record</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#rss-getfeed"><code>getFeed</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For RSS feeds, overrides the default feed for a query, returning an array of feed items.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getFeedSource</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides the default feed source parameter for an RSS feed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getRSSDescription</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides the default generated RSS description for a record.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getSingleRecordSearchFeed</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides the default feed for a subsearch within a record. This works identically to the getFeed method except that it takes 2 parameters: one for the current record, and a second parameter for the query.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getEnclosureField</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the name of the field that contains an "enclosure" which can be used for podcasting.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="rss-getfeed">40.1. <code>getFeed()</code> Delegate Method</h3>
+<h4 id="_synopsis" class="discrete">Synopsis</h4>
+<div class="paragraph">
+<p>The <code>getFeed()</code> method of a table delegate class or application delegate class returns an associative array of parameters to configure the RSS feed for a particular table . An RSS feed consists of the following components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>title</code> - The title of the RSS feed as it should appear in the subscribers' feed list.</p>
+</li>
+<li>
+<p><code>description</code> - Describes the RSS feed.</p>
+</li>
+<li>
+<p><code>link</code> - A link to the RSS feed</p>
+</li>
+<li>
+<p><code>syndicationURL</code> - The URL to this RSS feed&#8217;s site.</p>
+</li>
+</ol>
+</div>
+<h4 id="_parameters" class="discrete">Parameters</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>array</code> <code>$query</code> - The HTTP query. Contains information like the current table, current action, and search parameters. This allows you to customize your RSS feed depending on the user&#8217;s query parameters.</p>
+</li>
+<li>
+<p>Return Value</p>
+<div class="paragraph">
+<p>The <code>getFeed()</code> method returns an associative array with the components of the RSS feed. This array does not need to contain all possible keys, or even any keys. Any keys that are omitted will simply use default values in the RSS feed. The array may contain the following keys:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The title for the RSS feed. If this omitted, it will try to use the title directive of the <code>[_feed]</code> section of the conf.ini file. Failing that, it will try to generate an appropriate title for the feed depending on the current query.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A Description for this RSS feed. If this is omitted, it will try to use the description directive of the [_feed] section of the conf.ini file.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>link</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A link to the source page of the RSS feed. If this is omitted, it will try to use the link directive of the [_feed] section of the conf.ini file.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>syndicationURL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A link to the source page of the RSS feed. If this is omitted, it will try to use the syndicationURL directive of the [_feed] section of the conf.ini file.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
+<h4 id="_example" class="discrete">Example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeed(&amp;$query){
+    return array(
+        'title' =&gt; "RSS feed for the ".$query['-table']." table.",
+        'description' =&gt; "News and updates for automobiles",
+        'link' =&gt; df_absolute_url(DATAFACE_SITE_HREF),
+        'syndicationURL' =&gt; df_absolute_url(DATAFACE_SITE_HREF)
+    );
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+RSS feeds will work perfectly well without defining this method. This just allows you to customize one or more parameters of the RSS feed.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="rss-getfeeditem">40.2. <code>getFeedItem()</code> Delegate Method</h3>
+<h4 id="_synopsis_2" class="discrete">Synopsis</h4>
+<div class="paragraph">
+<p>The <code>getFeedItem()</code> method of a table delegate class returns an associative array of parameters for a record as it should appear as part of an RSS feed. An RSS feed item consists of the following components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>title</code> - The title of the record as it appears in the RSS feed.</p>
+</li>
+<li>
+<p><code>description</code> - The description of the record for the RSS feed. This is really the body of the RSS feed item.</p>
+</li>
+<li>
+<p><code>link</code> - The linkback URL if users want to know more about the record.</p>
+</li>
+<li>
+<p><code>date</code> - The date that the record was posted/modified.</p>
+</li>
+<li>
+<p><code>author</code> - The name of the person who posted this record.</p>
+</li>
+<li>
+<p><code>source</code> - URL to the site where record originated from.</p>
+</li>
+</ol>
+</div>
+<h4 id="_parameters_2" class="discrete">Parameters</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>Dataface_Record</code> <code>&amp;$record</code> - The record that is being represented in an RSS feed.</p>
+</li>
+</ol>
+</div>
+<h4 id="_return_value" class="discrete">Return Value</h4>
+<div class="paragraph">
+<p>The <code>getFeedItem()</code> method returns an associative array with the components of the RSS feed. This array does not need to contain all possible keys, or even any keys. Any keys that are omitted will simply use default values in the RSS feed. The array may contain the following keys:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The record title as it appears in RSS feeds. If this is omitted, the RSS feed will simply use the output of Dataface_Record&#8217;s getTitle() method.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The record description. This is used in the main body of the RSS feed. If this is omitted, the RSS feed will use an HTML table that shows all of the field data in the record. This value can also be overridden using the getRSSDescription? method of the delegate class.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>link</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL to this record. If this is omitted it just points to the view tab for this record. However you can direct it anywhere you like. When the user clicks on the "More Info" link in his RSS reader it will direct him to this link.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>date</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The date that this record was posted or last modified. This is the date that an RSS reader will use to decide if it has already loaded the record yet. If this is omitted it will try the Dataface_Record&#8217;s getLastModified() method to obtain the last modified date of the record. Failing that, it will use Dataface_Record&#8217;s getCreated() method to try to obtain the creation date of the record. This date should be a unix timestamp.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>author</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the user who posted this record. If this is omitted, then it will try to use <code>Dataface_Record&#8217;s `getCreator()</code> method. Failing that, it will use the value of the default_author parameter in the [_feed] section of the conf.ini file. If that is not defined, then it simply uses the string "Site Administrator".</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The source URL where the feed is to have originated. If none is specified, then it will use the value of the source parameter in the [_feed] section of the conf.ini file. Failing that, it will simply use the URL to the application.</p>
+<p class="tableblock"><strong>Note that you can alternatively define this value using the <code>getFeedSource</code> method.</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>enclosure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An associative array with keys <code>url</code>, <code>type</code>, and <code>length</code> describing audio or video content that will be used by podcasting apps.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
+</tr>
+</tbody>
+</table>
+<h4 id="_example_2" class="discrete">Example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeedItem(&amp;$record){
+    return array(
+        'title' =&gt; "News Item: ".$record-&gt;getTitle(),
+        'description' =&gt; $record-&gt;display('News Body'),
+        'link' =&gt; $record-&gt;getPublicLink(),
+        'date' =&gt; strtotime($record-&gt;val('last_modified')),
+        'author' =&gt; $record-&gt;val('posted_by'),
+        'source' =&gt; 'http://www.example.com',
+        'enclosure' =&gt; array(
+            'url' =&gt; 'http://www.example.com/path/to/mypodcast.mp3',
+            'length' =&gt; 123456, // in bytes
+            'type' =&gt; 'audio/mp3'
+        )
+    );
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+RSS feeds will work perfectly well without defining this method. This just allows you to customize one or more parameters of the RSS feed.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-27 06:16:25 -0700
+Last updated 2020-06-28 07:21:16 -0700
 </div>
 </div>
 </body>

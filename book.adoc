@@ -22,6 +22,8 @@ include::part_list_customization.adoc[]
 
 include::part_searching.adoc[]
 
+include::part_exporting_data.adoc[]
+
 include::part_file_uploads.adoc[]
 
 include::part_request_handling.adoc[]

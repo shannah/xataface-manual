@@ -1,0 +1,129 @@
+[#appendix-rss-config]
+== RSS Configuration Directives
+
+This section describes the configuration directives and delegate methods that can be used to configure RSS feeds.  See <<rss-feeds>> for an introduction to Xataface's RSS feed support.
+
+[#rss-delegate-class-methods]
+.RSS Delegate Class Methods
+[width="100%",options="header"]
+|====================
+| Name | Description |  Version
+| <<rss-getfeeditem,`getFeedItem`>> | For RSS Feeds, overrides the defaults and returns an associative array with feed elements for a particular record |  1.0
+| <<rss-getfeed,`getFeed`>> | For RSS feeds, overrides the default feed for a query, returning an array of feed items. |  1.0 
+| `getFeedSource` | Overrides the default feed source parameter for an RSS feed. | 1.0  
+| `getRSSDescription` | Overrides the default generated RSS description for a record. | 1.0  
+| `getSingleRecordSearchFeed` | Overrides the default feed for a subsearch within a record. This works identically to the getFeed method except that it takes 2 parameters: one for the current record, and a second parameter for the query. | 1.2.3 
+| `getEnclosureField` | Returns the name of the field that contains an "enclosure" which can be used for podcasting. | 3.0
+|====================
+
+
+[#rss-getfeed]
+=== `getFeed()` Delegate Method
+
+[discrete]
+==== Synopsis
+
+The `getFeed()` method of a table delegate class or application delegate class returns an associative array of parameters to configure the RSS feed for a particular table . An RSS feed consists of the following components:
+
+. `title` - The title of the RSS feed as it should appear in the subscribers' feed list.
+. `description` - Describes the RSS feed.
+. `link` - A link to the RSS feed
+. `syndicationURL` - The URL to this RSS feed's site.
+
+[discrete]
+==== Parameters
+
+. `array` `$query` - The HTTP query. Contains information like the current table, current action, and search parameters. This allows you to customize your RSS feed depending on the user's query parameters.
+. Return Value
++
+The `getFeed()` method returns an associative array with the components of the RSS feed. This array does not need to contain all possible keys, or even any keys. Any keys that are omitted will simply use default values in the RSS feed. The array may contain the following keys:
++
+[width="100%",options="header"]
+|====================
+| Name | Description |  Version
+| `title` | The title for the RSS feed. If this omitted, it will try to use the title directive of the `[_feed]` section of the conf.ini file. Failing that, it will try to generate an appropriate title for the feed depending on the current query. | 1.0
+| `description` | A Description for this RSS feed. If this is omitted, it will try to use the description directive of the [_feed] section of the conf.ini file. | 1.0
+| `link` | A link to the source page of the RSS feed. If this is omitted, it will try to use the link directive of the [_feed] section of the conf.ini file. | 1.0
+| `syndicationURL` | A link to the source page of the RSS feed. If this is omitted, it will try to use the syndicationURL directive of the [_feed] section of the conf.ini file. | 1.0
+|====================
+
+[discrete]
+==== Example
+
+[source,php]
+----
+function getFeed(&$query){
+    return array(
+        'title' => "RSS feed for the ".$query['-table']." table.",
+        'description' => "News and updates for automobiles",
+        'link' => df_absolute_url(DATAFACE_SITE_HREF),
+        'syndicationURL' => df_absolute_url(DATAFACE_SITE_HREF)
+    );
+}
+----
+
+NOTE: RSS feeds will work perfectly well without defining this method. This just allows you to customize one or more parameters of the RSS feed.
+
+[#rss-getfeeditem]
+=== `getFeedItem()` Delegate Method
+
+[discrete]
+==== Synopsis
+
+The `getFeedItem()` method of a table delegate class returns an associative array of parameters for a record as it should appear as part of an RSS feed. An RSS feed item consists of the following components:
+
+. `title` - The title of the record as it appears in the RSS feed.
+. `description` - The description of the record for the RSS feed. This is really the body of the RSS feed item.
+. `link` - The linkback URL if users want to know more about the record.
+. `date` - The date that the record was posted/modified.
+. `author` - The name of the person who posted this record.
+. `source` - URL to the site where record originated from.
+
+[discrete]
+==== Parameters
+
+. `Dataface_Record` `&$record` - The record that is being represented in an RSS feed.
+
+[discrete]
+==== Return Value
+
+The `getFeedItem()` method returns an associative array with the components of the RSS feed. This array does not need to contain all possible keys, or even any keys. Any keys that are omitted will simply use default values in the RSS feed. The array may contain the following keys:
+
+[width="100%",options="header"]
+|====================
+| Name | Description |  Version
+| `title` | The record title as it appears in RSS feeds. If this is omitted, the RSS feed will simply use the output of Dataface_Record's getTitle() method. | 1.0
+| `description` | The record description. This is used in the main body of the RSS feed. If this is omitted, the RSS feed will use an HTML table that shows all of the field data in the record. This value can also be overridden using the getRSSDescription? method of the delegate class. | 1.0
+| `link` | The URL to this record. If this is omitted it just points to the view tab for this record. However you can direct it anywhere you like. When the user clicks on the "More Info" link in his RSS reader it will direct him to this link. | 1.0
+| `date` | The date that this record was posted or last modified. This is the date that an RSS reader will use to decide if it has already loaded the record yet. If this is omitted it will try the Dataface_Record's getLastModified() method to obtain the last modified date of the record. Failing that, it will use Dataface_Record's getCreated() method to try to obtain the creation date of the record. This date should be a unix timestamp. | 1.0
+| `author` | The name of the user who posted this record. If this is omitted, then it will try to use `Dataface_Record`'s `getCreator()` method. Failing that, it will use the value of the default_author parameter in the [_feed] section of the conf.ini file. If that is not defined, then it simply uses the string "Site Administrator". | 1.0
+| `source` | The source URL where the feed is to have originated. If none is specified, then it will use the value of the source parameter in the [_feed] section of the conf.ini file. Failing that, it will simply use the URL to the application. 
+
+**Note that you can alternatively define this value using the `getFeedSource` method.** | 1.0
+| `enclosure` | An associative array with keys `url`, `type`, and `length` describing audio or video content that will be used by podcasting apps. | 3.0
+|====================
+
+
+[discrete]
+==== Example
+
+[source,php]
+----
+function getFeedItem(&$record){
+    return array(
+        'title' => "News Item: ".$record->getTitle(),
+        'description' => $record->display('News Body'),
+        'link' => $record->getPublicLink(),
+        'date' => strtotime($record->val('last_modified')),
+        'author' => $record->val('posted_by'),
+        'source' => 'http://www.example.com',
+        'enclosure' => array(
+            'url' => 'http://www.example.com/path/to/mypodcast.mp3',
+            'length' => 123456, // in bytes
+            'type' => 'audio/mp3'
+        )
+    );
+}
+----
+
+NOTE: RSS feeds will work perfectly well without defining this method. This just allows you to customize one or more parameters of the RSS feed.

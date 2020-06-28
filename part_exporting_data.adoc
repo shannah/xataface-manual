@@ -1,0 +1,14 @@
+[exporting_data]
+= Exporting Data
+
+Xataface includes built-in support for exporting data in a variety of formats, including:
+
+. RSS
+. CSV
+. XML
+. JSON
+
+Additional formats are provided via modules.  The following chapters describe how to integrate these formats into your Xataface applications.
+
+include::chapter_rss_feeds.adoc[]
+

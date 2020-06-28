@@ -1,0 +1,3 @@
+[part_appendix_delegate_methods]
+= Appendix 2: Delegate Class Methods
+
