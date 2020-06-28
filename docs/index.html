@@ -436,6 +436,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" type="text/css" href="css/book.css"/>
+<script src="js/book.js"></script>
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
@@ -447,104 +449,121 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_preface">Preface</a></li>
-<li><a href="#_pre_history_of_xataface">1. Pre-history of Xataface</a>
+<li><a href="#_pre_history_of_xataface">Pre-history of Xataface</a>
 <ul class="sectlevel2">
-<li><a href="#_the_vision">1.1. The Vision</a></li>
+<li><a href="#_the_vision">The Vision</a></li>
 </ul>
 </li>
-<li><a href="#_the_evolution_of_xataface">2. The Evolution of Xataface</a>
+<li><a href="#_the_evolution_of_xataface">The Evolution of Xataface</a>
 <ul class="sectlevel2">
-<li><a href="#_influence_of_plone_on_xataface">2.1. Influence of Plone on Xataface</a></li>
-<li><a href="#_influence_of_filemaker_on_xataface">2.2. Influence of FileMaker on Xataface</a></li>
-<li><a href="#_outgrowing_the_mould">2.3. Outgrowing the Mould</a></li>
+<li><a href="#_influence_of_plone_on_xataface">Influence of Plone on Xataface</a></li>
+<li><a href="#_influence_of_filemaker_on_xataface">Influence of FileMaker on Xataface</a></li>
+<li><a href="#_outgrowing_the_mould">Outgrowing the Mould</a></li>
 </ul>
 </li>
 <li><a href="#_fundmentals">Fundmentals</a></li>
-<li><a href="#_introduction">3. Introduction</a>
+<li><a href="#_introduction">Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#_requirements">3.1. Requirements</a></li>
-<li><a href="#_license">3.2. License</a></li>
-<li><a href="#_development_procedures">3.3. Development Procedures</a></li>
-<li><a href="#_why_use_xataface">3.4. Why Use Xataface?</a></li>
+<li><a href="#_requirements">Requirements</a></li>
+<li><a href="#_license">License</a></li>
+<li><a href="#_development_procedures">Development Procedures</a></li>
+<li><a href="#_why_use_xataface">Why Use Xataface?</a></li>
 </ul>
 </li>
-<li><a href="#_xataface_installation">4. Xataface Installation</a>
+<li><a href="#_xataface_installation">Xataface Installation</a>
 <ul class="sectlevel2">
-<li><a href="#_prerequisites">4.1. Prerequisites</a></li>
-<li><a href="#_installation_using_the_xataface_cli">4.2. Installation using the Xataface CLI</a></li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_installation_using_the_xataface_cli">Installation using the Xataface CLI</a></li>
 </ul>
 </li>
-<li><a href="#_creating_your_first_xataface_app">5. Creating your first Xataface app</a>
+<li><a href="#_creating_your_first_xataface_app">Creating your first Xataface app</a>
 <ul class="sectlevel2">
-<li><a href="#_creating_a_new_table">5.1. Creating A New Table</a></li>
-<li><a href="#_development_environment">5.2. Development Environment</a></li>
-<li><a href="#_changing_field_labels">5.3. Changing Field Labels</a></li>
+<li><a href="#_creating_a_new_table">Creating A New Table</a></li>
+<li><a href="#_development_environment">Development Environment</a></li>
+<li><a href="#_changing_field_labels">Changing Field Labels</a></li>
 </ul>
 </li>
-<li><a href="#_a_more_complex_example_faculty_of_widgetry_app">6. A More Complex Example: Faculty of Widgetry App</a></li>
-<li><a href="#_security">Security</a></li>
-<li><a href="#_api_authentication">7. API Authentication</a>
-<ul class="sectlevel2">
-<li><a href="#_login">7.1. Login</a></li>
-<li><a href="#_making_authenticated_requests">7.2. Making Authenticated Requests</a></li>
-<li><a href="#_logging_out">7.3. Logging Out</a></li>
-</ul>
-</li>
-<li><a href="#_actions">Actions</a></li>
-<li><a href="#_using_material_icons">8. Using Material Icons</a></li>
-<li><a href="#javascript-action">9. Triggering Javascript Function with Action</a></li>
-<li><a href="#_theme_customization">Theme Customization</a></li>
-<li><a href="#_adding_a_custom_stylesheet">10. Adding a Custom Stylesheet</a></li>
-<li><a href="#_form_customization">Form Customization</a></li>
-<li><a href="#_multiple_tabs_in_forms">11. Multiple Tabs in Forms</a></li>
-<li><a href="#_delegating_new_record_form_to_a_different_table">12. Delegating "New Record Form" to a Different Table</a>
-<ul class="sectlevel2">
-<li><a href="#_instructions_short_version">12.1. Instructions: Short Version</a></li>
-<li><a href="#_instructions_by_example">12.2. Instructions By Example</a></li>
-</ul>
-</li>
-<li><a href="#_using_ownerstamp_to_mark_record_ownership">13. Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
-<li><a href="#_redirecting_user_to_different_page_after_saving_record">14. Redirecting User to Different Page After Saving Record</a></li>
-<li><a href="#_auto_updating_a_field_when_other_fields_are_changed">15. Auto-Updating a Field When Other Fields are Changed</a></li>
-<li><a href="#_displaying_field_preview_using_ajax">16. Displaying Field Preview using AJAX</a></li>
-<li><a href="#_disabling_client_side_validation">17. Disabling Client-side Validation</a></li>
-<li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">18. Setting Fixed Number of Rows in the Grid Widget</a></li>
-<li><a href="#_list_customization">List Customization</a></li>
-<li><a href="#_adding_option_to_filter_result_list">19. Adding Option to Filter Result LIst</a></li>
-<li><a href="#_hiding_filter_counts">20. Hiding Filter Counts</a></li>
-<li><a href="#_sorting_filter_results">21. Sorting Filter Results</a></li>
-<li><a href="#row-css-classes">22. Adding CSS Classes to Rows</a></li>
-<li><a href="#_adding_row_actions">23. Adding Row Actions</a></li>
-<li><a href="#custom-row-action-styles">24. Customizing Row Action Styles</a></li>
-<li><a href="#_adding_javascript_row_actions">25. Adding Javascript Row Actions</a></li>
-<li><a href="#toggle-row-actions">26. Making Row Actions Toggleable</a></li>
-<li><a href="#ajax-list-row-actions">27. Using AJAX To Modify Row Records</a></li>
-<li><a href="#_searching">Searching</a></li>
-<li><a href="#_case_sensitive_searches">28. Case-Sensitive Searches</a></li>
-<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">29. Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_a_more_complex_example_faculty_of_widgetry_app">A More Complex Example: Faculty of Widgetry App</a></li>
 <li><a href="#_exporting_data">Exporting Data</a></li>
-<li><a href="#rss-feeds">30. RSS Feeds</a>
+<li><a href="#rss-feeds">RSS Feeds</a>
 <ul class="sectlevel2">
-<li><a href="#_configuring_rss_feeds">30.1. Configuring RSS Feeds</a></li>
+<li><a href="#_configuring_rss_feeds">Configuring RSS Feeds</a></li>
 </ul>
 </li>
-<li><a href="#_file_uploads">File Uploads</a></li>
-<li><a href="#_specifying_content_disposition_of_file_download">31. Specifying Content Disposition of File Download</a></li>
-<li><a href="#_http_request_handling">HTTP Request Handling</a></li>
-<li><a href="#_specifying_a_default_action">32. Specifying a Default Action</a></li>
-<li><a href="#_using_different_default_action_depending_on_table">33. Using Different Default Action Depending on Table</a></li>
-<li><a href="#_specifying_default_query_parameters_for_default_actions">34. Specifying Default Query Parameters for Default Actions</a></li>
-<li><a href="#_showing_the_edit_tab_by_default_for_record_details">35. Showing the "Edit" Tab By Default for Record Details</a></li>
-<li><a href="#_setting_default_query_parameters_for_the_browse_action">36. Setting Default Query Parameters for the <code>browse</code> Action</a></li>
-<li><a href="#_setting_a_related_records_tab_as_the_default_browse_action">37. Setting a Related Records Tab as the Default Browse Action</a></li>
-<li><a href="#_tables_views_and_queries">Tables, Views, and Queries</a></li>
-<li><a href="#_accessing_an_sql_query_like_a_table">38. Accessing an SQL query like a Table</a></li>
-<li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_preferences_directives">39. Preferences Directives</a></li>
-<li><a href="#appendix-rss-config">40. RSS Configuration Directives</a>
+<li><a href="#_recipes">Recipes</a></li>
+<li><a href="#actions">Actions</a>
 <ul class="sectlevel2">
-<li><a href="#rss-getfeed">40.1. <code>getFeed()</code> Delegate Method</a></li>
-<li><a href="#rss-getfeeditem">40.2. <code>getFeedItem()</code> Delegate Method</a></li>
+<li><a href="#_using_material_icons">Using Material Icons</a></li>
+<li><a href="#javascript-action">Triggering Javascript Function with Action</a></li>
+</ul>
+</li>
+<li><a href="#security">Security</a>
+<ul class="sectlevel2">
+<li><a href="#_api_authentication">API Authentication</a></li>
+</ul>
+</li>
+<li><a href="#theme_customization">Theme Customization</a>
+<ul class="sectlevel2">
+<li><a href="#_adding_a_custom_stylesheet">Adding a Custom Stylesheet</a></li>
+</ul>
+</li>
+<li><a href="#form_customization">Form Customization</a>
+<ul class="sectlevel2">
+<li><a href="#_multiple_tabs_in_forms">Multiple Tabs in Forms</a></li>
+<li><a href="#_delegating_new_record_form_to_a_different_table">Delegating "New Record Form" to a Different Table</a></li>
+<li><a href="#_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
+<li><a href="#_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</a></li>
+<li><a href="#_auto_updating_a_field_when_other_fields_are_changed">Auto-Updating a Field When Other Fields are Changed</a></li>
+<li><a href="#_displaying_field_preview_using_ajax">Displaying Field Preview using AJAX</a></li>
+<li><a href="#_disabling_client_side_validation">Disabling Client-side Validation</a></li>
+<li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</a></li>
+</ul>
+</li>
+<li><a href="#list_customization">List Customization</a>
+<ul class="sectlevel2">
+<li><a href="#_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</a></li>
+<li><a href="#_hiding_filter_counts">Hiding Filter Counts</a></li>
+<li><a href="#_sorting_filter_results">Sorting Filter Results</a></li>
+<li><a href="#row-css-classes">Adding CSS Classes to Rows</a></li>
+<li><a href="#_adding_row_actions">Adding Row Actions</a></li>
+<li><a href="#custom-row-action-styles">Customizing Row Action Styles</a></li>
+<li><a href="#_adding_javascript_row_actions">Adding Javascript Row Actions</a></li>
+<li><a href="#toggle-row-actions">Making Row Actions Toggleable</a></li>
+<li><a href="#ajax-list-row-actions">Using AJAX To Modify Row Records</a></li>
+</ul>
+</li>
+<li><a href="#searching">Searching</a>
+<ul class="sectlevel2">
+<li><a href="#_case_sensitive_searches">Case-Sensitive Searches</a></li>
+<li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</a></li>
+</ul>
+</li>
+<li><a href="#file_uploads">File Uploads</a>
+<ul class="sectlevel2">
+<li><a href="#_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</a></li>
+</ul>
+</li>
+<li><a href="#http_request_handling">HTTP Request Handling</a>
+<ul class="sectlevel2">
+<li><a href="#_specifying_a_default_action">Specifying a Default Action</a></li>
+<li><a href="#_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</a></li>
+<li><a href="#_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</a></li>
+<li><a href="#_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</a></li>
+<li><a href="#_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</a></li>
+<li><a href="#_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</a></li>
+</ul>
+</li>
+<li><a href="#tables_views_queries">Tables, Views, and Queries</a>
+<ul class="sectlevel2">
+<li><a href="#_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</a></li>
+</ul>
+</li>
+<li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
+<li><a href="#_preferences_directives">Preferences Directives</a></li>
+<li><a href="#appendix-rss-config">RSS Configuration Directives</a>
+<ul class="sectlevel2">
+<li><a href="#rss-getfeed"><code>getFeed()</code> Delegate Method</a></li>
+<li><a href="#rss-getfeeditem"><code>getFeedItem()</code> Delegate Method</a></li>
 </ul>
 </li>
 </ul>
@@ -558,7 +577,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_pre_history_of_xataface">1. Pre-history of Xataface</h2>
+<h2 id="_pre_history_of_xataface">Pre-history of Xataface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Xataface was first released in 2005.  I had just been hired as a web services developer in the Faculty of Applied Sciences at Simon Fraser University, and I was inheriting resposibility for the maintenance and development of a relatively large content management system that had been built in-house, originally in PERL, and later ported to PHP.</p>
@@ -609,7 +628,7 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 </table>
 </div>
 <div class="sect2">
-<h3 id="_the_vision">1.1. The Vision</h3>
+<h3 id="_the_vision">The Vision</h3>
 <div class="paragraph">
 <p>Most applications that I was building for the faculty had two parts:</p>
 </div>
@@ -687,7 +706,7 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 </div>
 </div>
 <div class="sect1">
-<h2 id="_the_evolution_of_xataface">2. The Evolution of Xataface</h2>
+<h2 id="_the_evolution_of_xataface">The Evolution of Xataface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The first project that Xataface was applied to was the Group content management system (GCMS) of the Faculty of Applied Sciences.  This was the system that was used to manage the websites for faculty members, research groups, and publications.  The database was already built, and there was an existing administrative back-end that was, in my opinion, hard to work with.  I replaced this administrative back-end entirely using Xataface.  The application itself (not counting the code inside Xataface), contained almost no PHP code, and handful of configuration files.  The underlying database was left untouched.  The result was an application that was orders of magnitude easier to maintain, and, at the same time yielded a better user experience.</p>
@@ -720,7 +739,7 @@ Originally Xataface was called "Dataface", but a Texas computer company named "D
 <p>After unrolling this "rewrite" of GCMS, I decided to release Xataface (then Dataface) to the world as an open source project.  I created a project on SourceForge, set up a website for it, wrote a "Getting Started" tutorial, and then returned to my day job, developing web applications or the faculty.</p>
 </div>
 <div class="sect2">
-<h3 id="_influence_of_plone_on_xataface">2.1. Influence of Plone on Xataface</h3>
+<h3 id="_influence_of_plone_on_xataface">Influence of Plone on Xataface</h3>
 <div class="paragraph">
 <p>At the time that I was developing the first version of Dataface, we were using the  <a href="https://www.plone.org">Plone</a> content management system for the faculty&#8217;s website.  If you&#8217;re familiar with Plone (circa 2005) you&#8217;ll recognize the tabs, lists, and navigation menus from the GCMS screenshots.  That&#8217;s because I used the plone stylesheet as a basis for Xataface&#8217;s styles.  I really liked the way Plone looked, and the stylesheet had many of the UI elements that I needed for Xataface.  I needed tabs - Plone had nice looking tabs.  I needed tabular lists.  Plone has nice looking sortable lists.  I needed navigation menus.  Etc&#8230;&#8203;  Some of these elements have persisted to present day.  Xataface 2.0 included a new default theme, "g2", that introduced a totally new stylesheet, but developers could still "opt out" of the "g2" theme and use the original plone theme.
 Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you dig you can likely still find some elements of that original Plone theme.</p>
@@ -753,7 +772,7 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 </div>
 </div>
 <div class="sect2">
-<h3 id="_influence_of_filemaker_on_xataface">2.2. Influence of FileMaker on Xataface</h3>
+<h3 id="_influence_of_filemaker_on_xataface">Influence of FileMaker on Xataface</h3>
 <div class="paragraph">
 <p>I&#8217;ve already discussed the fact that FileMaker was a key inspiration for Xataface.  I liked the way that FileMaker allowed mere mortals to both create and manage relatively complex databases. It was impressive that an office assistant,  with no programming skills whatsoever, could build a fully-functional database application with a nice user interface in a few hours.  To do the same thing with PHP and MySQL would take a software developer weeks, and it likely still would have been missing features that the FileMaker app provides out of the box.</p>
 </div>
@@ -768,7 +787,7 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 </div>
 </div>
 <div class="sect2">
-<h3 id="_outgrowing_the_mould">2.3. Outgrowing the Mould</h3>
+<h3 id="_outgrowing_the_mould">Outgrowing the Mould</h3>
 <div class="paragraph">
 <p>At the beginning, Xataface was just intended to be an open source alternative to FileMaker.  It didn&#8217;t take long, however to start growing in its own direction.  Today it has become a full-featured platform on which arbitrary data-driven web applications can be built.</p>
 </div>
@@ -842,7 +861,7 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 </div>
 </div>
 <div class="sect1">
-<h2 id="_introduction">3. Introduction</h2>
+<h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Xataface is a simple framework for building data-driven web applications in PHP and MySQL. This section introduces some of the concepts and applications of Dataface.
@@ -861,7 +880,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 <p>Xataface enables data-driven design because it allows developers to develop web sites by first designing the database that will be used to store the data on the website, and then design the pages used to display the data. The developer can focus on the data because he or she does not have to worry about having to build forms to update the data. If the requirements of the application change, the developer can simply add a field to the database table and all associated web forms will be updated automatically (because they are all dynamically generated using the database schema).</p>
 </div>
 <div class="sect2">
-<h3 id="_requirements">3.1. Requirements</h3>
+<h3 id="_requirements">Requirements</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -874,7 +893,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_license">3.2. License</h3>
+<h3 id="_license">License</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -884,7 +903,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development_procedures">3.3. Development Procedures</h3>
+<h3 id="_development_procedures">Development Procedures</h3>
 <div class="paragraph">
 <p>Identify the data that will need to be stored for a web site.</p>
 </div>
@@ -914,7 +933,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_why_use_xataface">3.4. Why Use Xataface?</h3>
+<h3 id="_why_use_xataface">Why Use Xataface?</h3>
 <div class="paragraph">
 <p>Some simple examples similar to those that are frequently encountered by web developers, and how dataface can be used to acheive a solution.</p>
 </div>
@@ -922,7 +941,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 <p>As a web services developer would frequently getting requests to build websites that were manageable by the site owner.  Most of these requests also specify certain types of content that must be stored on the website, and much of this content needs to be n-ary (i.e., there will be multiple instances of each type of content).  Let me give you an example.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_1_website_for_faculty_of_widgetry">3.4.1. Example 1: Website for Faculty of Widgetry</h4>
+<h4 id="_example_1_website_for_faculty_of_widgetry">Example 1: Website for Faculty of Widgetry</h4>
 <div class="paragraph">
 <p>The Faculty of Widgetry needs a website to publish information about its undergraduate programs.  It is important for them to be able to publish admission requirements, and program overviews for each program.  It is also important to have course outlines and timetables for each course. The Faculty of Widgetry has 12 undergraduate programs and over 100 courses offered.</p>
 </div>
@@ -997,7 +1016,7 @@ To fully understand what Xataface is, we must first define a few key terms:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_solution_3_use_an_existing_application">3.4.2. Solution 3: Use an existing Application</h4>
+<h4 id="_solution_3_use_an_existing_application">Solution 3: Use an existing Application</h4>
 <div class="paragraph">
 <p>OK, OK, let&#8217;s not get too carried away with trying to develop the website until we have checked the market to see if someone else has already done it better.  Maybe there is already a PHP application that makes websites for Faculties easy.  I mean, I can&#8217;t be the first person that needed to build a website for a Faculty.  In fact if you do a search or go to Hotscripts.com, you will probably find a handful of applications or scripts that almost do what you need.  If you&#8217;re lucky, maybe you can find an application that does exactly what you need (but frankly, I&#8217;ve never been that lucky).  If you find one, maybe it&#8217;s worth taking it for a test drive.  But beware. Using a system that almost does what you need but is difficult to modify to your needs can be worse than building it by scratch.  Make sure that you are able to modify the application to suit your needs exactly.</p>
 </div>
@@ -1052,7 +1071,7 @@ Courses
 </div>
 </div>
 <div class="sect1">
-<h2 id="_xataface_installation">4. Xataface Installation</h2>
+<h2 id="_xataface_installation">Xataface Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Over the years I have developed several different installation mechanisms for Xataface.  At the end of the day, installation only requires that you copy the <strong>xataface</strong> directory onto your web server.  To update it, you simply replace that directory with the new version.</p>
@@ -1067,13 +1086,13 @@ Courses
 <p>With version 3.0, Xataface now includes a command line (CLI) utilty to automate common tasks like creating new apps, generating delegate classes, enabling authentication, etc&#8230;&#8203;  This tutorial describes the installation and usage of this CLI script for creating and maintaining Xataface applications.  If you would prefer to do things manually, you can skip to the "Manual Installation" section.</p>
 </div>
 <div class="sect2">
-<h3 id="_prerequisites">4.1. Prerequisites</h3>
+<h3 id="_prerequisites">Prerequisites</h3>
 <div class="paragraph">
 <p>Before you install Xataface, you should have a PHP and MySQL installed. I recommend XAMPP</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installation_using_the_xataface_cli">4.2. Installation using the Xataface CLI</h3>
+<h3 id="_installation_using_the_xataface_cli">Installation using the Xataface CLI</h3>
 <div class="listingblock">
 <div class="title">Paste the following into macOS Terminal or Linux shell prompt</div>
 <div class="content">
@@ -1115,7 +1134,7 @@ Adding /Users/shannah/xataface/bin to your path in /Users/shannah/.bash_profile<
 </div>
 </div>
 <div class="sect1">
-<h2 id="_creating_your_first_xataface_app">5. Creating your first Xataface app</h2>
+<h2 id="_creating_your_first_xataface_app">Creating your first Xataface app</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now that you have xataface installed, we can proceed to create our first app.</p>
@@ -1238,7 +1257,7 @@ Did start apache server</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_a_new_table">5.1. Creating A New Table</h3>
+<h3 id="_creating_a_new_table">Creating A New Table</h3>
 <div class="paragraph">
 <p>Xataface provides an installation of PHPMyAdmin to assist you in building a database for your application.  You can access PHPMyAdmin at the URL:  <code><a href="http://localhost:9090/phpmyadmin" class="bare">http://localhost:9090/phpmyadmin</a></code></p>
 </div>
@@ -1354,7 +1373,7 @@ __include__=conf.db.ini.php
 </div>
 </div>
 <div class="sect3">
-<h4 id="_filtering_the_list">5.1.1. Filtering the List</h4>
+<h4 id="_filtering_the_list">Filtering the List</h4>
 <div class="paragraph">
 <p>Xataface provides a few different ways to filter the list view.  We can:</p>
 </div>
@@ -1395,7 +1414,7 @@ __include__=conf.db.ini.php
 </div>
 </div>
 <div class="sect2">
-<h3 id="_development_environment">5.2. Development Environment</h3>
+<h3 id="_development_environment">Development Environment</h3>
 <div class="paragraph">
 <p>At this point we have a fully-functional database application, and you didn&#8217;t have to write a single line of code.  Let&#8217;s pull the curtain back a little and see what&#8217;s going on in our application under the hood.</p>
 </div>
@@ -1446,7 +1465,7 @@ __include__=conf.db.ini.php
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_application_structure">5.2.1. Application Structure</h4>
+<h4 id="_application_structure">Application Structure</h4>
 <div class="paragraph">
 <p>As mentioned above, the "www" directory contains the meat of our application.  Let&#8217;s take a look at its contents now.</p>
 </div>
@@ -1499,7 +1518,7 @@ In this tutorial you&#8217;ll notice that all .ini files have a .php extension. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_changing_field_labels">5.3. Changing Field Labels</h3>
+<h3 id="_changing_field_labels">Changing Field Labels</h3>
 <div class="paragraph">
 <p>Out of the box, Xataface will assign appropriate labels to its form fields based on the underlying columns.  However, you can override these labels very easily.</p>
 </div>
@@ -1580,7 +1599,7 @@ Created tables/notes/fields.ini.php</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_a_more_complex_example_faculty_of_widgetry_app">6. A More Complex Example: Faculty of Widgetry App</h2>
+<h2 id="_a_more_complex_example_faculty_of_widgetry_app">A More Complex Example: Faculty of Widgetry App</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>sf</p>
@@ -1588,99 +1607,191 @@ Created tables/notes/fields.ini.php</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_security">Security</h2>
+<h2 id="_exporting_data">Exporting Data</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following chapters cover all things security-related in Xataface.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_api_authentication">7. API Authentication</h2>
-<div class="sectionbody">
-<div class="imageblock">
-<div class="content">
-<img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
-</div>
-<div class="title">Figure 22. Login sequence using example curl HTTP request.</div>
-</div>
-<div class="paragraph">
-<p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
-</div>
-<div class="sect2">
-<h3 id="_login">7.1. Login</h3>
-<div class="paragraph">
-<p>To log in using the API, simply perform a POST request to <code>?-action=login&amp;--no-prompt=1</code></p>
+<p>Xataface includes built-in support for exporting data in a variety of formats, including:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>UserName</code> - The username to log in with.</p>
+<p>RSS</p>
 </li>
 <li>
-<p><code>Password</code> - The password to log in with.</p>
+<p>CSV</p>
+</li>
+<li>
+<p>XML</p>
+</li>
+<li>
+<p>JSON</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>If login succeeds, you&#8217;ll receive a JSON response with a token.  E.g.</p>
+<p>Additional formats are provided via modules.  The following chapters describe how to integrate these formats into your Xataface applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rss-feeds">RSS Feeds</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A default Xataface application provides RSS feeds to any found set in your application. This article explains a little bit about RSS and how you can configure Xataface to give you the desired results for your RSS feed.</p>
+</div>
+<h3 id="_what_is_rss" class="discrete">What is RSS?</h3>
+<div class="paragraph">
+<p>From <a href="http://en.wikipedia.org/wiki/RSS_(file_format)">Wikipedia&#8217;s RSS article</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>"RSS is a family of Web feed formats used to publish frequently updated works such as blog entries, news headlines, audio, and videoin a standardized format.[2] An RSS document (which is called a "feed", "web feed",[3] or "channel") includes full or summarized text, plus metadata such as publishing dates and authorship. Web feeds benefit publishers by letting them syndicate content automatically. They benefit readers who want to subscribe to timely updates from favored websites or to aggregate feeds from many sites into one place. RSS feeds can be read using software called an "RSS reader", "feed reader", or "aggregator", which can be web-based or desktop-based. A standardized XML file format allows the information to be published once and viewed by many different programs. The user subscribes to a feed by entering the feed&#8217;s URI (often referred to informally as a "URL", although technically, those two terms are not exactly synonymous) into the reader or by clicking an RSS icon in a browser that initiates the subscription process. The RSS reader checks the user&#8217;s subscribed feeds regularly for new work, downloads any updates that it finds, and provides a user interface to monitor and read the feeds."</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In a way, RSS replaces email subscriptions so that you can subscribe to receive updates when content is added or changed on websites that you monitory. This way you can monitory these changes in your RSS reader so that your email box doesn&#8217;t get clogged up.</p>
+</div>
+<h3 id="_using_rss_in_xataface" class="discrete">Using RSS in Xataface</h3>
+<div class="paragraph">
+<p>Xataface allows you to subscribe to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Entire tables</p>
+</li>
+<li>
+<p>Any found set</p>
+</li>
+<li>
+<p>Changes to a particular record</p>
+</li>
+<li>
+<p>Related record lists</p>
+</li>
+</ol>
+</div>
+<h4 id="_example_1_subscribing_to_receive_news_updates" class="discrete">Example 1: Subscribing to receive news updates</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
+</div>
+<h4 id="_example_2_subscribing_to_receive_found_set_updates" class="discrete">Example 2: Subscribing to receive found set updates</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table that contains the phrase "Buffalo Bills", because he is a Buffalo Bills fan. So he navigates to the news table, and does a search for the phrase "Buffalo Bills". Then he clicks on the "RSS Feed" icon in the upper right of the result set list. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for news items containing the phrase "Buffalo Bills". Whenever a new item is posted with this phrase, he will be notified via RSS of the new record.</p>
+</div>
+<h4 id="_example_3_subscribing_to_a_related_list" class="discrete">Example 3: Subscribing to a related list</h4>
+<div class="paragraph">
+<p>Suppose you want to receive updates whenever a particular author adds a book to his list of published works. Further suppose this is represented by a relationship between the authors table and the books table named publications. You can subscribe to the RSS feed for his publications by navigating to the publications tab for that author, then clicking on the "RSS Feed" icon in the upper right. Now whenever this author adds a new book to his publications list, you&#8217;ll be notified via RSS.</p>
+</div>
+<h4 id="_example_usage_in_xataface" class="discrete">Example usage in Xataface</h4>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
+</div>
+<div class="paragraph">
+<p>A user wants to be alerted whenever a new record about "Wayne Gretzky" is inserted in to the news table. He navigates to the news table, then performs a search for "Wayne Gretzky" using the top right search box. Then, he clicks on the "RSS Feed" icon in the upper right of the result list. Now, whenever a new item is inserted with the phrase "Wayne Gretzky", the user will be notified via RSS.</p>
+</div>
+<div class="sect2">
+<h3 id="_configuring_rss_feeds">Configuring RSS Feeds</h3>
+<div class="paragraph">
+<p>As with everything else in Xataface, you can configure your RSS feeds to appear just as you want them to. The following delegate class methods are available to be defined in the table delegate class for your feed:</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#appendix-rss-config">RSS Configuration Directives</a> for available configuration directives and delegate class methods related to RSS feeds.</p>
+</div>
+<h4 id="_example_configuration" class="discrete">Example Configuration</h4>
+<div class="paragraph">
+<p>There are 2 parts to configuring your RSS feeds:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configuring the feed as a whole</p>
+</li>
+<li>
+<p>Configuring the feed items (that is each record that will appear in your RSS feed).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Configuring the Feed as a whole</strong></p>
+</div>
+<div class="paragraph">
+<p>For configuring the feed as a whole, we have 2 options. We can specify the title, description, and link for the feed in the <code>[_feed]</code> section of your "conf.ini" file. This is sort of a "one size fits all" approach where all feeds generated from your application will share the same title. E.g.</p>
 </div>
 <div class="listingblock">
+<div class="title">Configuring RSS feed in conf.ini file</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "code":200,
-  "token":"576646...2dDRuOGUycGI=",
-  "message":"Logged in"
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_feed]
+    title="My Site News"
+    description="News updates from my site"
+    link="http://www.example.com"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, if we want our feed&#8217;s information to depend on the user&#8217;s query (e.g. what the user was searching for, or which table the feed is generated on, we have more flexibility if we define the <code>getFeed</code> method in either the application delegate class or the table delegate class. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring RSS feed in delegate class</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeed($query=array()){
+    $params = array();
+    if ( @$query['-search'] ) $params['title'] = '"'.$query['-search'].'" results';
+    else $params['title'] = 'All records from my table';
+    return $params;
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>An unsuccessful login will look something like:</p>
+<p>Notice that I don&#8217;t need to define all possible parameters. Any parameters that I don&#8217;t define will be provided automatically by Xataface, or it will simply use the values specified in your <code>[_feed]</code> section of the "conf.ini" file.</p>
+</div>
+<div class="paragraph">
+<p><strong>Configuring Feed Items</strong></p>
+</div>
+<div class="paragraph">
+<p>Configuring the feed items is quite important for ensuring that subscribers are seeing what you want them to see in the RSS feed. Xataface tries to guess appropriate content for your feed items if you don&#8217;t specify it explicitly, but you&#8217;ll likely want to tweak it a little bit to make the feed look more polished for your purposes.</p>
+</div>
+<div class="paragraph">
+<p>Use the <code>getFeedItem</code> delegate class method to specify how a feed item behaves (e.g. the title, content, date, author, link).  E.g.</p>
 </div>
 <div class="listingblock">
+<div class="title">Configuring a feed item description in the delegate class.</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{"code":500,"message":"No UserName provided."}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_making_authenticated_requests">7.2. Making Authenticated Requests</h3>
-<div class="paragraph">
-<p>Once you have obtained a token, you should include this token in the <code>Authorization</code> header of HTTP requests.  E.g.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -H 'Authorization: Bearer {TOKEN}' https://example.com?index.php</code></pre>
+<pre class="highlight"><code class="language-php" data-lang="php">function getFeedItem(&amp;$record)){
+    return array(
+        'description' =&gt; $record-&gt;val('body')
+    );
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>But replace <code>{TOKEN}</code> with your token received during login.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_logging_out">7.3. Logging Out</h3>
-<div class="paragraph">
-<p>To log out, simply perform a POST or GET request to <code>?-action=logout&amp;--no-prompt=1</code></p>
+<p>Once again, notice that we don&#8217;t need to specify all available options. Only those options that we want to override. In this case we want the description of the feed item to simply display the body of our news item. The description of an RSS feed item is effectively the body text that the user sees why they click on an item in their news reader, so this is quite important.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_actions">Actions</h2>
+<h2 id="_recipes">Recipes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section of the book includes recipes for common patterns in Xataface applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="actions">Actions</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following sections pertain to actions in Xataface.  An action may either be a menu item, or an HTTP request handler.  Or it can be both.  They are defined in the actions.ini file (or actions.ini.php file) of your application, and their "handlers" are defined inside the "actions" directory of your application.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_material_icons">8. Using Material Icons</h2>
-<div class="sectionbody">
-<h3 id="_problem" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_using_material_icons">Using Material Icons</h3>
+<h4 id="_problem" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to use a <a href="https://material.io/resources/icons/?style=baseline">material icon</a> for a menu-item in your application, instead of an image.</p>
 </div>
-<h3 id="_solution" class="discrete">Solution</h3>
+<h4 id="_solution" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>The default theme of Xataface includes the material icons web font, so you can use any icons in that font on your actions via the <code>materialIcon</code> directive in your action.  For example, suppose we want to add a "Play" button to the rows of our table in list view.  We define our action as follows:</p>
 </div>
@@ -1715,7 +1826,7 @@ Created tables/notes/fields.ini.php</code></pre>
 </li>
 </ol>
 </div>
-<h3 id="_finding_the_right_material_icon" class="discrete">Finding the Right Material Icon</h3>
+<h4 id="_finding_the_right_material_icon" class="discrete">Finding the Right Material Icon</h4>
 <div class="paragraph">
 <p>You can browse the available material icons <a href="https://material.io/resources/icons/?style=baseline">here</a>.</p>
 </div>
@@ -1723,21 +1834,19 @@ Created tables/notes/fields.ini.php</code></pre>
 <div class="content">
 <img src="images/Image-130620-080448.218.png" alt="Material Icons site">
 </div>
-<div class="title">Figure 23. Material Icons website</div>
+<div class="title">Figure 22. Material Icons website</div>
 </div>
 <div class="paragraph">
 <p>The label below the icon is the name of the icon, that you would use for your <code>materialIcon</code> directive.  If the lable is truncated, you can click the "Selected Icon" button in the lower left to get a more detailed view.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="javascript-action">9. Triggering Javascript Function with Action</h2>
-<div class="sectionbody">
-<h3 id="_problem_2" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="javascript-action">Triggering Javascript Function with Action</h3>
+<h4 id="_problem_2" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on an action.</p>
 </div>
-<h3 id="_solution_2" class="discrete">Solution</h3>
+<h4 id="_solution_2" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive for the action definition in your actions.ini file.  The javascript you specify here will be executed when the user clicks on the action.  Perhaps the "hardest" part of this recipe is simply knowing where to put the javascript function that you wish to call.  There are many ways to include custom Javascript into your application.  My preferred way is to use the <code>xf_script($scriptpath)</code> inject your Javascript file.</p>
 </div>
@@ -1876,7 +1985,7 @@ class conf_ApplicationDelegate {
 <img src="images/Image-140620-084139.249.png" alt="Image 140620 084139.249">
 </div>
 </div>
-<h3 id="_troubleshooting" class="discrete">Troubleshooting</h3>
+<h4 id="_troubleshooting" class="discrete">Troubleshooting</h4>
 <div class="paragraph">
 <p>Things never work the first time.  There are a couple of things that can go wrong in setting up this recipe for the first time:</p>
 </div>
@@ -1929,22 +2038,90 @@ class conf_ApplicationDelegate {
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_theme_customization">Theme Customization</h2>
+<h2 id="security">Security</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following chapters form a sort of cook book with recipes for customizing themes in Xataface.</p>
+<p>The following chapters cover all things security-related in Xataface.</p>
+</div>
+<div class="sect2">
+<h3 id="_api_authentication">API Authentication</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
+</div>
+<div class="title">Figure 23. Login sequence using example curl HTTP request.</div>
+</div>
+<div class="paragraph">
+<p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
+</div>
+<h4 id="_login" class="discrete">Login</h4>
+<div class="paragraph">
+<p>To log in using the API, simply perform a POST request to <code>?-action=login&amp;--no-prompt=1</code></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>UserName</code> - The username to log in with.</p>
+</li>
+<li>
+<p><code>Password</code> - The password to log in with.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If login succeeds, you&#8217;ll receive a JSON response with a token.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "code":200,
+  "token":"576646...2dDRuOGUycGI=",
+  "message":"Logged in"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An unsuccessful login will look something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"code":500,"message":"No UserName provided."}</code></pre>
+</div>
+</div>
+<h4 id="_making_authenticated_requests" class="discrete">Making Authenticated Requests</h4>
+<div class="paragraph">
+<p>Once you have obtained a token, you should include this token in the <code>Authorization</code> header of HTTP requests.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -H 'Authorization: Bearer {TOKEN}' https://example.com?index.php</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But replace <code>{TOKEN}</code> with your token received during login.</p>
+</div>
+<h4 id="_logging_out" class="discrete">Logging Out</h4>
+<div class="paragraph">
+<p>To log out, simply perform a POST or GET request to <code>?-action=logout&amp;--no-prompt=1</code></p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_adding_a_custom_stylesheet">10. Adding a Custom Stylesheet</h2>
+<h2 id="theme_customization">Theme Customization</h2>
 <div class="sectionbody">
-<h3 id="_problem_3" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>The following sections form a sort of cook book with recipes for customizing themes in Xataface.</p>
+</div>
+<div class="sect2">
+<h3 id="_adding_a_custom_stylesheet">Adding a Custom Stylesheet</h3>
+<h4 id="_problem_3" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.</p>
 </div>
-<h3 id="_solution_3" class="discrete">Solution</h3>
+<h4 id="_solution_3" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>The <code>xf_stylesheet()</code> function can be used to inject a stylesheet into either the <code>&lt;head&gt;</code> section of the app&#8217;s page, or into the CSS bundle that is compiled by the <code>CSSTool</code>.  Let&#8217;s start with the simplest case, where you want to include the stylesheet in the entire application (i.e. it should be loaded in every page of the app), and the stylesheet is hosted on a CDN (content-delivery network).  In this case, you should place the call to <code>xf_stylesheet()</code> inside the <code>beforeHandleRequest()</code> method of the application delegate class.</p>
 </div>
@@ -1965,7 +2142,7 @@ class conf_ApplicationDelegate {
 <div class="paragraph">
 <p>This will append a <code>&lt;link rel="stylesheet"&#8230;&#8203;&gt;</code> tag  in the <code>&lt;head&gt;</code> section of every page.</p>
 </div>
-<h4 id="_hosting_stylesheet" class="discrete">Hosting Stylesheet</h4>
+<h5 id="_hosting_stylesheet" class="discrete">Hosting Stylesheet</h5>
 <div class="paragraph">
 <p>If you want to host the stylesheet as part of the app, it is customary to create a <code>css</code> directory in your application&#8217;s main directory where you place your CSS files.  So we can copy our stylesheet into this directory:</p>
 </div>
@@ -1989,7 +2166,7 @@ class conf_ApplicationDelegate {
 }</code></pre>
 </div>
 </div>
-<h4 id="_the_css_tool_and_include_paths" class="discrete">The CSS Tool and Include Paths</h4>
+<h5 id="_the_css_tool_and_include_paths" class="discrete">The CSS Tool and Include Paths</h5>
 <div class="paragraph">
 <p><code>xf_stylesheet()</code> takes an optional 2nd parameter which is a flag to indicate whether the stylesheet should be included directly in the <code>&lt;head&gt;</code> section, or bundled by the CSS tool, and injected dynamically on page load.</p>
 </div>
@@ -2017,7 +2194,7 @@ class conf_ApplicationDelegate {
 <pre class="highlight"><code class="language-php" data-lang="php">xf_stylesheet('css/mystylesheet.css', false);</code></pre>
 </div>
 </div>
-<h4 id="_when_to_use_the_css_tool" class="discrete">When to use the CSS Tool</h4>
+<h5 id="_when_to_use_the_css_tool" class="discrete">When to use the CSS Tool</h5>
 <div class="paragraph">
 <p>With two different options for including stylesheets, you might be wondering when you should and should not use the CSS tool.  Generally, I&#8217;ll use the CSS tool if I&#8217;m building a module and I want other modules and apps to be able to override the CSS file.  However, if I&#8217;m just including a CSS file that will be used for my application styles, I won&#8217;t use the CSS tool.</p>
 </div>
@@ -2050,22 +2227,20 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_form_customization">Form Customization</h2>
+<h2 id="form_customization">Form Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following chapters form a sort of cook book with recipes for customizing forms in Xataface.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_multiple_tabs_in_forms">11. Multiple Tabs in Forms</h2>
-<div class="sectionbody">
-<h3 id="_problem_4" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
+<h4 id="_problem_4" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h3 id="_solution_4" class="discrete">Solution</h3>
+<h4 id="_solution_4" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -2180,10 +2355,8 @@ Consider the following people table:</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_delegating_new_record_form_to_a_different_table">12. Delegating "New Record Form" to a Different Table</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_delegating_new_record_form_to_a_different_table">Delegating "New Record Form" to a Different Table</h3>
 <div class="paragraph">
 <p>Xataface allows you to delegate "new record" input to a different table.  E.g. Given a Table <code>A</code>, you can configure Xataface to use the "new record" form for a different table <code>B</code> for inserting new records.</p>
 </div>
@@ -2196,8 +2369,8 @@ Consider the following people table:</p>
 <div class="paragraph">
 <p>For example, if you have a "Contacts" table, but you want the user to be able to insert contacts by simply entering their employee ID - and this will be used in the back-end to fetch some initial data about the user from another database.  In this case, your "new record" form should really just include a single field: "Employee ID".</p>
 </div>
-<div class="sect2">
-<h3 id="_instructions_short_version">12.1. Instructions: Short Version</h3>
+<div class="sect3">
+<h4 id="_instructions_short_version">Instructions: Short Version</h4>
 <div class="paragraph">
 <p><strong>Definitions</strong></p>
 </div>
@@ -2231,8 +2404,8 @@ Consider the following people table:</p>
 </ol>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_instructions_by_example">12.2. Instructions By Example</h3>
+<div class="sect3">
+<h4 id="_instructions_by_example">Instructions By Example</h4>
 <div class="paragraph">
 <p>Let&#8217;s take the example I mentioned above.  We have a "contacts" table with lots of details about a contact, including <code>employee_id</code>.  When the user inserts a record, all they need to do is enter the "employee_id" and it will pull the rest of the data in from an external database.  So we will create a second "dummy" table that is only here to facilitate the creation of a new contact.  It includes only a single field "employee_id".</p>
 </div>
@@ -2345,15 +2518,13 @@ class tables_new_contact_form {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_using_ownerstamp_to_mark_record_ownership">13. Using <code>ownerstamp</code> to Mark Record Ownership</h2>
-<div class="sectionbody">
-<h3 id="_problem_5" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
+<h4 id="_problem_5" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h3 id="_solution_5" class="discrete">Solution</h3>
+<h4 id="_solution_5" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -2382,20 +2553,18 @@ class tables_new_contact_form {
 </li>
 </ol>
 </div>
-<h3 id="_discussion" class="discrete">Discussion</h3>
+<h4 id="_discussion" class="discrete">Discussion</h4>
 <div class="paragraph">
 <p>Before the "ownerstamp" directive existed, you could accomplish the same thing by implementing a <code>beforeSave()</code> trigger and setting the field value to the currently logged in user, changing the field permissions so it can&#8217;t be changed after the fact, and setting the widget type to "hidden".  But since this is such a common requirement, it is much simpler to just set <code>ownerstamp=1</code> and be done with it.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_redirecting_user_to_different_page_after_saving_record">14. Redirecting User to Different Page After Saving Record</h2>
-<div class="sectionbody">
-<h3 id="_problem_6" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
+<h4 id="_problem_6" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h3 id="_solution_6" class="discrete">Solution</h3>
+<h4 id="_solution_6" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -2440,15 +2609,13 @@ class tables_new_contact_form {
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_auto_updating_a_field_when_other_fields_are_changed">15. Auto-Updating a Field When Other Fields are Changed</h2>
-<div class="sectionbody">
-<h3 id="_problem_7" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_auto_updating_a_field_when_other_fields_are_changed">Auto-Updating a Field When Other Fields are Changed</h3>
+<h4 id="_problem_7" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h3 id="_solution_7" class="discrete">Solution</h3>
+<h4 id="_solution_7" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -2530,15 +2697,13 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_displaying_field_preview_using_ajax">16. Displaying Field Preview using AJAX</h2>
-<div class="sectionbody">
-<h3 id="_problem_8" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_displaying_field_preview_using_ajax">Displaying Field Preview using AJAX</h3>
+<h4 id="_problem_8" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h3 id="_solution_8" class="discrete">Solution</h3>
+<h4 id="_solution_8" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -2708,15 +2873,13 @@ class actions_ajax_post_preview {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_disabling_client_side_validation">17. Disabling Client-side Validation</h2>
-<div class="sectionbody">
-<h3 id="_problem_9" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
+<h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h3 id="_solution_9" class="discrete">Solution</h3>
+<h4 id="_solution_9" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -2730,15 +2893,13 @@ class actions_ajax_post_preview {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_setting_fixed_number_of_rows_in_the_grid_widget">18. Setting Fixed Number of Rows in the Grid Widget</h2>
-<div class="sectionbody">
-<h3 id="_problem_10" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
+<h4 id="_problem_10" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h3 id="_solution_10" class="discrete">Solution</h3>
+<h4 id="_solution_10" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -2768,22 +2929,20 @@ class actions_ajax_post_preview {
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_list_customization">List Customization</h2>
+<h2 id="list_customization">List Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The following chapters form a sort of cook book with recipes for customizing result lists in Xataface.</p>
+<p>The following sections form a sort of cook book with recipes for customizing result lists in Xataface.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_adding_option_to_filter_result_list">19. Adding Option to Filter Result LIst</h2>
-<div class="sectionbody">
-<h3 id="_problem_11" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h3 id="_solution_11" class="discrete">Solution</h3>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -2813,11 +2972,9 @@ class actions_ajax_post_preview {
 <p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_hiding_filter_counts">20. Hiding Filter Counts</h2>
-<div class="sectionbody">
-<h3 id="_problem_12" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -2830,7 +2987,7 @@ class actions_ajax_post_preview {
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h3 id="_solution_12" class="discrete">Solution</h3>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -2848,15 +3005,13 @@ class actions_ajax_post_preview {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_sorting_filter_results">21. Sorting Filter Results</h2>
-<div class="sectionbody">
-<h3 id="_problem_13" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_sorting_filter_results">Sorting Filter Results</h3>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h3 id="_solution_13" class="discrete">Solution</h3>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -2872,15 +3027,13 @@ class actions_ajax_post_preview {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="row-css-classes">22. Adding CSS Classes to Rows</h2>
-<div class="sectionbody">
-<h3 id="_problem_14" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h3 id="_solution_14" class="discrete">Solution</h3>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -2917,15 +3070,13 @@ class tables_MyTable {
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_adding_row_actions">23. Adding Row Actions</h2>
-<div class="sectionbody">
-<h3 id="_problem_15" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_adding_row_actions">Adding Row Actions</h3>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h3 id="_solution_15" class="discrete">Solution</h3>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -2981,15 +3132,13 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="title">Figure 29. The "play_post" action appears in the left-most column of the list view</div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="custom-row-action-styles">24. Customizing Row Action Styles</h2>
-<div class="sectionbody">
-<h3 id="_problem_16" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h3 id="_solution_16" class="discrete">Solution</h3>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -3016,15 +3165,13 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_adding_javascript_row_actions">25. Adding Javascript Row Actions</h2>
-<div class="sectionbody">
-<h3 id="_problem_17" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h3 id="_solution_17" class="discrete">Solution</h3>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -3111,15 +3258,13 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </ol>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="toggle-row-actions">26. Making Row Actions Toggleable</h2>
-<div class="sectionbody">
-<h3 id="_problem_18" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h3 id="_solution_18" class="discrete">Solution</h3>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -3139,7 +3284,7 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="paragraph">
 <p>The 2nd option is more complex but yields a better user experience.</p>
 </div>
-<h4 id="_solution_1_using_condition_directive" class="discrete">Solution 1: Using <code>condition</code> directive</h4>
+<h5 id="_solution_1_using_condition_directive" class="discrete">Solution 1: Using <code>condition</code> directive</h5>
 <div class="paragraph">
 <p>We can define our actions as follows: (And assume that our table has an "on_playlist" field that indicates whether or not a record is on the playlist currently.</p>
 </div>
@@ -3196,7 +3341,7 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="paragraph">
 <p>There is a lot hidden in this solution inside the <code>addToPlaylist()</code> and <code>removeFromPlaylist()</code> Javascript functions.  These are responsible for actually adding and removing records from the playlist. See <a href="#ajax-list-row-actions">Using AJAX To Modify Row Records</a> for an example using AJAX to do this.</p>
 </div>
-<h4 id="_solution_2_using_css_to_showhide_actions" class="discrete">Solution 2: Using CSS to Show/Hide Actions</h4>
+<h5 id="_solution_2_using_css_to_showhide_actions" class="discrete">Solution 2: Using CSS to Show/Hide Actions</h5>
 <div class="paragraph">
 <p>The first solution relies on the <code>condition</code> directive to show or hide our actions.  However, this directive is processed on the server-side, so we would need to reload the whole page if we wanted to update state.  We can offer a better user experience by using CSS to show/hide the actions.</p>
 </div>
@@ -3410,15 +3555,13 @@ function removeFromPlaylist(el) {
 </ol>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="ajax-list-row-actions">27. Using AJAX To Modify Row Records</h2>
-<div class="sectionbody">
-<h3 id="_problem_19" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h3 id="_solution_19" class="discrete">Solution</h3>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
@@ -3427,22 +3570,20 @@ function removeFromPlaylist(el) {
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_searching">Searching</h2>
+<h2 id="searching">Searching</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following section include tips on configuring search support in Xataface application.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_case_sensitive_searches">28. Case-Sensitive Searches</h2>
-<div class="sectionbody">
-<h3 id="_problem_20" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h3 id="_solution_20" class="discrete">Solution</h3>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -3459,20 +3600,18 @@ function removeFromPlaylist(el) {
    collate=utf8_general_cs</pre>
 </div>
 </div>
-<h3 id="_discussion_2" class="discrete">Discussion</h3>
+<h4 id="_discussion_2" class="discrete">Discussion</h4>
 <div class="paragraph">
 <p>By default, the case-sensitivity of searches depends on the collation of the underlying table and column in MySQL.  If the column was defined with a case-sensitive collation (e.g. <code>utf8_general_cs</code>), then all searches on this column will be case-sensitive.  If, however, it was defined with a case-insensitive collaction (e.g. <code>utf8_general_ci</code>), all searches will be case-insensitive.  If you want to change the behaviour of the app, you could simply change the underlying collation.  But in some cases you may not want to modify the table structure (or you won&#8217;t have access to the table structure).  In such cases, the "collate" directive is helpful.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_explicitly_specifying_case_sensitivity_of_a_search">29. Explicitly Specifying Case-sensitivity of a Search</h2>
-<div class="sectionbody">
-<h3 id="_problem_21" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
+<h4 id="_problem_21" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h3 id="_solution_21" class="discrete">Solution</h3>
+<h4 id="_solution_21" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -3497,187 +3636,20 @@ function removeFromPlaylist(el) {
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_exporting_data">Exporting Data</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Xataface includes built-in support for exporting data in a variety of formats, including:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>RSS</p>
-</li>
-<li>
-<p>CSV</p>
-</li>
-<li>
-<p>XML</p>
-</li>
-<li>
-<p>JSON</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Additional formats are provided via modules.  The following chapters describe how to integrate these formats into your Xataface applications.</p>
-</div>
-</div>
 </div>
 <div class="sect1">
-<h2 id="rss-feeds">30. RSS Feeds</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A default Xataface application provides RSS feeds to any found set in your application. This article explains a little bit about RSS and how you can configure Xataface to give you the desired results for your RSS feed.</p>
-</div>
-<h3 id="_what_is_rss" class="discrete">What is RSS?</h3>
-<div class="paragraph">
-<p>From <a href="http://en.wikipedia.org/wiki/RSS_(file_format)">Wikipedia&#8217;s RSS article</a>:</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>"RSS is a family of Web feed formats used to publish frequently updated works such as blog entries, news headlines, audio, and videoin a standardized format.[2] An RSS document (which is called a "feed", "web feed",[3] or "channel") includes full or summarized text, plus metadata such as publishing dates and authorship. Web feeds benefit publishers by letting them syndicate content automatically. They benefit readers who want to subscribe to timely updates from favored websites or to aggregate feeds from many sites into one place. RSS feeds can be read using software called an "RSS reader", "feed reader", or "aggregator", which can be web-based or desktop-based. A standardized XML file format allows the information to be published once and viewed by many different programs. The user subscribes to a feed by entering the feed&#8217;s URI (often referred to informally as a "URL", although technically, those two terms are not exactly synonymous) into the reader or by clicking an RSS icon in a browser that initiates the subscription process. The RSS reader checks the user&#8217;s subscribed feeds regularly for new work, downloads any updates that it finds, and provides a user interface to monitor and read the feeds."</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>In a way, RSS replaces email subscriptions so that you can subscribe to receive updates when content is added or changed on websites that you monitory. This way you can monitory these changes in your RSS reader so that your email box doesn&#8217;t get clogged up.</p>
-</div>
-<h3 id="_using_rss_in_xataface" class="discrete">Using RSS in Xataface</h3>
-<div class="paragraph">
-<p>Xataface allows you to subscribe to:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Entire tables</p>
-</li>
-<li>
-<p>Any found set</p>
-</li>
-<li>
-<p>Changes to a particular record</p>
-</li>
-<li>
-<p>Related record lists</p>
-</li>
-</ol>
-</div>
-<h4 id="_example_1_subscribing_to_receive_news_updates" class="discrete">Example 1: Subscribing to receive news updates</h4>
-<div class="paragraph">
-<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
-</div>
-<h4 id="_example_2_subscribing_to_receive_found_set_updates" class="discrete">Example 2: Subscribing to receive found set updates</h4>
-<div class="paragraph">
-<p>A user wants to be alerted whenever a new item is inserted into the news table that contains the phrase "Buffalo Bills", because he is a Buffalo Bills fan. So he navigates to the news table, and does a search for the phrase "Buffalo Bills". Then he clicks on the "RSS Feed" icon in the upper right of the result set list. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for news items containing the phrase "Buffalo Bills". Whenever a new item is posted with this phrase, he will be notified via RSS of the new record.</p>
-</div>
-<h4 id="_example_3_subscribing_to_a_related_list" class="discrete">Example 3: Subscribing to a related list</h4>
-<div class="paragraph">
-<p>Suppose you want to receive updates whenever a particular author adds a book to his list of published works. Further suppose this is represented by a relationship between the authors table and the books table named publications. You can subscribe to the RSS feed for his publications by navigating to the publications tab for that author, then clicking on the "RSS Feed" icon in the upper right. Now whenever this author adds a new book to his publications list, you&#8217;ll be notified via RSS.</p>
-</div>
-<h4 id="_example_usage_in_xataface" class="discrete">Example usage in Xataface</h4>
-<div class="paragraph">
-<p>A user wants to be alerted whenever a new item is inserted into the news table, so he navigates to the list tab of the news table, and clicks the RSS Feed icon in the upper right. If he has an RSS reader application set up, this is all he has to do to subscribe to the RSS feed for the news table. When new records are inserted, he&#8217;ll receive alerts in his RSS reader.</p>
-</div>
-<div class="paragraph">
-<p>A user wants to be alerted whenever a new record about "Wayne Gretzky" is inserted in to the news table. He navigates to the news table, then performs a search for "Wayne Gretzky" using the top right search box. Then, he clicks on the "RSS Feed" icon in the upper right of the result list. Now, whenever a new item is inserted with the phrase "Wayne Gretzky", the user will be notified via RSS.</p>
-</div>
-<div class="sect2">
-<h3 id="_configuring_rss_feeds">30.1. Configuring RSS Feeds</h3>
-<div class="paragraph">
-<p>As with everything else in Xataface, you can configure your RSS feeds to appear just as you want them to. The following delegate class methods are available to be defined in the table delegate class for your feed:</p>
-</div>
-<div class="paragraph">
-<p>See <a href="#appendix-rss-config">RSS Configuration Directives</a> for available configuration directives and delegate class methods related to RSS feeds.</p>
-</div>
-<h4 id="_example_configuration" class="discrete">Example Configuration</h4>
-<div class="paragraph">
-<p>There are 2 parts to configuring your RSS feeds:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Configuring the feed as a whole</p>
-</li>
-<li>
-<p>Configuring the feed items (that is each record that will appear in your RSS feed).</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><strong>Configuring the Feed as a whole</strong></p>
-</div>
-<div class="paragraph">
-<p>For configuring the feed as a whole, we have 2 options. We can specify the title, description, and link for the feed in the <code>[_feed]</code> section of your "conf.ini" file. This is sort of a "one size fits all" approach where all feeds generated from your application will share the same title. E.g.</p>
-</div>
-<div class="listingblock">
-<div class="title">Configuring RSS feed in conf.ini file</div>
-<div class="content">
-<pre class="highlight"><code class="language-ini" data-lang="ini">[_feed]
-    title="My Site News"
-    description="News updates from my site"
-    link="http://www.example.com"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>However, if we want our feed&#8217;s information to depend on the user&#8217;s query (e.g. what the user was searching for, or which table the feed is generated on, we have more flexibility if we define the <code>getFeed</code> method in either the application delegate class or the table delegate class. E.g.</p>
-</div>
-<div class="listingblock">
-<div class="title">Configuring RSS feed in delegate class</div>
-<div class="content">
-<pre class="highlight"><code class="language-php" data-lang="php">function getFeed($query=array()){
-    $params = array();
-    if ( @$query['-search'] ) $params['title'] = '"'.$query['-search'].'" results';
-    else $params['title'] = 'All records from my table';
-    return $params;
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Notice that I don&#8217;t need to define all possible parameters. Any parameters that I don&#8217;t define will be provided automatically by Xataface, or it will simply use the values specified in your <code>[_feed]</code> section of the "conf.ini" file.</p>
-</div>
-<div class="paragraph">
-<p><strong>Configuring Feed Items</strong></p>
-</div>
-<div class="paragraph">
-<p>Configuring the feed items is quite important for ensuring that subscribers are seeing what you want them to see in the RSS feed. Xataface tries to guess appropriate content for your feed items if you don&#8217;t specify it explicitly, but you&#8217;ll likely want to tweak it a little bit to make the feed look more polished for your purposes.</p>
-</div>
-<div class="paragraph">
-<p>Use the <code>getFeedItem</code> delegate class method to specify how a feed item behaves (e.g. the title, content, date, author, link).  E.g.</p>
-</div>
-<div class="listingblock">
-<div class="title">Configuring a feed item description in the delegate class.</div>
-<div class="content">
-<pre class="highlight"><code class="language-php" data-lang="php">function getFeedItem(&amp;$record)){
-    return array(
-        'description' =&gt; $record-&gt;val('body')
-    );
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once again, notice that we don&#8217;t need to specify all available options. Only those options that we want to override. In this case we want the description of the feed item to simply display the body of our news item. The description of an RSS feed item is effectively the body text that the user sees why they click on an item in their news reader, so this is quite important.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_file_uploads">File Uploads</h2>
+<h2 id="file_uploads">File Uploads</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following sections pertain to management of file uploads.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_specifying_content_disposition_of_file_download">31. Specifying Content Disposition of File Download</h2>
-<div class="sectionbody">
-<h3 id="_problem_22" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h3 id="_solution_22" class="discrete">Solution</h3>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -3704,22 +3676,20 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_http_request_handling">HTTP Request Handling</h2>
+<h2 id="http_request_handling">HTTP Request Handling</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following sections include tips for configuring how Xataface applications respond to HTTP requests.  This includes topics such as event routing, response types, etc&#8230;&#8203;</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_specifying_a_default_action">32. Specifying a Default Action</h2>
-<div class="sectionbody">
-<h3 id="_problem_23" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h3 id="_solution_23" class="discrete">Solution</h3>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -3748,15 +3718,13 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_using_different_default_action_depending_on_table">33. Using Different Default Action Depending on Table</h2>
-<div class="sectionbody">
-<h3 id="_problem_24" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h3 id="_solution_24" class="discrete">Solution</h3>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -3766,15 +3734,13 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_specifying_default_query_parameters_for_default_actions">34. Specifying Default Query Parameters for Default Actions</h2>
-<div class="sectionbody">
-<h3 id="_problem_25" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h3 id="_solution_25" class="discrete">Solution</h3>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -3845,15 +3811,13 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_showing_the_edit_tab_by_default_for_record_details">35. Showing the "Edit" Tab By Default for Record Details</h2>
-<div class="sectionbody">
-<h3 id="_problem_26" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h3 id="_solution_26" class="discrete">Solution</h3>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -3886,15 +3850,13 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_setting_default_query_parameters_for_the_browse_action">36. Setting Default Query Parameters for the <code>browse</code> Action</h2>
-<div class="sectionbody">
-<h3 id="_problem_27" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h3 id="_solution_27" class="discrete">Solution</h3>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -3937,15 +3899,13 @@ default_browse_params.posts="foo=bar"</code></pre>
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_setting_a_related_records_tab_as_the_default_browse_action">37. Setting a Related Records Tab as the Default Browse Action</h2>
-<div class="sectionbody">
-<h3 id="_problem_28" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h3 id="_solution_28" class="discrete">Solution</h3>
+<h4 id="_solution_28" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -3960,22 +3920,20 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_tables_views_and_queries">Tables, Views, and Queries</h2>
+<h2 id="tables_views_queries">Tables, Views, and Queries</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following chapters pertain tables, views, and queries.  It includes tips on how to set up your tables, views, and queries for optimal performance and flexibility.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_accessing_an_sql_query_like_a_table">38. Accessing an SQL query like a Table</h2>
-<div class="sectionbody">
-<h3 id="_problem_29" class="discrete">Problem</h3>
+<div class="sect2">
+<h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h3 id="_solution_29" class="discrete">Solution</h3>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -4041,7 +3999,7 @@ class tables__tmp_my_posts {
 <div class="paragraph">
 <p>You can access this "table" just as you would, a normal table.  Just remember that the full table name is "_tmp_my_posts".  E.g. If you go to "index.php?-table=_tmp_my_posts", it will show you these results.</p>
 </div>
-<h3 id="_how_dynamic_queries_work" class="discrete">How Dynamic Queries Work</h3>
+<h4 id="_how_dynamic_queries_work" class="discrete">How Dynamic Queries Work</h4>
 <div class="paragraph">
 <p>When xataface receives a request for a table whose name starts with "<em>tmp</em>" it begins by performing the <code>__sql__</code> and loading the results into a temporary table.  This operation is very fast because temporary tables are typically stored in RAM, and they are only usable in the current session (i.e. other users cannot see this table).</p>
 </div>
@@ -4059,6 +4017,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="_appendix_1_configuration_directives">Appendix 1: Configuration Directives</h2>
 <div class="sectionbody">
@@ -4068,7 +4027,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">39. Preferences Directives</h2>
+<h2 id="_preferences_directives">Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
@@ -4352,7 +4311,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 </div>
 <div class="sect1">
-<h2 id="appendix-rss-config">40. RSS Configuration Directives</h2>
+<h2 id="appendix-rss-config">RSS Configuration Directives</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describes the configuration directives and delegate methods that can be used to configure RSS feeds.  See <a href="#rss-feeds">RSS Feeds</a> for an introduction to Xataface&#8217;s RSS feed support.</p>
@@ -4405,7 +4364,7 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="rss-getfeed">40.1. <code>getFeed()</code> Delegate Method</h3>
+<h3 id="rss-getfeed"><code>getFeed()</code> Delegate Method</h3>
 <h4 id="_synopsis" class="discrete">Synopsis</h4>
 <div class="paragraph">
 <p>The <code>getFeed()</code> method of a table delegate class or application delegate class returns an associative array of parameters to configure the RSS feed for a particular table . An RSS feed consists of the following components:</p>
@@ -4503,7 +4462,7 @@ RSS feeds will work perfectly well without defining this method. This just allow
 </div>
 </div>
 <div class="sect2">
-<h3 id="rss-getfeeditem">40.2. <code>getFeedItem()</code> Delegate Method</h3>
+<h3 id="rss-getfeeditem"><code>getFeedItem()</code> Delegate Method</h3>
 <h4 id="_synopsis_2" class="discrete">Synopsis</h4>
 <div class="paragraph">
 <p>The <code>getFeedItem()</code> method of a table delegate class returns an associative array of parameters for a record as it should appear as part of an RSS feed. An RSS feed item consists of the following components:</p>
@@ -4632,7 +4591,7 @@ RSS feeds will work perfectly well without defining this method. This just allow
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-28 07:21:16 -0700
+Last updated 2020-06-28 09:52:59 -0700
 </div>
 </div>
 </body>

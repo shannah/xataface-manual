@@ -1,17 +1,17 @@
-[searching]
-= Searching
+[#searching]
+== Searching
 
 The following section include tips on configuring search support in Xataface application.
 
-== Case-Sensitive Searches
+=== Case-Sensitive Searches
 
 [discrete]
-=== Problem
+==== Problem
 
 You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").
 
 [discrete]
-=== Solution
+==== Solution
 
 Use the `collate` fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.
 
@@ -25,19 +25,19 @@ E.g.
 ----
 
 [discrete]
-=== Discussion
+==== Discussion
 
 By default, the case-sensitivity of searches depends on the collation of the underlying table and column in MySQL.  If the column was defined with a case-sensitive collation (e.g. `utf8_general_cs`), then all searches on this column will be case-sensitive.  If, however, it was defined with a case-insensitive collaction (e.g. `utf8_general_ci`), all searches will be case-insensitive.  If you want to change the behaviour of the app, you could simply change the underlying collation.  But in some cases you may not want to modify the table structure (or you won't have access to the table structure).  In such cases, the "collate" directive is helpful.
 
-== Explicitly Specifying Case-sensitivity of a Search
+=== Explicitly Specifying Case-sensitivity of a Search
 
 [discrete]
-=== Problem
+==== Problem
 
 You want to perform a case-sensitive search on a field that has a case-insensitive collation.
 
 [discrete]
-=== Solution
+==== Solution
 
 Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").
 

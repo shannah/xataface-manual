@@ -1,17 +1,17 @@
-[file_uploads]
-= File Uploads
+[#file_uploads]
+== File Uploads
 
 The following sections pertain to management of file uploads.
 
-== Specifying Content Disposition of File Download
+=== Specifying Content Disposition of File Download
 
 [discrete]
-=== Problem
+==== Problem
 
 By default the contents of `blob` fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.
 
 [discrete]
-=== Solution
+==== Solution
 
 Use the `contentDisposition=inline` fields.ini directive.
 

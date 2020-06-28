@@ -1,17 +1,17 @@
-[tables_views_queries]
-= Tables, Views, and Queries
+[#tables_views_queries]
+== Tables, Views, and Queries
 
 The following chapters pertain tables, views, and queries.  It includes tips on how to set up your tables, views, and queries for optimal performance and flexibility.
 
-== Accessing an SQL query like a Table
+=== Accessing an SQL query like a Table
 
 [discrete]
-=== Problem
+==== Problem
 
 You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.
 
 [discrete]
-=== Solution
+==== Solution
 
 There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.
 
@@ -56,7 +56,7 @@ class tables__tmp_my_posts {
 You can access this "table" just as you would, a normal table.  Just remember that the full table name is "_tmp_my_posts".  E.g. If you go to "index.php?-table=_tmp_my_posts", it will show you these results.
 
 [discrete]
-=== How Dynamic Queries Work
+==== How Dynamic Queries Work
 
 When xataface receives a request for a table whose name starts with "_tmp_" it begins by performing the `\\__sql__` and loading the results into a temporary table.  This operation is very fast because temporary tables are typically stored in RAM, and they are only usable in the current session (i.e. other users cannot see this table).
 

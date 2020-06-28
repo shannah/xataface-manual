@@ -4,30 +4,15 @@ Steve Hannah
 :encoding: utf-8
 :lang: en
 :toc: left
-:numbered:
+:docinfo: private
 
 include::preface.adoc[]
 
 include::part_fundamentals.adoc[]
 
-include::part_security.adoc[]
-
-include::part_actions.adoc[]
-
-include::part_theme_customization.adoc[]
-
-include::part_form_customization.adoc[]
-
-include::part_list_customization.adoc[]
-
-include::part_searching.adoc[]
-
 include::part_exporting_data.adoc[]
 
-include::part_file_uploads.adoc[]
+include::part_recipes.adoc[]
 
-include::part_request_handling.adoc[]
-
-include::part_tables_views_and_queries.adoc[]
 
 include::part_appendix_configuration.adoc[]

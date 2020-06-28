@@ -1,0 +1,145 @@
+.site-navigation,
+.site-content,
+.site-footer {
+	margin: 0 auto;
+	max-width: 840px;
+	width: 92%
+}
+
+.site-navigation {
+	-webkit-columns: 3;
+	-moz-columns: 3;
+	columns: 3;
+	-webkit-column-gap: 40px;
+	-moz-column-gap: 40px;
+	column-gap: 40px
+}
+
+.site-navigation input[type="checkbox"],
+.site-navigation label {
+	display: none
+}
+
+.site-navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0
+}
+
+.site-navigation ul li {
+	margin-bottom: 20px;
+	font-size: 22px;
+	line-height: 23px
+}
+
+.site-navigation ul li a {
+	display: block;
+	color: #444;
+	font-weight: 700;
+	text-decoration: none
+}
+
+.site-navigation ul li a:hover {
+	color: #8892bf
+}
+
+.site-navigation ul li ul {
+	padding-top: 8px
+}
+
+.site-navigation ul li li {
+	margin-bottom: 6px;
+	font-size: 18px
+}
+
+.site-navigation ul li li a {
+	border: none;
+	color: #777;
+	font-weight: normal
+}
+
+.site-navigation li {
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	break-inside: avoid
+}
+
+@media (max-width:820px) {
+	.site-navigation {
+		-webkit-columns: 2;
+		-moz-columns: 2;
+		columns: 2
+	}
+}
+
+@media (max-width:560px) {
+	.site-navigation {
+		-webkit-columns: 1;
+		-moz-columns: 1;
+		columns: 1
+	}
+}
+
+@media (max-width:375px) {
+	.site-navigation {
+		background: rgba(255, 255, 255, 0.95);
+		-webkit-columns: 1;
+		-moz-columns: 1;
+		columns: 1;
+		max-height: 100vh;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 100
+	}
+	.site-navigation label {
+		background: #4f5b93;
+		box-sizing: border-box;
+		display: block;
+		height: 40px;
+		padding: 0 10px;
+		width: 100vh;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		color: white;
+		font-family: verdana, sans-serif;
+		font-size: 13px;
+		line-height: 40px;
+		text-transform: uppercase;
+		z-index: 2
+	}
+	.site-navigation>ul {
+		background: rgba(255, 255, 255, 0.96);
+		border-top: 3px solid #8892bf;
+		box-shadow: rgba(0, 0, 0, 0.25) 0 -5px 10px;
+		box-sizing: border-box;
+		padding: 20px;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		position: absolute;
+		left: 0;
+		bottom: 40px;
+		height: 50vh;
+		width: 100vh;
+		-webkit-transform: translate(0, 100vh);
+		-ms-transform: translate(0, 100vh);
+		transform: translate(0, 100vh);
+		transition: all .2s ease;
+		z-index: 1
+	}
+	.site-navigation input[type="checkbox"]:checked~ul {
+		-webkit-transform: translate(0, 0);
+		-ms-transform: translate(0, 0);
+		transform: translate(0, 0)
+	}
+}
+
+
+body {
+    font-family: Times,Serif;
+}
+
+ul.sectlevel2 > li{
+    margin-bottom: 0.75em !important;
+}

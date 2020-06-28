@@ -1,0 +1,22 @@
+[recipes]
+= Recipes
+
+This section of the book includes recipes for common patterns in Xataface applications.
+
+include::chapter_actions.adoc[]
+
+include::chapter_security.adoc[]
+
+include::chapter_theme_customization.adoc[]
+
+include::chapter_form_customization.adoc[]
+
+include::chapter_list_customization.adoc[]
+
+include::chapter_searching.adoc[]
+
+include::chapter_file_uploads.adoc[]
+
+include::chapter_request_handling.adoc[]
+
+include::chapter_tables_views_and_queries.adoc[]
