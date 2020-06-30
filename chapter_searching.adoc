@@ -55,3 +55,48 @@ If you, instead wanted to explicitly perform a case-insensitive search you would
 #Bob#ci
 ----
 
+=== Making Columns Not-Searchable
+
+[discrete]
+==== Problem
+
+The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?
+
+[solution]
+==== Solution
+
+Use the `not_searchable` fields.ini directive on any field cause searches *not* to match using that column.
+
+E.g. If I don't want the search field to match on a the "private_info" column, I could do the following:
+
+.fields.ini directives, disabling search matching on the private_info field
+[source,ini]
+----
+[private_info]
+    not_searchable=1
+----
+
+Now, if the user enters a search in the top search box, it won't match against the "private_info" column.
+
+You can "inverse" this behaviour, and make all of the columns not searchable by default, using the `\\__global__` section.
+
+E.g.
+
+.Making all fields unsearchable except for the `myfield` column.
+[source,ini]
+----
+[__global__]
+    not_searchable=1
+    
+[myfield]
+    not_searchable=0
+----
+
+[IMPORTANT]
+====
+`not_searchable` only affects the top search box (i.e. the `-search` query parameter).  Users can still peform "finds" on a field with `not_searchable=1`by directly performing a find on that column using either the "advanced find" form, column search, filters, or via URL conventions (e.g. `myfield=someval`).
+
+If you want to make a field completely "un-findable", you should use the `not_findable` directive.  
+====
+
+

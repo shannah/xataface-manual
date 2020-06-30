@@ -536,6 +536,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_case_sensitive_searches">Case-Sensitive Searches</a></li>
 <li><a href="#_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</a></li>
+<li><a href="#_making_columns_not_searchable">Making Columns Not-Searchable</a></li>
 </ul>
 </li>
 <li><a href="#file_uploads">File Uploads</a>
@@ -3635,6 +3636,65 @@ function removeFromPlaylist(el) {
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
+<h4 id="_problem_22" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
+</div>
+<div class="sect3">
+<h4 id="_solution_22">Solution</h4>
+<div class="paragraph">
+<p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
+</div>
+<div class="paragraph">
+<p>E.g. If I don&#8217;t want the search field to match on a the "private_info" column, I could do the following:</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini directives, disabling search matching on the private_info field</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[private_info]
+    not_searchable=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, if the user enters a search in the top search box, it won&#8217;t match against the "private_info" column.</p>
+</div>
+<div class="paragraph">
+<p>You can "inverse" this behaviour, and make all of the columns not searchable by default, using the <code>__global__</code> section.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Making all fields unsearchable except for the <code>myfield</code> column.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[__global__]
+    not_searchable=1
+
+[myfield]
+    not_searchable=0</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>not_searchable</code> only affects the top search box (i.e. the <code>-search</code> query parameter).  Users can still peform "finds" on a field with <code>not_searchable=1`by directly performing a find on that column using either the "advanced find" form, column search, filters, or via URL conventions (e.g. `myfield=someval</code>).</p>
+</div>
+<div class="paragraph">
+<p>If you want to make a field completely "un-findable", you should use the <code>not_findable</code> directive.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3645,11 +3705,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_22" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -3685,11 +3745,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -3720,11 +3780,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -3736,11 +3796,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_25" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -3813,11 +3873,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_26" class="discrete">Solution</h4>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -3852,11 +3912,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_27" class="discrete">Solution</h4>
+<h4 id="_solution_28" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -3901,11 +3961,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -3929,11 +3989,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_29" class="discrete">Solution</h4>
+<h4 id="_solution_30" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
