@@ -493,8 +493,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_recipes">Recipes</a></li>
 <li><a href="#actions">Actions</a>
 <ul class="sectlevel2">
-<li><a href="#_using_material_icons">Using Material Icons</a></li>
+<li><a href="#material-icons">Using Material Icons</a></li>
 <li><a href="#javascript-action">Triggering Javascript Function with Action</a></li>
+<li><a href="#customize-action-label">Customizing Action Labels</a></li>
 </ul>
 </li>
 <li><a href="#security">Security</a>
@@ -530,6 +531,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_adding_javascript_row_actions">Adding Javascript Row Actions</a></li>
 <li><a href="#toggle-row-actions">Making Row Actions Toggleable</a></li>
 <li><a href="#ajax-list-row-actions">Using AJAX To Modify Row Records</a></li>
+<li><a href="#default-sort">Specifying Default Sorting</a></li>
 </ul>
 </li>
 <li><a href="#searching">Searching</a>
@@ -559,6 +561,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</a></li>
 </ul>
 </li>
+<li><a href="#_user_interface_and_themes">User Interface and Themes</a></li>
+<li><a href="#responsive-ui">Responsive UI</a>
+<ul class="sectlevel2">
+<li><a href="#_switching_between_mobile_and_desktop_theme">Switching Between Mobile And Desktop Theme</a></li>
+<li><a href="#_mobile_header_and_footer">Mobile Header and Footer</a></li>
+<li><a href="#_table_tabs">Table Tabs</a></li>
+<li><a href="#_fab_floating_action_button">FAB (Floating Action Button)</a></li>
+<li><a href="#_customizing_the_list_view">Customizing the List View</a></li>
+</ul>
+</li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
 <li><a href="#_preferences_directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
@@ -567,6 +579,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#rss-getfeeditem"><code>getFeedItem()</code> Delegate Method</a></li>
 </ul>
 </li>
+<li><a href="#_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</a></li>
+<li><a href="#_appendix_3_javascript_environment">Appendix 3: Javascript Environment</a></li>
 </ul>
 </div>
 </div>
@@ -1787,7 +1801,7 @@ Created tables/notes/fields.ini.php</code></pre>
 <p>The following sections pertain to actions in Xataface.  An action may either be a menu item, or an HTTP request handler.  Or it can be both.  They are defined in the actions.ini file (or actions.ini.php file) of your application, and their "handlers" are defined inside the "actions" directory of your application.</p>
 </div>
 <div class="sect2">
-<h3 id="_using_material_icons">Using Material Icons</h3>
+<h3 id="material-icons">Using Material Icons</h3>
 <h4 id="_problem" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to use a <a href="https://material.io/resources/icons/?style=baseline">material icon</a> for a menu-item in your application, instead of an image.</p>
@@ -2038,6 +2052,79 @@ class conf_ApplicationDelegate {
 </ol>
 </div>
 </div>
+<div class="sect2">
+<h3 id="customize-action-label">Customizing Action Labels</h3>
+<h4 id="_problem_3" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to customize the label for an existing action</p>
+</div>
+<h4 id="_solution_3" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>If you want to customize the action for all tables, you can simply override the action in your app&#8217;s actions.ini file, and set the <code>label</code> property.</p>
+</div>
+<div class="listingblock">
+<div class="title">Overriding the "new" action in your app&#8217;s actions.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[new &gt; new]
+    label=Insert New Record</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+To override the tooltip text for the action, you could set the <code>description</code> directive.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can use Xataface&#8217;s internationalization support to override the label.  E.g. in your app&#8217;s "lang/en.ini" file (which contains your English translations), you can define the key "actions.[ACTION_NAME].label".  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Overriding the "new" action&#8217;s label in the lang/en.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">actions.new.label="Insert New Record"</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+To override the tooltip text for the action, you can set the <code>actions.new.description</code> property.
+</td>
+</tr>
+</table>
+</div>
+<h5 id="_overriding_label_on_a_particular_table" class="discrete">Overriding Label on a Particular Table</h5>
+<div class="paragraph">
+<p>The above examples would override the action label in the entire application.  If you want to specify the label in a particular table, you can define the "tables.[TABLENAME].actions.[ACTIONNAME].label" proeprty in your language file (e.g. lang/en.ini).</p>
+</div>
+<div class="listingblock">
+<div class="title">Overriding the label for the "new" action in the "articles" table.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">tables.articles.actions.new.label="Insert Article"</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+You can also override the the tooltip text using <code>tables.[TABLENAME].actions.[ACTIONNAME].description</code>, and the material icon using <code>tables.[TABLENAME].actions.[ACTIONNAME].materialIcon</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2118,11 +2205,11 @@ class conf_ApplicationDelegate {
 </div>
 <div class="sect2">
 <h3 id="_adding_a_custom_stylesheet">Adding a Custom Stylesheet</h3>
-<h4 id="_problem_3" class="discrete">Problem</h4>
+<h4 id="_problem_4" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.</p>
 </div>
-<h4 id="_solution_3" class="discrete">Solution</h4>
+<h4 id="_solution_4" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>The <code>xf_stylesheet()</code> function can be used to inject a stylesheet into either the <code>&lt;head&gt;</code> section of the app&#8217;s page, or into the CSS bundle that is compiled by the <code>CSSTool</code>.  Let&#8217;s start with the simplest case, where you want to include the stylesheet in the entire application (i.e. it should be loaded in every page of the app), and the stylesheet is hosted on a CDN (content-delivery network).  In this case, you should place the call to <code>xf_stylesheet()</code> inside the <code>beforeHandleRequest()</code> method of the application delegate class.</p>
 </div>
@@ -2237,11 +2324,11 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </div>
 <div class="sect2">
 <h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
-<h4 id="_problem_4" class="discrete">Problem</h4>
+<h4 id="_problem_5" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h4 id="_solution_4" class="discrete">Solution</h4>
+<h4 id="_solution_5" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -2521,11 +2608,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
-<h4 id="_problem_5" class="discrete">Problem</h4>
+<h4 id="_problem_6" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h4 id="_solution_5" class="discrete">Solution</h4>
+<h4 id="_solution_6" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -2561,11 +2648,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
-<h4 id="_problem_6" class="discrete">Problem</h4>
+<h4 id="_problem_7" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h4 id="_solution_6" class="discrete">Solution</h4>
+<h4 id="_solution_7" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -2612,11 +2699,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_auto_updating_a_field_when_other_fields_are_changed">Auto-Updating a Field When Other Fields are Changed</h3>
-<h4 id="_problem_7" class="discrete">Problem</h4>
+<h4 id="_problem_8" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h4 id="_solution_7" class="discrete">Solution</h4>
+<h4 id="_solution_8" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -2700,11 +2787,11 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 <div class="sect2">
 <h3 id="_displaying_field_preview_using_ajax">Displaying Field Preview using AJAX</h3>
-<h4 id="_problem_8" class="discrete">Problem</h4>
+<h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h4 id="_solution_8" class="discrete">Solution</h4>
+<h4 id="_solution_9" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -2876,11 +2963,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
-<h4 id="_problem_9" class="discrete">Problem</h4>
+<h4 id="_problem_10" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h4 id="_solution_9" class="discrete">Solution</h4>
+<h4 id="_solution_10" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -2896,11 +2983,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
-<h4 id="_problem_10" class="discrete">Problem</h4>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h4 id="_solution_10" class="discrete">Solution</h4>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -2939,11 +3026,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
-<h4 id="_problem_11" class="discrete">Problem</h4>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h4 id="_solution_11" class="discrete">Solution</h4>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -2975,7 +3062,7 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
-<h4 id="_problem_12" class="discrete">Problem</h4>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -2988,7 +3075,7 @@ class actions_ajax_post_preview {
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h4 id="_solution_12" class="discrete">Solution</h4>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -3008,11 +3095,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_sorting_filter_results">Sorting Filter Results</h3>
-<h4 id="_problem_13" class="discrete">Problem</h4>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h4 id="_solution_13" class="discrete">Solution</h4>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -3030,11 +3117,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
-<h4 id="_problem_14" class="discrete">Problem</h4>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h4 id="_solution_14" class="discrete">Solution</h4>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -3073,11 +3160,11 @@ class tables_MyTable {
 </div>
 <div class="sect2">
 <h3 id="_adding_row_actions">Adding Row Actions</h3>
-<h4 id="_problem_15" class="discrete">Problem</h4>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h4 id="_solution_15" class="discrete">Solution</h4>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -3135,11 +3222,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
-<h4 id="_problem_16" class="discrete">Problem</h4>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h4 id="_solution_16" class="discrete">Solution</h4>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -3168,11 +3255,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
-<h4 id="_problem_17" class="discrete">Problem</h4>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h4 id="_solution_17" class="discrete">Solution</h4>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -3261,11 +3348,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
-<h4 id="_problem_18" class="discrete">Problem</h4>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h4 id="_solution_18" class="discrete">Solution</h4>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -3558,16 +3645,35 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
-<h4 id="_problem_19" class="discrete">Problem</h4>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h4 id="_solution_19" class="discrete">Solution</h4>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
 <div class="paragraph">
 <p>TODO: Need to write this solution</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-sort">Specifying Default Sorting</h3>
+<h4 id="_problem_21" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want the records in a particular table to be sorted on a particular column by default.</p>
+</div>
+<div class="sect3">
+<h4 id="_solution_21">Solution</h4>
+<div class="paragraph">
+<p>Use the <code>default_sort</code> property of the fields.ini file.</p>
+</div>
+<div class="listingblock">
+<div class="title">Using the <code>default_sort</code> property in the fields.ini file to sort records in descending order on the date_posted field.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">default_sort=date_posted desc</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3580,11 +3686,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_20" class="discrete">Problem</h4>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_20" class="discrete">Solution</h4>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -3608,11 +3714,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_21" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_21" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -3638,12 +3744,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_22">Solution</h4>
+<h4 id="_solution_24">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -3705,11 +3811,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -3745,11 +3851,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -3780,11 +3886,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_25" class="discrete">Solution</h4>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -3796,11 +3902,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_26" class="discrete">Solution</h4>
+<h4 id="_solution_28" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -3873,11 +3979,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_27" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -3912,11 +4018,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_30" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -3961,11 +4067,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_29" class="discrete">Solution</h4>
+<h4 id="_solution_31" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -3989,11 +4095,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_30" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -4074,6 +4180,394 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_user_interface_and_themes">User Interface and Themes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following sections cover user interface considerations such as themes, UI configuration, and customization.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="responsive-ui">Responsive UI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Starting in Xataface 3.0, the entire the user interface has been revamped to provide a good mobile experience out of the box.  Every aspect of the UI has been reviewed and improved to fit user expectations of a mobile application.  Elements that don&#8217;t make sense in a mobile interface have been "hidden" and replaced with other more suitable elements.</p>
+</div>
+<div class="paragraph">
+<p>Here are a few snapshots of the new look:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-013308.455.png" alt="Image 060820 013308.455">
+</div>
+<div class="title">Figure 30. List view</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-013349.259.png" alt="Image 060820 013349.259">
+</div>
+<div class="title">Figure 31. Details view</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-013500.872.png" alt="Image 060820 013500.872">
+</div>
+<div class="title">Figure 32. New Record Form</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-013559.078.png" alt="Image 060820 013559.078">
+</div>
+<div class="title">Figure 33. Hamburger Menu</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-013629.481.png" alt="Image 060820 013629.481">
+</div>
+<div class="title">Figure 34. Login form</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll notice quite a few differences from the desktop theme:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Instead of a table with columns, the "list" view renders similar to the view you would expect in a mobile news, mail, or social media app.  Each row includes a title, description, icon, and set of actions that can be performed.</p>
+</li>
+<li>
+<p>The familiar "Details", "List", and "Find" tabs are still there, but have been moved to the bottom of the screen and have been restyled to look more like the tabs in native mobile apps.</p>
+</li>
+<li>
+<p>The navigation menu (to select the <strong>table</strong>), and personal tools menu ("logout", "profile", etc..) are now contained in hamburger slide-out menu; a common pattern in mobile apps.</p>
+</li>
+<li>
+<p>Table actions (e.g. "New Record", "Delete", etc..) have been moved into a FAB (floating action button) in the lower right that hovers over the screen.  This is also a common element in mobile apps.</p>
+</li>
+<li>
+<p>Forms are laid out in a single column, and the "Save" button has been moved to a fixed position at the bottom of the screen to streamline usability.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_switching_between_mobile_and_desktop_theme">Switching Between Mobile And Desktop Theme</h3>
+<div class="paragraph">
+<p>The theme is fully responsive, meaning that it will automatically render the appropriate UI based on the size of the window.  Currently the threshold occurs as a window width of 768 pixels.  If the window is wider than that, it will render the desktop UI.  Narrower, and it will render the mobile theme.</p>
+</div>
+<div class="paragraph">
+<p>When in "mobile" mode, the <code>body</code> tag will include the "small" CSS class.  When in "desktop" mode, it will include the "large" CSS class.  This will allow you to define CSS styles that target mobile or desktop separately.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Using CSS to target styles to mobile or desktop.  The following would render <code>&lt;h1 class="mystyle"&gt;My heading&lt;/h1&gt;</code> as blue on mobile and green on desktop.</div>
+<div class="content">
+<pre class="highlight"><code class="language-css" data-lang="css">/**
+ * red style for h1 tags.  Not used at all because it is overridden
+ * by following two rules on mobile and desktop.
+ */
+h1.mystyle {
+    color:red;
+}
+
+/**
+ * Blue style applied on mobile only.
+ */
+body.small h1.mystyle {
+    color:blue;
+}
+
+/**
+ * Green style applied on desktop only.
+ */
+body.large h1.mystyle {
+    color:green;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A Javascript event is fired both when entering and exiting mobile mode.  You can use these events in your Javascript code to be notified when transitioning between modes.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">The <code>xf-mobileenter</code> and <code>xf-mobileexit</code> events are fired when entering and leaving mobile mode respectively.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">// Event that is fired when the window enters "mobile" mode
+window.addEventListener('xf-mobileenter', function() {
+    // Do stuff required to adjust to the change to mobile mode
+});
+
+// Event that is fired when the window exits "mobile" mode
+window.addEventListener('xf-mobileexit', function() {
+    // // Do stuff required to adjust to the change to desktop mode
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more information about these events, see <a href="#javascript-events">Javascript Events</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mobile_header_and_footer">Mobile Header and Footer</h3>
+<div class="paragraph">
+<p>The header and footer components of the mobile theme have "fixed" positions.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-022427.761.png" alt="Image 060820 022427.761">
+</div>
+<div class="title">Figure 35. The mobile header</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-022505.157.png" alt="Image 060820 022505.157">
+</div>
+<div class="title">Figure 36. The mobile footer</div>
+</div>
+<div class="paragraph">
+<p>The size of these components may change as it is possible to add and remove contents from these components.  It is also possible to hide them in some contexts.</p>
+</div>
+<div class="paragraph">
+<p>Xataface automatically configures the body padding so that these do not obscure other content on the page.  If you are using fixed or absolute positioning, you should be aware of these components.  You can use the <code>xf-viewport-changed</code> Javascript event be be notified when the size of the header or footer is changed.  For example, the FAB component is designed to hover in the lower right corner of the page, but it shouldn&#8217;t overlap the bottom tabs, so it needs to be positioned relative to the "mobile-footer" component. It uses the following code to accomplish this:</p>
+</div>
+<div class="listingblock">
+<div class="title">The FAB component makes use of the <code>xf-viewport-changed</code> event to reposition itself when the mobile footer or header is changed.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">function updatePosition() {
+    var zoom = document.querySelector('.zoom');
+
+    if (zoom) {
+        var footer = document.querySelector('.mobile-footer');
+        if (footer) {
+            zoom.style.bottom = (footer.offsetHeight + 10) + "px";
+        }
+    }
+}
+window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
+</div>
+</div>
+<h4 id="_hiding_the_header_and_footer" class="discrete">Hiding the Header and Footer</h4>
+<div class="paragraph">
+<p>You can hide the mobile-header and/or mobile-footer components by adding "no-mobile-header" and "no-mobile-footer" CSS classes to the <code>body</code> tag respectively.</p>
+</div>
+<div class="listingblock">
+<div class="title">Hiding the Header from Javascript</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">document.body.classList.add('no-mobile-header');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Hiding the footer from Javscript</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">document.body.classList.add('no-mobile-footer');</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can use the <code>addBodyCSSClass()</code> method of the <code>Dataface_Application</code> class to add CSS classes to the <code>body</code> tag from PHP.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">$app = Dataface_Application::getInstance();
+$app-&gt;addBodyCSSClass('-no-mobile-header');</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Certain Xataface actions hide the header, footer, and FAB by default.  Some examples include the login, edit, and new record forms.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="_adding_content_to_the_footer" class="discrete">Adding Content to the Footer</h4>
+<div class="paragraph">
+<p>The mobile footer is a handy place to add content that you want to display in a fixed position at the bottom of the screen.  The following snippet shows how to add a component to the top/beginning of the mobile footer.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">var mobileFooter = document.querySelector('.mobile-footer');
+jQuery(mobileFooter).prepend(myElement);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_table_tabs">Table Tabs</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-025517.027.png" alt="Image 060820 025517.027">
+</div>
+<div class="title">Figure 37. The mobile table tabs.</div>
+</div>
+<div class="paragraph">
+<p>The table tabs (i.e. "Details", "List", and "Find") are rendered in the mobile footer by default. These are taken from the same actions as the table tabs in the desktop UI.  You can add/remove options to this menu by adding actions to the "table_tabs" category.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+For best results, make sure that the action includes a <code>materialIcon</code>.  See <a href="#material-icons">Using Material Icons</a> for more details on material icons.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Like the header and footer, you can hide the table tabs in mobile using the "no-table-tabs" CSS class on the "body" tag.</p>
+</div>
+<div class="paragraph">
+<p>For example, the "edit" action includes the following snippet to remove the header, fab, and table tabs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">$app-&gt;addBodyCSSClass('no-table-tabs');
+$app-&gt;addBodyCSSClass('no-mobile-header');
+$app-&gt;addBodyCSSClass('no-fab');</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fab_floating_action_button">FAB (Floating Action Button)</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-025738.446.png" alt="Image 060820 025738.446">
+</div>
+<div class="title">Figure 38. FAB with one action</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-025922.987.png" alt="Image 060820 025922.987">
+</div>
+<div class="title">Figure 39. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-030005.881.png" alt="Image 060820 030005.881">
+</div>
+<div class="title">Figure 40. FAB expanded to show actions.</div>
+</div>
+<div class="paragraph">
+<p>The <strong>table actions menu</strong> is rendered using a floating action button.  You can hide this by adding the "no-fab" CSS class to the <code>body</code> tag.</p>
+</div>
+<div class="paragraph">
+<p>To add options to the FAB, simply add actions to the <code>table_actions_menu</code> category, and make sure they have a <code>materialIcon</code> directive.  See <a href="#material-icons">Using Material Icons</a> for more about material icons.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Actions in the <code>table_actions_menu</code> category are shared between the desktop and mobile themes.  You can make the action desktop-only by adding "#large#" to the <code>tags</code> property of the action. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;An action that only shows up on desktop
+[myaction]
+    category=table_actions_menu
+    label="My Action"
+    tags="#large#"</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_customizing_the_list_view">Customizing the List View</h3>
+<div class="paragraph">
+<p>The rows of the list view use different mark-up in mobile than in desktop.  Both versions are rendered in HTML, but only one of them is visible at any given time.</p>
+</div>
+<div class="paragraph">
+<p>There are 4 core content elements of a row in the mobile theme:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-060820-031126.567.png" alt="Image 060820 031126.567">
+</div>
+<div class="title">Figure 41. A row in the mobile theme.</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Logo</dt>
+<dd>
+<p><span class="image"><img src="images/Image-060820-031809.806.png" alt="Image 060820 031809.806"></span>
+A logo or icon that is rendered on the left side.  You can customize this image by setting a field of your data base as the "logo".  The logo field should contain the URL to an image.  You can use a container field for this, a regular field, or a calculated field. E.g.</p>
+<div class="listingblock">
+<div class="title">Logo field defined in fields.ini file.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[mylogofield]
+    logo=1</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Title</dt>
+<dd>
+<p><span class="image"><img src="images/Image-060820-031911.676.png" alt="Image 060820 031911.676"></span></p>
+<div class="paragraph">
+<p>The title field. There are many ways to define the title field.  Xataface uses some heuristics to guess the field, but you can configure this explicitly using the <code>getTitle()</code> delegate method or the <code>title</code> fields.ini property.</p>
+</div>
+</dd>
+<dt class="hdlist1">Description</dt>
+<dd>
+<p><span class="image"><img src="images/Image-060820-031941.796.png" alt="Image 060820 031941.796"></span></p>
+<div class="paragraph">
+<p>The description field.  There are many ways to define the description field.  As with "title", Xataface uses some heuristics to guess the most appropriate field, but you can configure this explicitly using the <code>getDescription()</code> delegate method or the <code>description</code> fields.ini property.</p>
+</div>
+</dd>
+<dt class="hdlist1">Record Actions</dt>
+<dd>
+<p><span class="image"><img src="images/Image-060820-031958.143.png" alt="Image 060820 031958.143"></span></p>
+<div class="paragraph">
+<p>Actions from the "list_row_actions" category are rendered in the south of the row.  For best results, the action should include the "materialIcon" directive.  See <a href="#material-icons">Using Material Icons</a> for more details about material icons.</p>
+</div>
+</dd>
+</dl>
+</div>
+<h4 id="_useful_css_classes_in_mobile_list_view" class="discrete">Useful CSS Classes In Mobile List View</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">mobile-listing-row</dt>
+<dd>
+<p>The <code>&lt;div&gt;</code> tag wrapping the row.  This tag will also include the <code>xf-record-id</code> attribute whose value is the record ID of the record.  This element is the analog of the <code>&lt;tr&gt;</code> tag of the desktop interface.</p>
+</dd>
+<dt class="hdlist1">mobile-row-content</dt>
+<dd>
+<p>Inner <code>&lt;div&gt;</code> tag containing the row content.</p>
+</dd>
+<dt class="hdlist1">mobile-logo</dt>
+<dd>
+<p><code>&lt;div&gt;</code> tag wrapping the logo.</p>
+</dd>
+<dt class="hdlist1">mobile-title</dt>
+<dd>
+<p><code>&lt;div&gt;</code> tag wrapping the record title.</p>
+</dd>
+<dt class="hdlist1">mobile-description</dt>
+<dd>
+<p><code>&lt;div&gt;</code> tag wrapping the record description.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -4648,10 +5142,80 @@ RSS feeds will work perfectly well without defining this method. This just allow
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_3_javascript_environment">Appendix 3: Javascript Environment</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Xataface defines a small set of Javascript events to notify subscribers of lifecycle events.</p>
+</div>
+<h2 id="_javascript_components" class="discrete">Javascript Components</h2>
+<div class="paragraph">
+<p>Xataface includes a set of Javascript components that can be reused in many different contexts.  This section lists some of theme.</p>
+</div>
+<div class="paragraph">
+<p>TODO: Add documentation on javascript components</p>
+</div>
+<h2 id="javascript-events" class="discrete">Javascript Events</h2>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">xf-mobileenter</dt>
+<dd>
+<p>Triggered on the <code>window</code> object when transitioning from "desktop" mode to "mobile" mode.  See <a href="#responsive-ui">Responsive UI</a> for more information about mobile mode.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">window.addEventListener('xf-mobileenter', function() {
+    // Entering mobile mode
+});</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">xf-mobileexit</dt>
+<dd>
+<p>Triggered on the <code>window</code> object when transitioning from "mobile" mode to "desktop" mode. See <a href="#responsive-ui">Responsive UI</a> for more information about mobile mode.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">window.addEventListener('xf-mobileexit', function() {
+    // Exiting mobile mode
+});</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">xf-viewport-changed</dt>
+<dd>
+<p>Triggered in mobile mode when the viewport area is changed.  The viewport is considered the area below the <strong>mobile-header</strong> and <strong>mobile-footer</strong> blocks, which are positioned "fixed" at the top and bottom of the screen respectively.  This event will allow you to reposition components whose position should depend on the size of the view port.</p>
+<div class="paragraph">
+<p>One example use of this event is the FAB button that needs to be positioned in the bottom-right corner of the viewport.  The following Javascript code will reposition the FAB whenever the viewport size is changed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">function updatePosition() {
+    var zoom = document.querySelector('.zoom');
+
+    if (zoom) {
+        var footer = document.querySelector('.mobile-footer');
+        if (footer) {
+            zoom.style.bottom = (footer.offsetHeight + 10) + "px";
+        }
+    }
+}
+window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-06-28 09:52:59 -0700
+Last updated 2020-08-06 14:03:42 -0700
 </div>
 </div>
 </body>

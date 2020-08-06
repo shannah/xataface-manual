@@ -1,0 +1,4 @@
+== Search Customization
+
+This chapter includes tips for customizing search behaviour.
+

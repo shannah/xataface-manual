@@ -14,5 +14,11 @@ include::part_exporting_data.adoc[]
 
 include::part_recipes.adoc[]
 
+include::part_responsive_ui.adoc[]
+
 
 include::part_appendix_configuration.adoc[]
+
+include::part_appendix_delegate_methods.adoc[]
+
+include::part_appendix_javascript_events.adoc[]

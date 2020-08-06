@@ -1,0 +1,6 @@
+[ui]
+= User Interface and Themes
+
+The following sections cover user interface considerations such as themes, UI configuration, and customization.
+
+include::chapter_responsive_ui.adoc[]

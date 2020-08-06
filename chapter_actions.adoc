@@ -3,6 +3,7 @@
 
 The following sections pertain to actions in Xataface.  An action may either be a menu item, or an HTTP request handler.  Or it can be both.  They are defined in the actions.ini file (or actions.ini.php file) of your application, and their "handlers" are defined inside the "actions" directory of your application.
 
+[#material-icons]
 === Using Material Icons
 
 [discrete]
@@ -166,7 +167,53 @@ Things to check:
 ----
 
 
+[#customize-action-label]
+=== Customizing Action Labels
 
-    
+[discrete]
+==== Problem
+
+You want to customize the label for an existing action
+
+[discrete]
+==== Solution
+
+If you want to customize the action for all tables, you can simply override the action in your app's actions.ini file, and set the `label` property.
+
+.Overriding the "new" action in your app's actions.ini file
+[source,ini]
+----
+[new > new]
+    label=Insert New Record
+----
+
+TIP: To override the tooltip text for the action, you could set the `description` directive.
+
+Alternatively, you can use Xataface's internationalization support to override the label.  E.g. in your app's "lang/en.ini" file (which contains your English translations), you can define the key "actions.[ACTION_NAME].label".  E.g.
+
+.Overriding the "new" action's label in the lang/en.ini file
+[source,ini]
+----
+actions.new.label="Insert New Record"
+----
+
+TIP: To override the tooltip text for the action, you can set the `actions.new.description` property.
+
+[discrete]
+===== Overriding Label on a Particular Table
+
+The above examples would override the action label in the entire application.  If you want to specify the label in a particular table, you can define the "tables.[TABLENAME].actions.[ACTIONNAME].label" proeprty in your language file (e.g. lang/en.ini).
+
+.Overriding the label for the "new" action in the "articles" table.
+[source,ini]
+----
+tables.articles.actions.new.label="Insert Article"
+----
+
+
+TIP: You can also override the the tooltip text using `tables.[TABLENAME].actions.[ACTIONNAME].description`, and the material icon using `tables.[TABLENAME].actions.[ACTIONNAME].materialIcon`
+
+
+
 
 
