@@ -159,7 +159,7 @@ A URL to content that should be displayed just below the field.  By default the 
 *Since 3.0*
 
 ajax_preview_event::
-The event that triggers the <<field-ajax-preview>> content to be updated.  Default is "change", but any valid Javascript event name may be used.  The event is triggered by the field itself.  E.g. set this to "input" to update the content as the user types into the field.
+The event that triggers the `ajax_preview` content to be updated.  Default is "change", but any valid Javascript event name may be used.  The event is triggered by the field itself.  E.g. set this to "input" to update the content as the user types into the field.
 +
 *Since 3.0*
 
