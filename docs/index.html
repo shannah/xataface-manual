@@ -514,8 +514,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_delegating_new_record_form_to_a_different_table">Delegating "New Record Form" to a Different Table</a></li>
 <li><a href="#_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</a></li>
 <li><a href="#_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</a></li>
-<li><a href="#_auto_updating_a_field_when_other_fields_are_changed">Auto-Updating a Field When Other Fields are Changed</a></li>
-<li><a href="#_displaying_field_preview_using_ajax">Displaying Field Preview using AJAX</a></li>
+<li><a href="#recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</a></li>
+<li><a href="#display-field-preview-using-ajax">Displaying Field Preview using AJAX</a></li>
 <li><a href="#_disabling_client_side_validation">Disabling Client-side Validation</a></li>
 <li><a href="#_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</a></li>
 </ul>
@@ -572,6 +572,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
+<li><a href="#_fields_ini_directives">Fields.ini Directives</a></li>
 <li><a href="#_preferences_directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
 <ul class="sectlevel2">
@@ -2698,7 +2699,7 @@ class tables_new_contact_form {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_auto_updating_a_field_when_other_fields_are_changed">Auto-Updating a Field When Other Fields are Changed</h3>
+<h3 id="recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</h3>
 <h4 id="_problem_8" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
@@ -2786,7 +2787,7 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 </div>
 <div class="sect2">
-<h3 id="_displaying_field_preview_using_ajax">Displaying Field Preview using AJAX</h3>
+<h3 id="display-field-preview-using-ajax">Displaying Field Preview using AJAX</h3>
 <h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
@@ -4305,7 +4306,7 @@ window.addEventListener('xf-mobileexit', function() {
 </div>
 </div>
 <div class="paragraph">
-<p>For more information about these events, see <a href="#javascript-events">Javascript Events</a>.</p>
+<p>For more information about these events, see <a href="#javascript-events">[javascript-events]</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -4577,6 +4578,791 @@ A logo or icon that is rendered on the left side.  You can customize this image 
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following chapters serve as reference to show all of the various configuration directives available in Xataface apps.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fields_ini_directives">Fields.ini Directives</h2>
+<div class="sectionbody">
+<h3 id="_overview" class="discrete">Overview</h3>
+<div class="paragraph">
+<p>The fields.ini file is a configuration file which is associated with a single table of a database application. It provides metadata about the table&#8217;s fields to help Xataface dictate how they should be included in the application. This includes metadata such as</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Widget type</strong> - To specify the type of widget that should be used to edit content in the field (e.g. text, select, checkbox).</p>
+</li>
+<li>
+<p><strong>Label</strong> - The labels that can be used in column headers and on forms.</p>
+</li>
+<li>
+<p><strong>Help text</strong> - for forms to inform the user how data should be entered.</p>
+</li>
+<li>
+<p><strong>Field Groupings</strong></p>
+</li>
+<li>
+<p><strong>widget:atts</strong> - To use javascripts in event handlers</p>
+</li>
+<li>
+<p>and more</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Although a table doesn&#8217;t need to have an associated fields.ini file in order for the application to work, each table can have one; and it is always located in the "tables" directory. For example, the fields.ini file for the "people" table would be located at <code>tables/people/fields.ini</code> file.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>All ini files can also contain the ".php" file extension.  E.g. "fields.ini.php".  Using a .php extension can be helpful for security as it allows you to easily prevent the contents of the INI file from being served by the web server by adding the following to the first line of the file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you do not use the ".php" extension, ensure that your .htaccess file blocks access to .ini files.  A sample .htaccess file is bundled with Xataface <a href="https://github.com/shannah/xataface/blob/master/site_skeleton/.htaccess">here</a>.  The contents are:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">&lt;FilesMatch "\.ini$"&gt;
+    # Apache 2.2
+    &lt;IfModule !mod_authz_core.c&gt;
+        Deny from all
+    &lt;/IfModule&gt;
+
+    # Apache 2.4
+    &lt;IfModule mod_authz_core.c&gt;
+        Require all denied
+    &lt;/IfModule&gt;
+&lt;/FilesMatch&gt;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_syntax" class="discrete">Syntax</h3>
+<div class="paragraph">
+<p>The fields.ini file uses standard INI syntax (just like the php.ini file), where each section corresponds to a column in the table.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider a table "people" with columns "first_name", "last_name", and "age". The fields.ini file for the people table could then contain sections for each of its columns as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[first_name]
+
+[last_name]
+
+[age]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the sections are empty (i.e. they have no directives, but we could easily add some directives:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[first_name]
+    widget:description="Please enter your first name"
+    widget:label="Given Name"
+
+...etc...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we have told Xataface that the first name field should include some help text (using the <code>widget:description</code> directive) on its edit form.</p>
+</div>
+<h3 id="_example_fields_ini_file" class="discrete">Example fields.ini file</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;; Global directives applied to every field
+[__global__]
+    visibility:list=hidden
+
+[isbn]
+widget:label = ISBN
+visibility:list=visible
+
+[copyright_year]
+widget:label = "Year"
+widget:atts:size=4
+visibility:list=visible
+
+[categories]
+widget:type=checkbox
+vocabulary = book_categories
+
+[media]
+widget:type=checkbox
+vocabulary = book_media
+
+[borrower_id]
+widget:type=select
+vocabulary=users
+
+[due_date]
+widget:description = "The date that the book is due to be returned to the library"
+visibility:list=visible
+
+[cover_art_url_small]
+visibility:browse=hidden
+
+[cover_art_url_medium]
+;visibility:browse=hidden
+
+[cover_art_url_large]
+visibility:browse=hidden
+visibility:find=hidden
+
+[amazon_description]
+widget:label = Description
+
+[amazon_reviews]
+
+[amazon_url]
+
+[amazon_refresh_timestamp]
+widget:type=static
+
+[date_created]
+timestamp=insert
+widget:type = static
+
+[date_modified]
+timestamp=update
+widget:type=static
+
+[created_by]
+widget:type=static
+
+[modified_by]
+widget:type=static
+
+[notes]</code></pre>
+</div>
+</div>
+<h3 id="_field_directives" class="discrete">Field Directives</h3>
+<div class="paragraph">
+<p>The following directives may be added to a field&#8217;s section of the fields.ini file to customize the field&#8217;s behavior. Some directives are not applicable to all fields.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">ajax_value</dt>
+<dd>
+<p>Make the field dynamically update whenever one or more other fields on the same form is changed. When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.  See <a href="#recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</a> for a usage example.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">ajax_preview</dt>
+<dd>
+<p>A URL to content that should be displayed just below the field.  By default the content is updated whenever the field content is changed, but the <code>ajax_preview_event</code> directive can be used to specify a different event.  See <a href="#display-field-preview-using-ajax">Displaying Field Preview using AJAX</a> for example usage.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">ajax_preview_event</dt>
+<dd>
+<p>The event that triggers the <a href="#field-ajax-preview">[field-ajax-preview]</a> content to be updated.  Default is "change", but any valid Javascript event name may be used.  The event is triggered by the field itself.  E.g. set this to "input" to update the content as the user types into the field.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">column:label</dt>
+<dd>
+<p>Specifies a custom label to use in list view for the column. If this is not specified, then the value of <code>widget:label</code> will be used.</p>
+<div class="paragraph">
+<p><strong>Since 1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">column:legend</dt>
+<dd>
+<p>Adds a small amount of help text to the column header for this field in list view. Default is blank. E.g.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-080820-063616.423.png" alt="Image 080820 063616.423">
+</div>
+</div>
+<div class="paragraph">
+<p>In this photo it shows the text "*Paper Uploaded" set as the <code>column:legend</code> for "field 1".</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">date_format</dt>
+<dd>
+<p>Specifies how the field should be formatted when displayed. Takes same parameters as PHP strftime function.</p>
+<div class="paragraph">
+<p><strong>Since 2.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">display</dt>
+<dd>
+<p>Specifies the layout of the field on the edit form. Most fields have an implicit value of "inline" meaning the widget and its label appear on the same line. Textareas and htmlareas have an implicit value of "block" meaning that the label and widget appear in separate rows (label above the widget). You can set this value explicitly also to override the layout of a field.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">display_format</dt>
+<dd>
+<p>A pattern that can be used to define the display format of the field. This takes the same parameters as the PHP sprintf function.</p>
+<div class="paragraph">
+<p><strong>Since 2.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">encryption</dt>
+<dd>
+<p>Primarily used with password fields, indicates the type of encryption that should be used to save the field. Supports "md5", "sha1", "encrypt", and "password".
+<strong>Since 0.6</strong></p>
+</dd>
+<dt class="hdlist1">event.date</dt>
+<dd>
+<p>For use by the Calendar Action. Indicates that the field stores the date of the record when interpreted as an event. Possible values "0" or "1".</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">event.start</dt>
+<dd>
+<p>For use by the Calendar Action. Indicates that the field stores the start time of the record when interpreted as an event. Possible values "0" or "1".</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">event.end</dt>
+<dd>
+<p>For use by the Calendar Action. Indicates that the field stores the end time of the record when interpreted as an event. Possible values "0" or "1".</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">event.location</dt>
+<dd>
+<p>For use by the Calendar Action. Indicates that the field stores the location of a record when interpreted as an event. Possible values "0" or "1".</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether this field should be filterable? in list view?.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">frozen_description</dt>
+<dd>
+<p>The field description shown when the widget is frozen (i.e. uneditable). If this is not specified, no field description is shown in this case.</p>
+<div class="paragraph">
+<p><strong>Since 1.2</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">group</dt>
+<dd>
+<p>The name of the field group that this field belongs to. Fields with the same "group" value will be rendered in the same field group on the form.</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">Key</dt>
+<dd>
+<p>If you are using a View for the table you need to explicitly mark the fields that comprise the primary key. E.g. Key=PRI</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">label_link</dt>
+<dd>
+<p>An optional URL for the field label to link to. This would usually be some "help" page that explains what the field is for. The link will be a link in both the view and edit tabs.</p>
+<div class="paragraph">
+<p><strong>Since 1.1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">ignore</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether this field should be ignored on the edit form. This is handy if the field is going to be constantly updated in the background (via a cron job perhaps) and you don&#8217;t want the edit form to interfere.</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">logo</dt>
+<dd>
+<p>Boolean value (0 or 1) to indicate if this field should be treated as a logo field. Logo fields are displayed in the upper left of the view tab for a record, and are assumed to contain an image. If no logo field is explicitly specified, Xataface will make a best guess as to which field should be used.</p>
+<div class="paragraph">
+<p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">money_format</dt>
+<dd>
+<p>For fields containing monetary amounts, this specifies the format. Takes same parameters as PHP money_format function.</p>
+<div class="paragraph">
+<p><strong>Since 2.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">noLinkFromListView</dt>
+<dd>
+<p>Boolean value (0 or 1) to indicate if this field should be linked when in list view (or in a related list). Default value is 0 to indicate that the field IS linked. It is common to use this directive when using a custom xxx__renderCell() method that contains its own links.</p>
+<div class="paragraph">
+<p><strong>Since 1.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">not_findable</dt>
+<dd>
+<p>A flag to indicate that this field can not be used as part of a query. This is helpful if you want a field to remain completely confidential to prevent people from finding records based on the value of this field. This flag is even necessary if the permissions for the field don&#8217;t permit viewing the value of the field.</p>
+<div class="paragraph">
+<p><strong>Since 1.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">number_format</dt>
+<dd>
+<p>For numeric fields, this indicates the number of decimal places to display when displaying this field. E.g. 2</p>
+<div class="paragraph">
+<p><strong>Since 2.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">order</dt>
+<dd>
+<p>The order of the field when laid out on forms and lists. Can contain any floating point number or integer (e.g. 0, 10, -10, 235.4)</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">relationship</dt>
+<dd>
+<p>Used only with complex fields that involve editing related records (e.g. grid). This is the name of the relationship that the field should be edited.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">repeat</dt>
+<dd>
+<p>Boolean value (0 or 1) used in conjunction with a select widget to indicate whether to enable a multi-select.</p>
+</dd>
+<dt class="hdlist1">section</dt>
+<dd>
+<p>The name of the section that this field should belong to in the view tab.</p>
+<div class="paragraph">
+<p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">secure</dt>
+<dd>
+<p>A boolean flag for use with container fields? to indicate that it should use secure URLs for the file downloads (i.e. it will obey the application permissions). Without this directives, uploaded files are served directly by apache and don&#8217;t obey the Xataface permissions defined per record.</p>
+<div class="paragraph">
+<p><strong>Since 1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">struct</dt>
+<dd>
+<p>A boolean (0 or 1) value indicating whether this field is considered a structure. A value of 1 indicates that this field is a structure and should not be truncated under any circumstances. Normally fields are truncated at 255 chars in list view. This is useful if the field contains XML or other structured data so that attempts to truncate it would destroy integrity.</p>
+<div class="paragraph">
+<p><strong>Since 1.1.2</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">tab</dt>
+<dd>
+<p>If tabbed forms are enabled, then this specifies the name of the tab that this field belongs to on the edit form.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">timestamp</dt>
+<dd>
+<p>Indicates when a timestamp should be set in the field (only applicable for date and time fields). Possible values are "insert" and "update"</p>
+<div class="paragraph">
+<p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">title</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether this field should be treated as a title field.</p>
+<div class="paragraph">
+<p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">transient</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether this field is a transient field or not. A transient field is a field that is defined in the fields.ini file but not in the database. Hence the values that are input into this field on the edit form are not saved to the database.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">Type</dt>
+<dd>
+<p>The data type of the field (note the capital "T" as Xataface is case sensitive). This value is only overridden for container? fields, however its value can be accessed programmatically for any field.</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">validators:VALIDATOR_NAME</dt>
+<dd>
+<p>A prefix for a validation type on the current field. (Replace "VALIDATOR_NAME" with the name of the validator to be used. e.g. required). There are many validators available to be used.</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">validators:VALIDATOR_NAME:message</dt>
+<dd>
+<p>The message the should be displayed if the form fails to validator due to the "VALIDATION_NAME" validation rule.</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">viewgroup</dt>
+<dd>
+<p>The name of the field grouping that this field will belong to in the view tab. If this is not present, then it will be grouped according to the group directive.</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">visibility:browse</dt>
+<dd>
+<p>Indicates whether the field should be visible in browse mode (i.e. in the "view" tab). Possible values are "visible" and "hidden".</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">visibility:csv</dt>
+<dd>
+<p>Indicates whether the field should be included in CSV exports. Possible values are "visible" and "hidden".</p>
+<div class="paragraph">
+<p><strong>Since (1.0 beta 4)	1.0b4</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">visibility:find</dt>
+<dd>
+<p>Indicates whether the field should be visible in find mode. Possible values are "visible" and "hidden"	+
+<strong>Since 1.0</strong></p>
+</dd>
+<dt class="hdlist1">visibility:list</dt>
+<dd>
+<p>Indicates whether the field should be visible in list view. Possible values are "visible" and "hidden".	+
+<strong>Since 0.6</strong></p>
+</dd>
+<dt class="hdlist1">visibility:update</dt>
+<dd>
+<p>Indicates whether the field should be included in update and copy/replace forms. Possible values are "visible" and "hidden".</p>
+<div class="paragraph">
+<p><strong>Since 1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">vocabulary</dt>
+<dd>
+<p>The valuelist that should be used as the options to select. This is only applicable for fields that have options to select like a select list or a checkbox group.</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:atts</dt>
+<dd>
+<p>A namespace for attributes that should be added to the HTML widget. This allows you to specify things like javascript events, styles, widget size, etc..</p>
+<div class="paragraph">
+<p><strong>Since 0.5</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:columns</dt>
+<dd>
+<p>For checkbox groups, this specifies the number of columns to use for laying out the checkboxes.</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:description</dt>
+<dd>
+<p>Help text to give the user a hint about how to edit the field&#8217;s content.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:editor</dt>
+<dd>
+<p>The type of HTML editor that should be used. This is used only when widget:type is set to htmlarea</p>
+<div class="paragraph">
+<p>Acceptable values include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>fckeditor (default)</p>
+</li>
+<li>
+<p>tinymce (version 0.6 or higher)</p>
+</li>
+<li>
+<p>nicedit (version 1.0 or higher)</p>
+</li>
+<li>
+<p>all</p>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">widget:editvalues</dt>
+<dd>
+<p>Used with select lists to allow users to add values to the select list. E.g. widget:editvalues=1</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:focus</dt>
+<dd>
+<p>Sets default focus. 0 or 1. (Javascript focus in a form)</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:label</dt>
+<dd>
+<p>The label that should be used for the current field on edit forms, column headings, and other relevant locations.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:question</dt>
+<dd>
+<p>Text displayed just before the widget. This is almost the same as widget:description except that this text is guaranteed to be displayed before the widget, whereas widget:description may be displayed below or beside the widget.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">widget:type</dt>
+<dd>
+<p>The type of widget that should be used (e.g. checkbox, select, text, etc..)</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">xml</dt>
+<dd>
+<p>A flag for use with calculated fields (i.e. fields defined in the delegate class via the field__fieldname method) that will include the field in XML output produced by the export xml action. Default is 0, but setting this value to 1 wil cause the field to be included.</p>
+<div class="paragraph">
+<p><strong>Since 1.2.7</strong></p>
+</div>
+</dd>
+</dl>
+</div>
+<h3 id="_applying_directives_to_all_fields_global" class="discrete">Applying Directives to All fields (<code>__global__</code>)</h3>
+<div class="paragraph">
+<p>Xataface 1.2.6 includes support for a <code>__global__</code> section that allows you to specify directives that should be applied to all fields. These directives can be overridden on a field by field basis. The <code>__global__</code> section can take all the same directives that a normal field section takes.</p>
+</div>
+<h3 id="_widgetattsclass_values" class="discrete"><code>widget:atts:class</code> Values</h3>
+<div class="paragraph">
+<p>The <code>widget:atts:class</code> directive allows you to assign a CSS class to a field&#8217;s widget. There are certain CSS classes that have meaning to Xataface and will cause additional functionality to automatically be added to the field. These built-in classes are listed below:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">passwordTwice</dt>
+<dd>
+<p>Applicable only to password fields. If you set <code>widget:atts:class=passwordTwice</code>, then this will convert the password field into two fields whereby both fields need to match in order for submission to continue on the edit form. This operates as a password verification field.</p>
+<div class="paragraph">
+<p><strong>Since 1.3rc2</strong></p>
+</div>
+</dd>
+</dl>
+</div>
+<h3 id="_global_directives" class="discrete">Global Directives</h3>
+<div class="paragraph">
+<p>The following directives can be added to the beginning of the fields.ini file (before any field sections) to customize field groups and the table as a whole.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">__dependencies__</dt>
+<dd>
+<p>A comma-delimited list of tables that this table is dependent upon for caching purposes. E.g. if any table in this list is modified, then the query cache is cleared for queries on this table. See this blog article for more information about query caching.</p>
+<div class="paragraph">
+<p><strong>Since 1.2</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">__isa__</dt>
+<dd>
+<p>The name of the parent table of the current table. This directive allows you to have a heirarchical structure amongst the tables in your application.</p>
+<div class="paragraph">
+<p><strong>Since 0.8</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">__source_tables__</dt>
+<dd>
+<p>A comma-delimited list of tables that this table/view is derived from. This is used with the query caching feature and is necessary to use this directive if the table is actually a view. If this directive is not set, then any queries involving this view will not use the query cache because Xataface would have no way to discern the update time of the view. See this blog article for more information about query caching.</p>
+<div class="paragraph">
+<p><strong>Since 1.2</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">__sql__</dt>
+<dd>
+<p>Defines a custom select query to override the default select query for the current table. (The default select query is generally "select * from tablename").</p>
+<div class="paragraph">
+<p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">__prefs__</dt>
+<dd>
+<p>Sets preferences for this table and its records. This directive is an array, so it must be enclosed in square brackets, i.e. <code>[__prefs__]</code>, unlike the other global directives listed above.</p>
+<div class="paragraph">
+<p><strong>Since 1.0b4</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">label</dt>
+<dd>
+<p>Sets the friendly name for this table. This is the equivalent of using the [_tables] section in the conf.ini file, except without imposing the requirement that these tables appear in the application&#8217;s primary navigation menu. E.g. label = "Table Name"</p>
+</dd>
+<dt class="hdlist1">title</dt>
+<dd>
+<p>A string SQL select expression that is used to describe the title of records. This is the equivalent of the <code>titleColumn()</code> function used in Delegate_class_methods.</p>
+</dd>
+</dl>
+</div>
+<h3 id="_field_groups" class="discrete">Field Groups</h3>
+<div class="paragraph">
+<p>The "group" directive allows you to group multiple fields together so that they will be rendered in the same field group on forms. You can also configure these groups as a whole by defining a section named "[fieldgroup:GROUPNAME]" (where GROUPNAME is the name of the field group, corresponding to the group directive values for the fields) in the fields.ini file. This section provides a few basic directives to customize some aspects of the field group:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>label</p>
+</li>
+<li>
+<p>order</p>
+</li>
+<li>
+<p>description</p>
+</li>
+<li>
+<p>template</p>
+</li>
+<li>
+<p>more&#8230;&#8203;</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The most common use of these sections is to customize the label or order of groups, especially when there are multiple field groups in the table. For example, suppose we have a table "people" with fields "first_name", "last_name", "phone", "fax", "email", "address", "city", and "country". Suppose these fields are grouped as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>"first_name" and "last_name"</p>
+</li>
+<li>
+<p>"phone", "fax", and "email"</p>
+</li>
+<li>
+<p>"address", "city", and "country"</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>so that the fields.ini file looks like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[first_name]
+    group=name
+
+[last_name]
+    group=name
+
+[phone]
+    group=contact
+
+[fax]
+    group=contact
+[email]
+    group=contact
+
+[address]
+    group=address
+
+[city]
+    group=address
+
+[country]
+    group=address</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, the "name" group will appear first in the form, followed by "contact" and "address". If we want to place "address" first we could add the following section to our fields.ini file:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">order</dt>
+<dd>
+<p>Specifies the order of the group with respect to other groups on the form. Accepts any numerical value (e.g. 0, 1, -1, 25.43), with lower values appearing first. Default value is 0.</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">hidden</dt>
+<dd>
+<p>A value of "1" causes the field group to be hidden by default.  Hidden groups will have a button placed along the bottom of the form which can be used to reveal the field group.  If this directive is used, the <code>materialIcon</code> directive must also be used to provide the icon that is used in this button.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-080820-070623.789.png" alt="Image 080820 070623.789">
+</div>
+<div class="title">Figure 42. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-080820-070748.070.png" alt="Image 080820 070748.070">
+</div>
+<div class="title">Figure 43. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">label</dt>
+<dd>
+<p>Specifies the label that should be used for the field group.</p>
+<div class="paragraph">
+<p><strong>Since 0.6</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">label_link</dt>
+<dd>
+<p>Specifies a URL that the field group label should link to.</p>
+<div class="paragraph">
+<p><strong>Since 1.1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">materialIcon</dt>
+<dd>
+<p>A material icon to use for the field group&#8217;s button when the group is hidden via the <code>hidden</code> directive.  See <a href="#material-icons">Using Material Icons</a> for more information about material icons.  See <code>hidden</code> directive docs for information about the hidden directive.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">noheader</dt>
+<dd>
+<p>A value of "1" hides the usual collapsible header for the field group so that the fields are just rendered directly on the form.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">template</dt>
+<dd>
+<p>The path to a custom template that should be used to render the fields of the field group.</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">collapsed</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the field group should be collapsed by default (user can expand it).</p>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -5161,7 +5947,10 @@ RSS feeds will work perfectly well without defining this method. This just allow
 <div class="paragraph">
 <p>TODO: Add documentation on javascript components</p>
 </div>
-<h2 id="javascript-events" class="discrete">Javascript Events</h2>
+<div id="javascript-events" class="paragraph">
+<p>[discrete]aja
+== Javascript Events</p>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">xf-mobileenter</dt>

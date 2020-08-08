@@ -284,6 +284,7 @@ The "new" action also supports the `after_action` and `after_action.tablename` d
 ----
 ====
 
+[#recipe-auto-updating-field]
 === Auto-Updating a Field When Other Fields are Changed
 
 [discrete]
@@ -341,7 +342,7 @@ When it receives the response, it will take the `ProgramTitle` attribute of the 
 You can use the `widget:atts:data-xf-update-condition=empty` directive to *only* update the field value if it is currently empty.  
 ====
 
-
+[#display-field-preview-using-ajax]
 === Displaying Field Preview using AJAX
 
 [discrete]

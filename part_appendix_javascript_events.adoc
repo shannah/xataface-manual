@@ -11,7 +11,7 @@ Xataface includes a set of Javascript components that can be reused in many diff
 TODO: Add documentation on javascript components
 
 [#javascript-events]
-[discrete]
+[discrete]aja
 == Javascript Events
 
 xf-mobileenter::
