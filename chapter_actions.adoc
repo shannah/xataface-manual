@@ -1,5 +1,5 @@
 [#actions]
-== Actions
+== Actions and Menus
 
 The following sections pertain to actions in Xataface.  An action may either be a menu item, or an HTTP request handler.  Or it can be both.  They are defined in the actions.ini file (or actions.ini.php file) of your application, and their "handlers" are defined inside the "actions" directory of your application.
 
@@ -212,6 +212,88 @@ tables.articles.actions.new.label="Insert Article"
 
 
 TIP: You can also override the the tooltip text using `tables.[TABLENAME].actions.[ACTIONNAME].description`, and the material icon using `tables.[TABLENAME].actions.[ACTIONNAME].materialIcon`
+
+[#tables-navigation-menu]
+=== Customising Navigation Menu
+
+[discrete]
+==== Problem
+
+You want to customize the options in the navigation menu
+
+[discrete]
+==== Solution
+
+Define actions in the `_tables` category.  These will be used instead of the tables listed in the `_tables` section of the conf.ini to form the tables navigation menu.
+
+[discrete]
+==== Discussion
+
+The top-level navigation menu in Xataface allows you to select which database table you with to work with.  By default, it is generated from the `[_tables]` section of the conf.ini file.
+
+For example, given the following _tables section:
+
+[source,ini]
+----
+[_tables]
+    students=Students
+    countries=Countries
+    provinces=Provinces
+----
+
+Xataface will generate a menu that looks like:
+
+image::images/Image-150820-073236.636.png[Tables navigation menu in Xataface]
+
+In some cases, you may want to generate your own custom menu.  For example, you may want to group some tables together into a single drop-down menu.  You can do this by defining actions inside your actions.ini file in the `_tables` category.
+
+For example:
+
+.Defining actions in the `_tables` category in your actions.ini file.  These will be used to form the navigation menu instead of your app's tables.
+[source,ini]
+----
+[menu_students]
+    label=Students
+    category=_tables
+    url="?-table=students"
+    selected_condition="$table=='students'"
+
+[menu_setup]
+    label=Setup
+    category=_tables
+    subcategory=_tables_setup
+    order=10
+
+[menu_countries]
+    label="Countries"
+    category=_tables_setup
+    url="?-table=countries"
+    selected_condition="$table=='countries'"
+
+[menu_provinces]
+    label="Provinces"
+    category=_tables_setup
+    url="?-table=provinces"
+    selected_condition="$table=='provinces'"
+
+----
+
+In this case we have defined two top-level menus in the `_tables` category: "menu_students" and "menu_setup".  The "menu_setup" action has uses the "subcategory" property to assert that it is a drop-down menu.  Any actions in the "_tables_setup" category will be included in this drop-down menu.
+
+The resulting menu for this setup would be:
+
+image::images/Image-150820-073433.380.png[Custom tables navigation menu]
+
+If you hover over the "Setup" menu, it will expand:
+
+image::images/Image-150820-073452.855.png[Hovering over the Setup drop-down menu]
+
+
+
+
+
+
+
 
 
 
