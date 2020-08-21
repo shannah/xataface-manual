@@ -134,8 +134,7 @@ As with the "sort" dialog, the "filter" dialog will slide up from the bottom of 
 .Filter dialog on mobile loads from bottom of the window.
 image::images/Image-210820-090239.167.png[]
 
-
-[discrete, #filter_types]
+[#filter_types]
 === Filter Types
 
 Xataface supports a few different filter types.  Use the "filter.type" fields.ini directive to specify the filter type to use for a given field.  If you do not specify this, then Xataface will try to choose the most appropriate filter to use based on the type of field.  The following filter types are supported:
@@ -161,8 +160,9 @@ Same as the "range" filter type, except it only includes the "Min" field.
 max::
 Same as the "range" filter type, except it only includes the "Max" field.
 
-[discrete]
-==== fields.ini Configuration options
+=== Filters Configuration
+
+The following are some of the configuration options related to filtering that you can define in your fields.ini files.
 
 filter::
 A value of "1" indicates that this field is filterable.
