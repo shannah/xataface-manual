@@ -10,6 +10,8 @@ include::preface.adoc[]
 
 include::part_fundamentals.adoc[]
 
+include::part_sorting_and_filtering.adoc[]
+
 include::part_exporting_data.adoc[]
 
 include::part_recipes.adoc[]
@@ -22,3 +24,5 @@ include::part_appendix_configuration.adoc[]
 include::part_appendix_delegate_methods.adoc[]
 
 include::part_appendix_javascript_events.adoc[]
+
+include::part_appendix_url_conventions.adoc[]

@@ -484,6 +484,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_a_more_complex_example_faculty_of_widgetry_app">A More Complex Example: Faculty of Widgetry App</a></li>
+<li><a href="#_sorting_and_filtering">Sorting and Filtering</a></li>
+<li><a href="#_sorting_results">Sorting Results</a>
+<ul class="sectlevel2">
+<li><a href="#_sort_configuration">Sort Configuration</a></li>
+</ul>
+</li>
+<li><a href="#_filtering_results">Filtering Results</a></li>
 <li><a href="#_exporting_data">Exporting Data</a></li>
 <li><a href="#rss-feeds">RSS Feeds</a>
 <ul class="sectlevel2">
@@ -583,6 +590,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</a></li>
 <li><a href="#_appendix_3_javascript_environment">Appendix 3: Javascript Environment</a></li>
+<li><a href="#_javascript_components">Javascript Components</a>
+<ul class="sectlevel2">
+<li><a href="#_window_xataface">window.xataface</a></li>
+<li><a href="#_xataface_sheet">xataface.Sheet</a></li>
+</ul>
+</li>
+<li><a href="#_appendix_4_url_conventions">Appendix 4: URL Conventions</a></li>
 </ul>
 </div>
 </div>
@@ -1624,6 +1638,340 @@ Created tables/notes/fields.ini.php</code></pre>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_sorting_and_filtering">Sorting and Filtering</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the core features of any database application is the ability to sort and filter results.  Xataface applications come with powerful sorting and filtering features out of the box.  All HTTP requests define a result set in your database.  By following some simple <a href="#part_appendix_url_conventions">URL Conventions</a> you can easily craft an HTTP request targetting the exact result set you want.  At a higher level, Xataface also provides a rich user experience for sorting and filtering result sets inside the application.</p>
+</div>
+<div class="paragraph">
+<p>This chapter describes the UI components involved in filtering and sorting, how to use them, and how to configure them to suit your needs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sorting_results">Sorting Results</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To sort a result set, you can simply click on the "Sort" button in the upper left of the list view as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-073755.419.png" alt="Image 210820 073755.419">
+</div>
+<div class="title">Figure 22. List View on desktop.  Click the "Sort" button in the upper left to reveal sorting options.  Note that the list view depicted here is using the "listStyle=mobile" directive so the results are displayed as a list of titles/descriptions rather than a table.</div>
+</div>
+<div class="paragraph">
+<p>This will reveal the sort options.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-073946.197.png" alt="Image 210820 073946.197">
+</div>
+<div class="title">Figure 23. The sort dialog on desktop allows the user to specify an alternate sort order for the list.</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Out of the box, Xataface will provide options to sort on every appropriate field in the table.  The table in the above screenshot only includes two sort options:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>"Date posted: Newest first"</p>
+</li>
+<li>
+<p>"Article date: Newest first"</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is because the application includes the following definitions in its fields.ini file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[date_posted]
+    sortable-=1
+
+[article_date]
+    sortable-=1</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can "sort" the results by clicking on the appropriate sort option in this dialog.</p>
+</div>
+<h3 id="_mobile_ui" class="discrete">Mobile UI</h3>
+<div class="paragraph">
+<p>On desktop, the "sort" dialog slides open from the right of the window.  On mobile, it slides up from the bottom as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-075054.415.png" alt="Image 210820 075054.415">
+</div>
+<div class="title">Figure 24. Sort dialog on mobile device.</div>
+</div>
+<div class="paragraph">
+<p>One other nice feature of the mobile UI, is that when you scroll down the page, the "Sort" and "Filter" buttons are changed into floating buttons as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-075230.037.png" alt="Image 210820 075230.037">
+</div>
+<div class="title">Figure 25. Sort and Filter become floating buttons when you scroll down the page.</div>
+</div>
+<h2 id="_sort_option_labels" class="discrete">Sort option Labels</h2>
+<div class="paragraph">
+<p>The screenshots above demonstrate only sorting on date fields.  The labels "newest first", and "oldest" first are used by default on date and time fields.  Text and numeric fields use different labels by default.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-075531.054.png" alt="Image 210820 075531.054">
+</div>
+<div class="title">Figure 26. A sort dialog for sorting numeric and text fields.</div>
+</div>
+<div class="sect2">
+<h3 id="_sort_configuration">Sort Configuration</h3>
+<div class="paragraph">
+<p>Xataface provides sorting out of the box without the need for any configuration, but it is recommended that you configure the sorting behaviour explicitly for each table of your app.  In many cases you may only want to provide sorting on a few key columns.   You can use the "sortable", "sortable-", and "sortable+" fields.ini directives to explicitly mark a field as "sortable".  If no fields in your table are explicitly marked as sortable, then Xataface will make a best guess.  If it finds at least one field that is marked as sortable, then it will simply hand the reigns over to you (i.e. it won&#8217;t make any fields sortable that you haven&#8217;t explicitly marked as sortable, in this case).</p>
+</div>
+<h4 id="_fields_ini_configuration_options" class="discrete">fields.ini Configuration options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">sortable</dt>
+<dd>
+<p>Set this value to "1" to mark this field as sortable in both ascending and descending order.</p>
+</dd>
+<dt class="hdlist1">sortable-</dt>
+<dd>
+<p>Set this value to "1" to mark this field as sortable in descending order only.</p>
+</dd>
+<dt class="hdlist1">sortable+</dt>
+<dd>
+<p>Set this value to "1" to mark this field as sortable in ascending order only.</p>
+</dd>
+<dt class="hdlist1">sort.label</dt>
+<dd>
+<p>Specifies the label that should be used for this field in the sort dialog.  If this is omitted, it will use a sensible label like "Field Name: A-Z".</p>
+</dd>
+<dt class="hdlist1">sort+.label</dt>
+<dd>
+<p>Specifies the label that should be used for this field in the sort dialog for sorting in ascending order only.</p>
+</dd>
+<dt class="hdlist1">sort-.label</dt>
+<dd>
+<p>Specifies the label that should be used for this field in the sort dialog for sorting in descending order only.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[date_posted]
+    sortable-=1
+
+[article_date]
+    sortable-=1</code></pre>
+</div>
+</div>
+<h4 id="_sort_actions" class="discrete">Sort Actions</h4>
+<div class="paragraph">
+<p>If sorting on individual fields doesn&#8217;t provide you with enough flexibility, then you can also define actions in your actions.ini file using the "sort_actions" category.</p>
+</div>
+<div class="paragraph">
+<p>TODO: Add documentation on using "sort_actions" category for sorting.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filtering_results">Filtering Results</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To filter a result set, you can simply click on the "Filter" button in the upper left of the list view as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-081331.232.png" alt="Image 210820 081331.232">
+</div>
+</div>
+<div class="paragraph">
+<p>This will reveal the filtering dialog as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-081450.121.png" alt="Image 210820 081450.121">
+</div>
+</div>
+<div class="paragraph">
+<p>The filter dialog includes a keyword search field, which will perform a search on all eligible columns of the table, followed by options to filter on a selection of fields in the table.  The available fields are determined in a similar fashion to the way that sortable fields are determined.  If you define "filter=1" on <strong>any</strong> field of your application, it will include only those fields that are marked with "filter=1".  If you don&#8217;t mark <strong>any</strong> fields as filterable, then Xataface will make a best guess at which fields should be filterable - defaulting to all fields except certain obvious ones such as password columns which should not be filterable.</p>
+</div>
+<div class="paragraph">
+<p>If we follow the flow of the application depicted above, clickin on the "Author" option reveals filter options for the "Author" field.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-082201.672.png" alt="Image 210820 082201.672">
+</div>
+</div>
+<div class="paragraph">
+<p>You can select one or more authors to filter the results on these authors.  The little parenthesized numbers to the right of the options indicates the number of rows in the current result set that match that author.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+The "Show X Results" button at the bottom is automatically updated as you adjust your filter preferences to show you how many results match your filter.  This is helpful when you&#8217;re trying to narrow down the results to a managable size, but also not to zero.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_mobile_ui_2" class="discrete">Mobile UI</h3>
+<div class="paragraph">
+<p>As with the "sort" dialog, the "filter" dialog will slide up from the bottom of the window instead of the side when viewed on a mobile device.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-090239.167.png" alt="Image 210820 090239.167">
+</div>
+<div class="title">Figure 27. Filter dialog on mobile loads from bottom of the window.</div>
+</div>
+<h3 id="_filter_types" class="discrete">Filter Types</h3>
+<div class="paragraph">
+<p>Xataface supports a few different filter types.  Use the "filter.type" fields.ini directive to specify the filter type to use for a given field.  If you do not specify this, then Xataface will try to choose the most appropriate filter to use based on the type of field.  The following filter types are supported:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">text</dt>
+<dd>
+<p>A text field to enter keywords to search for.  This includes options for "exact", "contains", "starts with", and "ends with".  This is the default for VARCHAR, CHAR, and INT columns.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-085336.821.png" alt="Image 210820 085336.821">
+</div>
+</div>
+</dd>
+<dt class="hdlist1">range</dt>
+<dd>
+<p>Search fields for "min" and "max".  This is the default for FLOAT, DECIMAL, and DATE columns.  Date columns will also provide some options to perform common searches as well.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-085515.976.png" alt="Image 210820 085515.976">
+</div>
+<div class="title">Figure 28. Range filter on a varchar field.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-085758.340.png" alt="Image 210820 085758.340">
+</div>
+<div class="title">Figure 29. Range filter on a datetime field</div>
+</div>
+</dd>
+<dt class="hdlist1">filter</dt>
+<dd>
+<p>User can select from current values for the column in the result set, and can see the number of matches per value.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-090053.430.png" alt="Image 210820 090053.430">
+</div>
+</div>
+</dd>
+<dt class="hdlist1">min</dt>
+<dd>
+<p>Same as the "range" filter type, except it only includes the "Min" field.</p>
+</dd>
+<dt class="hdlist1">max</dt>
+<dd>
+<p>Same as the "range" filter type, except it only includes the "Max" field.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_fields_ini_configuration_options_2" class="discrete">fields.ini Configuration options</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">filter</dt>
+<dd>
+<p>A value of "1" indicates that this field is filterable.</p>
+</dd>
+<dt class="hdlist1">filter.type</dt>
+<dd>
+<p>The type of filter to use.  Options include "text", "range", "min", "max", and "filter".  See <a href="#filter_types">[filter_types]</a>.</p>
+</dd>
+<dt class="hdlist1">filter.label</dt>
+<dd>
+<p>The label to use for the filter.  This defaults to the <code>widget:label</code> for the field.</p>
+</dd>
+<dt class="hdlist1">filter.icon</dt>
+<dd>
+<p>Icon to use in the text field when using the "text" filter type.  This should be the name of a material icon.  See <a href="#material-icons">Using Material Icons</a> for details about material icons in Xataface.</p>
+</dd>
+<dt class="hdlist1">filter.min.icon</dt>
+<dd>
+<p>Optional icon to use inside the "min" field for min and range filters.  The icon should be a valid material icon name.  See <a href="#material-icons">Using Material Icons</a> for details about material icons in Xataface.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-090958.753.png" alt="Image 210820 090958.753">
+</div>
+<div class="title">Figure 30. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
+</div>
+</dd>
+<dt class="hdlist1">filter.max.icon</dt>
+<dd>
+<p>Same as <code>filter.min.icon</code> except for the "min" field.</p>
+</dd>
+<dt class="hdlist1">filter.input.type</dt>
+<dd>
+<p>Specify the <code>type</code> attribute of the <code>&lt;input&gt;</code> tag used in the "text", "range", "min", and "max" filter types.  This will be "text" by default in most fields.  It will be <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date">date</a> by default for date fields, and <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local">datetime-local</a> for datetime fields.</p>
+</dd>
+<dt class="hdlist1">filter.sort</dt>
+<dd>
+<p>Used for the "filter" filter type.  This specifies the column to use for sorting the options in the fitler.</p>
+</dd>
+<dt class="hdlist1">filter.placeholder</dt>
+<dd>
+<p>Placeholder text used for the "text" filter type.  Placeholder text is only displayed when the field is empty.</p>
+</dd>
+<dt class="hdlist1">filter.min.placeholder</dt>
+<dd>
+<p>Placeholder text used the "min" field.  Placeholder text is only displayed when the field is empty.</p>
+</dd>
+<dt class="hdlist1">filter.max.placeholder</dt>
+<dd>
+<p>Placeholder text used the "max" field.  Placeholder text is only displayed when the field is empty.</p>
+</dd>
+<dt class="hdlist1">filter.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "text" filter type.  E.g. <code>filter.input.maxlength=5</code></p>
+</dd>
+<dt class="hdlist1">filter.min.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "min" field. E.g. <code>filter.min.input.maxlength=5</code></p>
+</dd>
+<dt class="hdlist1">filter.max.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "max" field. E.g. <code>filter.max.input.maxlength=5</code></p>
+</dd>
+<dt class="hdlist1">filter.vocabulary</dt>
+<dd>
+<p>A valuelist that can be used to provide "common" search options.  These are displayed before the text or range fields to allow the user to easily select common searches.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_exporting_data">Exporting Data</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1851,7 +2199,7 @@ Created tables/notes/fields.ini.php</code></pre>
 <div class="content">
 <img src="images/Image-130620-080448.218.png" alt="Material Icons site">
 </div>
-<div class="title">Figure 22. Material Icons website</div>
+<div class="title">Figure 31. Material Icons website</div>
 </div>
 <div class="paragraph">
 <p>The label below the icon is the name of the icon, that you would use for your <code>materialIcon</code> directive.  If the lable is truncated, you can click the "Selected Icon" button in the lower left to get a more detailed view.</p>
@@ -2228,7 +2576,7 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 <div class="content">
 <img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
 </div>
-<div class="title">Figure 23. Login sequence using example curl HTTP request.</div>
+<div class="title">Figure 32. Login sequence using example curl HTTP request.</div>
 </div>
 <div class="paragraph">
 <p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
@@ -2691,7 +3039,7 @@ class tables_new_contact_form {
 <div class="content">
 <img src="images/Image-140420-010101.342.png" alt="Image 140420 010101.342">
 </div>
-<div class="title">Figure 24. Sequence diagram for inserting a new record in the Contacts table</div>
+<div class="title">Figure 33. Sequence diagram for inserting a new record in the Contacts table</div>
 </div>
 </div>
 </div>
@@ -3027,7 +3375,7 @@ class actions_ajax_post_preview {
 <div class="content">
 <img src="images/Image-070620-011602.097.png" alt="Image 070620 011602.097">
 </div>
-<div class="title">Figure 25. Ajax preview displayed below the post_url field.</div>
+<div class="title">Figure 34. Ajax preview displayed below the post_url field.</div>
 </div>
 <div class="paragraph">
 <p><strong>Bonus Points</strong></p>
@@ -3137,13 +3485,13 @@ class actions_ajax_post_preview {
 <div class="content">
 <img src="images/Image-150520-070017.404.png" alt="Image 150520 070017.404">
 </div>
-<div class="title">Figure 26. List View when a filter field defined.</div>
+<div class="title">Figure 35. List View when a filter field defined.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-150520-070032.226.png" alt="Image 150520 070032.226">
 </div>
-<div class="title">Figure 27. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
+<div class="title">Figure 36. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
 </div>
 <div class="paragraph">
 <p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
@@ -3159,7 +3507,7 @@ class actions_ajax_post_preview {
 <div class="content">
 <img src="images/Image-150520-065039.669.png" alt="Image 150520 065039.669">
 </div>
-<div class="title">Figure 28. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
+<div class="title">Figure 37. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
 </div>
 <div class="paragraph">
 <p>We want to hide this.</p>
@@ -3306,7 +3654,7 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="content">
 <img src="images/Image-140620-091333.203.png" alt="Image 140620 091333.203">
 </div>
-<div class="title">Figure 29. The "play_post" action appears in the left-most column of the list view</div>
+<div class="title">Figure 38. The "play_post" action appears in the left-most column of the list view</div>
 </div>
 </div>
 <div class="sect2">
@@ -4294,31 +4642,31 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 <div class="content">
 <img src="images/Image-060820-013308.455.png" alt="Image 060820 013308.455">
 </div>
-<div class="title">Figure 30. List view</div>
+<div class="title">Figure 39. List view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013349.259.png" alt="Image 060820 013349.259">
 </div>
-<div class="title">Figure 31. Details view</div>
+<div class="title">Figure 40. Details view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013500.872.png" alt="Image 060820 013500.872">
 </div>
-<div class="title">Figure 32. New Record Form</div>
+<div class="title">Figure 41. New Record Form</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013559.078.png" alt="Image 060820 013559.078">
 </div>
-<div class="title">Figure 33. Hamburger Menu</div>
+<div class="title">Figure 42. Hamburger Menu</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013629.481.png" alt="Image 060820 013629.481">
 </div>
-<div class="title">Figure 34. Login form</div>
+<div class="title">Figure 43. Login form</div>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll notice quite a few differences from the desktop theme:</p>
@@ -4394,7 +4742,7 @@ window.addEventListener('xf-mobileexit', function() {
 </div>
 </div>
 <div class="paragraph">
-<p>For more information about these events, see <a href="#javascript-events">[javascript-events]</a>.</p>
+<p>For more information about these events, see <a href="#javascript-events">Javascript Events</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -4406,13 +4754,13 @@ window.addEventListener('xf-mobileexit', function() {
 <div class="content">
 <img src="images/Image-060820-022427.761.png" alt="Image 060820 022427.761">
 </div>
-<div class="title">Figure 35. The mobile header</div>
+<div class="title">Figure 44. The mobile header</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-022505.157.png" alt="Image 060820 022505.157">
 </div>
-<div class="title">Figure 36. The mobile footer</div>
+<div class="title">Figure 45. The mobile footer</div>
 </div>
 <div class="paragraph">
 <p>The size of these components may change as it is possible to add and remove contents from these components.  It is also possible to hide them in some contexts.</p>
@@ -4501,7 +4849,7 @@ jQuery(mobileFooter).prepend(myElement);</code></pre>
 <div class="content">
 <img src="images/Image-060820-025517.027.png" alt="Image 060820 025517.027">
 </div>
-<div class="title">Figure 37. The mobile table tabs.</div>
+<div class="title">Figure 46. The mobile table tabs.</div>
 </div>
 <div class="paragraph">
 <p>The table tabs (i.e. "Details", "List", and "Find") are rendered in the mobile footer by default. These are taken from the same actions as the table tabs in the desktop UI.  You can add/remove options to this menu by adding actions to the "table_tabs" category.</p>
@@ -4538,19 +4886,19 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-025738.446.png" alt="Image 060820 025738.446">
 </div>
-<div class="title">Figure 38. FAB with one action</div>
+<div class="title">Figure 47. FAB with one action</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-025922.987.png" alt="Image 060820 025922.987">
 </div>
-<div class="title">Figure 39. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
+<div class="title">Figure 48. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-030005.881.png" alt="Image 060820 030005.881">
 </div>
-<div class="title">Figure 40. FAB expanded to show actions.</div>
+<div class="title">Figure 49. FAB expanded to show actions.</div>
 </div>
 <div class="paragraph">
 <p>The <strong>table actions menu</strong> is rendered using a floating action button.  You can hide this by adding the "no-fab" CSS class to the <code>body</code> tag.</p>
@@ -4594,7 +4942,7 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-031126.567.png" alt="Image 060820 031126.567">
 </div>
-<div class="title">Figure 41. A row in the mobile theme.</div>
+<div class="title">Figure 50. A row in the mobile theme.</div>
 </div>
 <div class="dlist">
 <dl>
@@ -4948,6 +5296,110 @@ widget:type=static
 <p><strong>Since 0.8</strong></p>
 </div>
 </dd>
+<dt class="hdlist1">filter.type</dt>
+<dd>
+<p>The type of filter to use.  Options include "text", "range", "min", "max", and "filter".  See <a href="#filter_types">[filter_types]</a>.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.label</dt>
+<dd>
+<p>The label to use for the filter.  This defaults to the <code>widget:label</code> for the field.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.icon</dt>
+<dd>
+<p>Icon to use in the text field when using the "text" filter type.  This should be the name of a material icon.  See <a href="#material-icons">Using Material Icons</a> for details about material icons in Xataface.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.min.icon</dt>
+<dd>
+<p>Optional icon to use inside the "min" field for min and range filters.  The icon should be a valid material icon name.  See <a href="#material-icons">Using Material Icons</a> for details about material icons in Xataface.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-210820-090958.753.png" alt="Image 210820 090958.753">
+</div>
+<div class="title">Figure 51. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.max.icon</dt>
+<dd>
+<p>Same as <code>filter.min.icon</code> except for the "min" field.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.input.type</dt>
+<dd>
+<p>Specify the <code>type</code> attribute of the <code>&lt;input&gt;</code> tag used in the "text", "range", "min", and "max" filter types.  This will be "text" by default in most fields.  It will be <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date">date</a> by default for date fields, and <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local">datetime-local</a> for datetime fields.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.sort</dt>
+<dd>
+<p>Used for the "filter" filter type.  This specifies the column to use for sorting the options in the fitler.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.placeholder</dt>
+<dd>
+<p>Placeholder text used for the "text" filter type.  Placeholder text is only displayed when the field is empty.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.min.placeholder</dt>
+<dd>
+<p>Placeholder text used the "min" field.  Placeholder text is only displayed when the field is empty.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.max.placeholder</dt>
+<dd>
+<p>Placeholder text used the "max" field.  Placeholder text is only displayed when the field is empty.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "text" filter type.  E.g.<code>filter.input.maxlength=5</code></p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.min.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "min" field. E.g. <code>filter.min.input.maxlength=5</code></p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.max.input.*</dt>
+<dd>
+<p>Specify HTML attributes on the <code>&lt;input&gt;</code> element used in the "max" field. E.g. <code>filter.max.input.maxlength=5</code></p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">filter.vocabulary</dt>
+<dd>
+<p>A valuelist that can be used to provide "common" search options.  These are displayed before the text or range fields to allow the user to easily select common searches.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">frozen_description</dt>
 <dd>
 <p>The field description shown when the widget is frozen (i.e. uneditable). If this is not specified, no field description is shown in this case.</p>
@@ -5048,6 +5500,57 @@ widget:type=static
 <p>A boolean flag for use with container fields? to indicate that it should use secure URLs for the file downloads (i.e. it will obey the application permissions). Without this directives, uploaded files are served directly by apache and don&#8217;t obey the Xataface permissions defined per record.</p>
 <div class="paragraph">
 <p><strong>Since 1.3</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">sortable</dt>
+<dd>
+<p>A boolean flag that indicates whether a column is sortable.  This does not affect permissions (i.e. the user can still sort on the column by including it in the <code>-sort</code> request parameter.   This only affects whether the column is sortable in the UI.  Currently this is only used for the mobile UI.  On the desktop UI, all columns visible in list view are sortable.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If no columns in the table define the <code>sortable</code> property, then all columns are treated as <code>sortable=1</code>.  If at least one column in the table has <code>sortable</code> defined, then the remaining columns are assumed to be <code>sortable=0</code>.  One way of thinking about this that you need to opt in to this behaviour to use it.  Otherwise Xataface will just guess at which columns the usezr should be able to sort on.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">sortable+</dt>
+<dd>
+<p>A boolean flag that enables or disables sorting on this column in ascending order.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">sortable-</dt>
+<dd>
+<p>A boolean flag that enables or disables sorting on this column in descending order.</p>
+</dd>
+<dt class="hdlist1">sort.label</dt>
+<dd>
+<p>The label that should be used for sorting on this field.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">sort+.label</dt>
+<dd>
+<p>The label that should be used for sorting on this field in ascending order.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">sort-.label</dt>
+<dd>
+<p>The label that should be used for sorting on this field in descending order.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
 </div>
 </dd>
 <dt class="hdlist1">struct</dt>
@@ -5396,13 +5899,13 @@ widget:type=static
 <div class="content">
 <img src="images/Image-080820-070623.789.png" alt="Image 080820 070623.789">
 </div>
-<div class="title">Figure 42. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
+<div class="title">Figure 52. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-080820-070748.070.png" alt="Image 080820 070748.070">
 </div>
-<div class="title">Figure 43. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
+<div class="title">Figure 53. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
@@ -6028,17 +6531,134 @@ RSS feeds will work perfectly well without defining this method. This just allow
 <div class="paragraph">
 <p>Xataface defines a small set of Javascript events to notify subscribers of lifecycle events.</p>
 </div>
-<h2 id="_javascript_components" class="discrete">Javascript Components</h2>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_javascript_components">Javascript Components</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Xataface includes a set of Javascript components that can be reused in many different contexts.  This section lists some of theme.</p>
 </div>
 <div class="paragraph">
 <p>TODO: Add documentation on javascript components</p>
 </div>
-<div id="javascript-events" class="paragraph">
-<p>[discrete]aja
-== Javascript Events</p>
+<div class="sect2">
+<h3 id="_window_xataface">window.xataface</h3>
+<div class="paragraph">
+<p>The <code>window.xataface</code> object includes a number of utility classes and functions.  Some functions are always available.  Others require you to explicitly to load a script in order for them to be available.</p>
 </div>
+<h4 id="_properties" class="discrete">Properties</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">viewport</dt>
+<dd>
+<p>The current display viewport dimensions.  If the mobile footer and header are visible, then this viewport will be the bounds not covered by the header or footer.  Properties include <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>, <code>width</code>, and <code>height</code>.</p>
+<div class="listingblock">
+<div class="title">Example Using viewport to position an element</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">var viewport = xataface.viewport;
+if (viewport) {
+    // Position the settings wrapper 10 pixels above the footer
+    settingsWrapper.style.bottom = (viewport.bottom + 10) + 'px';
+}</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_xataface_sheet">xataface.Sheet</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-160820-125111.003.png" alt="Image 160820 125111.003">
+</div>
+</div>
+<div class="paragraph">
+<p>A component for displaying content in a Sheet.  Sheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.</p>
+</div>
+<h4 id="_bootstrapping" class="discrete">Bootstrapping</h4>
+<div class="listingblock">
+<div class="title">Loading Script in PHP</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">xf_script('xataface/components/Sheet.js');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Loading Script in Javascript using <code>require</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/Sheet.js&gt;</code></pre>
+</div>
+</div>
+<h4 id="_initialization_options" class="discrete">Initialization Options</h4>
+<div class="paragraph">
+<p>Use <code>new Sheet(options)</code> to create a new sheet.  The following options are allowed:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">position</dt>
+<dd>
+<p>The position where the sheet should be displayed. <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>.</p>
+</dd>
+<dt class="hdlist1">url</dt>
+<dd>
+<p>The URL to load in the sheet.  <strong>String</strong></p>
+</dd>
+</dl>
+</div>
+<h4 id="_properties_2" class="discrete">Properties</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">installed</dt>
+<dd>
+<p>A read-only property indicating whether the sheet is currently installed in the document.</p>
+</dd>
+<dt class="hdlist1">position</dt>
+<dd>
+<p>The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', or 'right'.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_methods" class="discrete">Methods</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">load(url:string)</dt>
+<dd>
+<p>Load the given URL inside the Sheet.  This will be loaded inside an iframe.</p>
+</dd>
+<dt class="hdlist1">show()</dt>
+<dd>
+<p>Show the sheet.</p>
+</dd>
+<dt class="hdlist1">close()</dt>
+<dd>
+<p>Close the sheeet</p>
+</dd>
+</dl>
+</div>
+<h4 id="_usage_example" class="discrete">Usage Example</h4>
+<div class="listingblock">
+<div class="title">Function that opens the sort options dialog inside a sheet.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/actions/Sheet.js&gt;
+
+// ...
+
+function openSortDialog() {
+    var qStr = window.location.search;
+    if (qStr.indexOf('-action=') !== -1) {
+        qStr = qStr.replace(/-action=[^&amp;]*/, '-action=mobile_sort_dialog');
+    } else {
+        qStr += '&amp;-action=mobile_sort_dialog';
+    }
+    var sheet = new xataface.Sheet({
+        url : qStr
+    });
+    sheet.show();
+}</code></pre>
+</div>
+</div>
+<h2 id="javascript-events" class="discrete">Javascript Events</h2>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">xf-mobileenter</dt>
@@ -6090,9 +6710,495 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_appendix_4_url_conventions">Appendix 4: URL Conventions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Xataface adheres to a few simple URL conventions for all of its actions. When you understand how Xataface URLs work you begin to get far more out of your applications. By specifying the appropriate query parameters to can jump directly to any point in your application, or produce a specific result set.</p>
+</div>
+<div class="paragraph">
+<p>For example, the URL <code>index.php?-table=people</code> will take you to the people table (and since the default action for a Xataface application is list, it will take you to the list view.</p>
+</div>
+<div class="paragraph">
+<p>You could be more explicit by specifying the action in the URL directly:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;-action=list</code></p>
+</div>
+<div class="paragraph">
+<p>This would take you to the same screen. From this example, you see that you can specify such things as the table and action via GET parameters. Xataface accepts many more GET parameters also, as you&#8217;ll see in the next section.</p>
+</div>
+<h2 id="_available_get_parameters" class="discrete">Available GET Parameters</h2>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">-action</dt>
+<dd>
+<p>Specifies the action to perform. E.g. browse, list, find, edit, new, &#8230;&#8203; etc..	Default value is "list". <br>
+<strong>Since 0.1</strong></p>
+</dd>
+<dt class="hdlist1">-table</dt>
+<dd>
+<p>The name of the table to use as the context table.	Defaults to the first table in the <code>[_tables]</code> section of your conf.ini file.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-skip</dt>
+<dd>
+<p>Skip a certain number of results in the current found set to display. E.g. If there are 100 records in the table and you want to start browsing from the 30th record, you would set <code>-skip=29</code>.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Not to be confused with the -cursor parameter which is used to specify which record to view in the details tab.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Default value: 0</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-limit</dt>
+<dd>
+<p>The maximum number of records in the found set to display.	Default value: 30</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-cursor</dt>
+<dd>
+<p>The index of the record in the current found set that is treated as the "current" record. This is used in the details tab to identify which record to act on. E.g. which record to view or edit.	Default value is 0</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-sort</dt>
+<dd>
+<p>A comma-delimited list of columns to sort the result set on. Optionally specify descending or descending by adding " asc" or " desc" to the column.  E.g. <code>-sort=first_name+asc,height+desc</code>.  If no sort is specified, it will not sort the results.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-relationship</dt>
+<dd>
+<p>If we are browsing related records, this specifies the name of the relationship.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-related:start</dt>
+<dd>
+<p>If we are browsing related records, this is the first record in the relationship to show.	Defaults value: 0</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-related:limit</dt>
+<dd>
+<p>If we are browsing related records, this is the number of records to show per page.	Default value:30</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">-search</dt>
+<dd>
+<p>A keyword search term to filter the found set on. Any row containing any field that matches the query will be returned.</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">--no-query=1</dt>
+<dd>
+<p>A flag to indicate that xataface should not query the database by default. This flag is used in the new record form to prevent the form parameters from being interpreted as query parameters to search in the database. If you set this flag, it likely result in a message saying "No records found". Generally you would only use this in a custom action where you are not relying on Xataface&#8217;s default found set.
+<strong>Since 1.3</strong></p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>There are many other GET parameters that are used in various contexts but the above parameters are available throughout the entire application.</p>
+</div>
+<h2 id="_finding_records_using_the_url" class="discrete">Finding Records using the URL</h2>
+<div class="paragraph">
+<p>Notice that all of the GET parameters mentioned in the previous section begin with a hyphen (i.e. '-'). This is a convention Xataface uses to distinguish directives from search queries. All parameters that do not begin with '-' are treated as a query to filter the found set.</p>
+</div>
+<div class="paragraph">
+<p>For example, <code>first_name=bob</code> used as a GET parameter would cause the found set to be filtered so that only records where the first_name column contains the phrase "bob" are returned. Putting this all together, suppose we wanted to show the list tab for the people table, but only wanted to show the people with first names containing "bob":</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-action=list&amp;-table=people&amp;first_name=bob</code></p>
+</div>
+<h3 id="_exact_range_and_pattern_matching" class="discrete">Exact, Range, and Pattern Matching</h3>
+<div class="paragraph">
+<p>By default, queries on text columns look for partial matches. I.e. if you search for "bob" it will match "bob", "bobby", "rubob", and any other text that contains "bob". If you are only interested in finding records that match exactly "bob", then you can prepend an "=" to the query. E.g. first_name==bob, or the full URL:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-action=list&amp;-table=people&amp;first_name==bob</code></p>
+</div>
+<div class="paragraph">
+<p>This should show the list tab for the people table with only records with first name exactly "bob".</p>
+</div>
+<div class="paragraph">
+<p>There are a number of modifiers that you can prepend to your query to modify how it is executed. They are as follows:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Search operators</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Prefix</th>
+<th class="tableblock halign-left valign-top">Usage Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&gt;10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records greater than search parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&lt;10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records less than search parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&gt;=</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&gt;=10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records greater than or equal to the search parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;=</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&lt;=10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records less than or equal to the search parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">..</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=10..20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records in a given range.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">=</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name==bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records that exactly match the search parameter (if there is no prefix then it will search for partial matches on text/varchar/char fields.).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">~</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name=~a%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exact match, but you can include wildcards such as '%' and '?' in your search.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">!=</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name=!=bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records that do NOT match the search parameter. (Same as &lt;&gt;)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name=&lt;&gt;bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Match records that do NOT match the search parameter. (Same as !=)</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_search_examples" class="discrete">Search Examples</h3>
+<div class="paragraph">
+<p>Given the following data set:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">first_name</th>
+<th class="tableblock halign-left valign-top">age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cindy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Julie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jake</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kabob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Here are some example queries on this data set and their results:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Query</th>
+<th class="tableblock halign-left valign-top">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&gt;10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">match records where age is greater than 10. This includes Cindy and Kabob.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&lt;10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">match records where age is less than 10. This includes Julie and Jake</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&gt;=10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">match records where age is greater or equal to 10. This includes Bob, Cindy, and Kabob.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=&lt;=10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">match records where age is less than or equal to 10. This includes Bob, Julie, and Jake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">age=8..10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">match records where age is between 8 and 10. This includes Bob and Jake.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name=bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches records where first_name contains "bob". This includes Bob and Kabob.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name==bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches records where first_name is exactly "bob". This includes Bob only.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first_name=~J%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches records that begin with "J". This includes Jake and Julie</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_matching_on_related_records" class="discrete">Matching on Related Records</h3>
+<div class="paragraph">
+<p>It is also possible to match records based on their related data (i.e. data that is not physically stored in the record itself, but in related records via a relationship). For example if we want to find authors who have written about a particular topic, we would normally have to first find all of the articles that contain a topic, and then cross-reference that result against the authors table. With Xataface we can perform this query directly from the authors table using something like the following query:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=authors&amp;articles/title=sports</code></p>
+</div>
+<div class="paragraph">
+<p>This assumes that the authors table has a relationship named articles that contains all of the articles that an author has written. So the above query returns precisely those authors who have written at least one article whose title field contains the phrase "sports".</p>
+</div>
+<h4 id="_anatomy_of_a_related_query" class="discrete">Anatomy of a Related Query</h4>
+<div class="paragraph">
+<p><code>%relationship%/%field%=%query%</code></p>
+</div>
+<div class="paragraph">
+<p>This matches all records in the current table such that at least one record in its <code>&lt;relationship&gt;</code> relationship matches the query: <code>%field%=%query%</code>.</p>
+</div>
+<h3 id="_using_the_or_operator" class="discrete">Using the "OR" Operator</h3>
+<div class="paragraph">
+<p>Xataface allows you to search for more than one value at a time using the OR operator. E.g.</p>
+</div>
+<div class="paragraph">
+<p><code>first_name=bob+OR+steve</code></p>
+</div>
+<div class="paragraph">
+<p>Would match all records with first_name containing "bob" or "steve".</p>
+</div>
+<div class="paragraph">
+<p><code>first_name=bob+OR+=steve</code></p>
+</div>
+<div class="paragraph">
+<p>Would match all records with first_name containing "bob" or exactly matching "steve"</p>
+</div>
+<div class="paragraph">
+<p><code>age=&lt;10+OR+&gt;20</code></p>
+</div>
+<div class="paragraph">
+<p>Would match all records with age less than 10 or greater than 20.</p>
+</div>
+<h3 id="_combining_multiple_queries_in_one_request" class="discrete">Combining Multiple Queries in One Request</h3>
+<div class="paragraph">
+<p>Xataface allows you to filter on more than one field at a time. If you combine multiple queries in the same request it has the effect of strengthening the filter, matching only those rows that match both queries. E.g.</p>
+</div>
+<div class="paragraph">
+<p><code>age=&gt;10&amp;first_name=bob</code></p>
+</div>
+<div class="paragraph">
+<p>would match all records where age is greater than 10 AND that have first_name containing "bob".</p>
+</div>
+<h4 id="_examples_of_combined_queries" class="discrete">Examples of Combined Queries</h4>
+<div class="paragraph">
+<p>Given the same data set as the previous set of examples:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">first_name</th>
+<th class="tableblock halign-left valign-top">age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cindy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Julie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jake</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kabob</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>first_name=bob&amp;age=11</code></p>
+</div>
+<div class="paragraph">
+<p>would return no matches because there are no records that contain both first_name "bob" and age 11.</p>
+</div>
+<div class="paragraph">
+<p>However</p>
+</div>
+<div class="paragraph">
+<p><code>first_name=bob&amp;age=10</code></p>
+</div>
+<div class="paragraph">
+<p>would return only "Bob" and</p>
+</div>
+<div class="paragraph">
+<p><code>first_name=bob&amp;age=16</code></p>
+</div>
+<div class="paragraph">
+<p>would return only "Kabob".</p>
+</div>
+<h3 id="_special_common_queries" class="discrete">Special Common Queries</h3>
+<h4 id="_search_for_null_or_blank_value" class="discrete">Search For Null or Blank Value</h4>
+<div class="paragraph">
+<p>Searching for a null value or a blank value is an exact match for "". Therefore you can simply search for "=". E.g. To find records with a null or blank first_name you would use the query first_name==. Or the full query:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;first_name==</code></p>
+</div>
+<h4 id="_search_for_non_blank_value" class="discrete">Search for Non-blank Value</h4>
+<div class="paragraph">
+<p>Searching for a non-blank value is the same as searching for a value greater than "". Therefore you can simply search for "&gt;". E.g. if you wanted to find records with a first_name, you would use the query "first_name=&gt;". Or the full query:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;first_name=&gt;</code></p>
+</div>
+<h3 id="_preserved_vs_non_preserved_parameters" class="discrete">Preserved vs Non-preserved Parameters</h3>
+<div class="paragraph">
+<p>As mentioned above any parameters that are prefixed by a hyphen (i.e. "=") are treated as directives rather than search filters. Hence if you want to use your own GET parameters you should always prefix them with a "-" to ensure that Xataface does not attempt to apply it as a search filter. In order to keep a consistent context for users, all browsing within the same table preserves both search queries and directives. Hence if you go to the URL:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;-action=list&amp;first_name=bob</code></p>
+</div>
+<div class="paragraph">
+<p>It will show you the list tab of the people table with only those records with first_name "bob". Now if you click on the details tab it will preserve your query "first_name". The query will become something like:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;-action=details&amp;first_name=bob&amp;&#8230;&#8203;etc&#8230;&#8203; more parameters</code></p>
+</div>
+<div class="paragraph">
+<p>(Although the parameters may appear in a different order). This allows you to navigate forward and back to previous and next records and stay within the same found set. It also ensures that if you click on the list tab to return to the list view, it will retain your place in the list.</p>
+</div>
+<div class="paragraph">
+<p>Note that navigating within the same table it will also preserve your directives. E.g. If you specify the "-limit" directive to show 100 records per page:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-table=people&amp;-action=list&amp;-limit=100</code></p>
+</div>
+<div class="paragraph">
+<p>And then you click on the details tab, it will retain your "-limit" parameter. Of course the "-limit" parameter is not actually used by the details action because it works on only one record at a time (it uses the "-cursor" parameter instead), when you click back on the list tab it will still show you 100 records per page.</p>
+</div>
+<div class="paragraph">
+<p>Because of this, we call the "-limit" parameter a preserved parameter. It is retained when navigating within the same table. Note: parameters are retained in the HTTP Query string, not in sessions or cookies. This ensures that there are no surprises when you enter a URL to your Xataface application.</p>
+</div>
+<h4 id="_unpreserved_parameters" class="discrete">Unpreserved Parameters</h4>
+<div class="paragraph">
+<p>If you don&#8217;t want Xataface to preserve one of your parameters, you should prefix two hyphens to the parameter name. I.e. "--". One example of an unpreserved parameters throughout Xataface applications is the --msg parameter. The value of this parameter will be displayed on the page as an info message to the user. Clearly you don&#8217;t want this parameter preserved across requests, as you only want the user to see a message once. E.g.</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?--msg=Record+Successfully+saved</code></p>
+</div>
+<div class="paragraph">
+<p>Would display the mesage "Record Successfully Saved" at the top of the page. If you click on any link in the application, it will not retain the --msg parameter so you will not see the message on subsequent requests.</p>
+</div>
+<div class="paragraph">
+<p>This parameter is useful if you want to give feedback to the user about an action that has been carried out.</p>
+</div>
+<h4 id="_summary" class="discrete">Summary</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter Type</th>
+<th class="tableblock halign-left valign-top">Prefix</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Preserved</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-limit</code>, <code>-skip</code>, <code>-cursor</code>, <code>-action</code>, <code>-table</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parameter value is preserved when user navigates away from the page (within the same table).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unpreserved Parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--msg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parameter is NOT retrained with the user navigates away from the page.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-06 14:03:42 -0700
+Last updated 2020-08-21 07:15:03 -0700
 </div>
 </div>
 </body>

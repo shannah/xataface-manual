@@ -1,0 +1,259 @@
+[part_appendix_url_conventions]
+= Appendix 4: URL Conventions
+
+Xataface adheres to a few simple URL conventions for all of its actions. When you understand how Xataface URLs work you begin to get far more out of your applications. By specifying the appropriate query parameters to can jump directly to any point in your application, or produce a specific result set.
+
+For example, the URL `index.php?-table=people` will take you to the people table (and since the default action for a Xataface application is list, it will take you to the list view.
+
+You could be more explicit by specifying the action in the URL directly:
+
+`index.php?-table=people&-action=list` 
+
+This would take you to the same screen. From this example, you see that you can specify such things as the table and action via GET parameters. Xataface accepts many more GET parameters also, as you'll see in the next section.
+
+[discrete]
+== Available GET Parameters
+
+-action::
+Specifies the action to perform. E.g. browse, list, find, edit, new, ... etc..	Default value is "list".  +
+**Since 0.1**
+-table::
+The name of the table to use as the context table.	Defaults to the first table in the `[_tables]` section of your conf.ini file.
++
+**Since 0.1**
+
+-skip::
+Skip a certain number of results in the current found set to display. E.g. If there are 100 records in the table and you want to start browsing from the 30th record, you would set `-skip=29`.
++
+[TIP] 
+====
+Not to be confused with the -cursor parameter which is used to specify which record to view in the details tab.
+====
++
+Default value: 0	
++
+**Since 0.1**
+-limit::	The maximum number of records in the found set to display.	Default value: 30	
++
+**Since 0.1**
+-cursor::	The index of the record in the current found set that is treated as the "current" record. This is used in the details tab to identify which record to act on. E.g. which record to view or edit.	Default value is 0	
++
+**Since 0.1**
+-sort::
+A comma-delimited list of columns to sort the result set on. Optionally specify descending or descending by adding " asc" or " desc" to the column.  E.g. `-sort=first_name+asc,height+desc`.  If no sort is specified, it will not sort the results.	
++
+**Since 0.1**
+-relationship::	
+If we are browsing related records, this specifies the name of the relationship.
++
+**Since 0.1**
+-related:start::	If we are browsing related records, this is the first record in the relationship to show.	Defaults value: 0
++
+**Since 0.1**
+-related:limit::	If we are browsing related records, this is the number of records to show per page.	Default value:30	
++
+**Since 0.1**
+-search::	
+A keyword search term to filter the found set on. Any row containing any field that matches the query will be returned.
++
+**Since 0.1**
+--no-query=1::
+A flag to indicate that xataface should not query the database by default. This flag is used in the new record form to prevent the form parameters from being interpreted as query parameters to search in the database. If you set this flag, it likely result in a message saying "No records found". Generally you would only use this in a custom action where you are not relying on Xataface's default found set.	
+**Since 1.3**
+
+There are many other GET parameters that are used in various contexts but the above parameters are available throughout the entire application.
+
+[discrete]
+== Finding Records using the URL
+
+Notice that all of the GET parameters mentioned in the previous section begin with a hyphen (i.e. '-'). This is a convention Xataface uses to distinguish directives from search queries. All parameters that do not begin with '-' are treated as a query to filter the found set.
+
+For example, `first_name=bob` used as a GET parameter would cause the found set to be filtered so that only records where the first_name column contains the phrase "bob" are returned. Putting this all together, suppose we wanted to show the list tab for the people table, but only wanted to show the people with first names containing "bob":
+
+`index.php?-action=list&-table=people&first_name=bob`
+
+[discrete]
+=== Exact, Range, and Pattern Matching
+
+By default, queries on text columns look for partial matches. I.e. if you search for "bob" it will match "bob", "bobby", "rubob", and any other text that contains "bob". If you are only interested in finding records that match exactly "bob", then you can prepend an "=" to the query. E.g. first_name==bob, or the full URL:
+
+`index.php?-action=list&-table=people&first_name==bob`
+
+This should show the list tab for the people table with only records with first name exactly "bob".
+
+There are a number of modifiers that you can prepend to your query to modify how it is executed. They are as follows:
+
+
+.Search operators
+[width="100%",options="header"]
+|====================
+| Prefix | Usage Example | Description
+| >	 | age\=>10 |  Match records greater than search parameter.
+| <	 | age=<10 |  Match records less than search parameter.
+| >= | age\=>=10 |  	Match records greater than or equal to the search parameter.
+| \<= | age=\<=10 |  Match records less than or equal to the search parameter.
+| .. | age=10..20 |  Match records in a given range.
+| =	 | first_name==bob |  Match records that exactly match the search parameter (if there is no prefix then it will search for partial matches on text/varchar/char fields.).
+| ~	 | first_name=~a% |  Exact match, but you can include wildcards such as '%' and '?' in your search.
+| != | first_name=!=bob |  	Match records that do NOT match the search parameter. (Same as <>)
+| <> | first_name=<>bob |  	Match records that do NOT match the search parameter. (Same as !=)
+|====================
+
+[discrete]
+=== Search Examples
+
+Given the following data set:
+[options="header"]
+|====================
+| first_name	| age
+| Bob	|10
+| Cindy	|12
+| Julie	|6
+|Jake	|8
+|Kabob	|16
+|====================
+
+Here are some example queries on this data set and their results:
+
+[options="header"]
+|====================
+|Query	|Matches
+| age\=>10	|match records where age is greater than 10. This includes Cindy and Kabob.
+| age=<10	|match records where age is less than 10. This includes Julie and Jake
+| age\=>=10	|match records where age is greater or equal to 10. This includes Bob, Cindy, and Kabob.
+| age=\<=10	|match records where age is less than or equal to 10. This includes Bob, Julie, and Jake.
+| age=8..10	| match records where age is between 8 and 10. This includes Bob and Jake.
+| first_name=bob	|Matches records where first_name contains "bob". This includes Bob and Kabob.
+| first_name==bob	|Matches records where first_name is exactly "bob". This includes Bob only.
+| first_name=~J%	|Matches records that begin with "J". This includes Jake and Julie
+|====================
+
+[discrete]
+=== Matching on Related Records
+
+It is also possible to match records based on their related data (i.e. data that is not physically stored in the record itself, but in related records via a relationship). For example if we want to find authors who have written about a particular topic, we would normally have to first find all of the articles that contain a topic, and then cross-reference that result against the authors table. With Xataface we can perform this query directly from the authors table using something like the following query:
+
+`index.php?-table=authors&articles/title=sports`
+
+This assumes that the authors table has a relationship named articles that contains all of the articles that an author has written. So the above query returns precisely those authors who have written at least one article whose title field contains the phrase "sports".
+
+[discrete]
+==== Anatomy of a Related Query
+
+`%relationship%/%field%=%query%`
+
+This matches all records in the current table such that at least one record in its `<relationship>` relationship matches the query: `%field%=%query%`.
+
+[discrete]
+=== Using the "OR" Operator
+
+Xataface allows you to search for more than one value at a time using the OR operator. E.g.
+
+`first_name=bob+OR+steve`
+
+Would match all records with first_name containing "bob" or "steve".
+
+`first_name=bob+OR+=steve`
+
+Would match all records with first_name containing "bob" or exactly matching "steve"
+
+`age=<10+OR+>20`
+
+Would match all records with age less than 10 or greater than 20.
+
+[discrete]
+=== Combining Multiple Queries in One Request
+
+Xataface allows you to filter on more than one field at a time. If you combine multiple queries in the same request it has the effect of strengthening the filter, matching only those rows that match both queries. E.g.
+
+`age\=>10&first_name=bob`
+
+would match all records where age is greater than 10 AND that have first_name containing "bob".
+
+[discrete]
+==== Examples of Combined Queries
+
+Given the same data set as the previous set of examples:
+
+[options="header"]
+|==========
+| first_name	|age
+| Bob	|10
+| Cindy	|12
+| Julie	| 6
+| Jake	| 8
+| Kabob	| 16
+|==========
+
+`first_name=bob&age=11`
+
+would return no matches because there are no records that contain both first_name "bob" and age 11.
+
+However
+
+`first_name=bob&age=10`
+
+would return only "Bob" and
+
+`first_name=bob&age=16`
+
+would return only "Kabob".
+
+[discrete]
+=== Special Common Queries
+
+[discrete]
+==== Search For Null or Blank Value
+
+Searching for a null value or a blank value is an exact match for "". Therefore you can simply search for "=". E.g. To find records with a null or blank first_name you would use the query first_name==. Or the full query:
+
+`index.php?-table=people&first_name==`
+
+[discrete]
+==== Search for Non-blank Value
+
+Searching for a non-blank value is the same as searching for a value greater than "". Therefore you can simply search for ">". E.g. if you wanted to find records with a first_name, you would use the query "first_name\=>". Or the full query:
+
+`index.php?-table=people&first_name\=>`
+
+[discrete]
+=== Preserved vs Non-preserved Parameters
+
+As mentioned above any parameters that are prefixed by a hyphen (i.e. "=") are treated as directives rather than search filters. Hence if you want to use your own GET parameters you should always prefix them with a "-" to ensure that Xataface does not attempt to apply it as a search filter. In order to keep a consistent context for users, all browsing within the same table preserves both search queries and directives. Hence if you go to the URL:
+
+`index.php?-table=people&-action=list&first_name=bob`
+
+It will show you the list tab of the people table with only those records with first_name "bob". Now if you click on the details tab it will preserve your query "first_name". The query will become something like:
+
+`index.php?-table=people&-action=details&first_name=bob&...etc... more parameters`
+
+(Although the parameters may appear in a different order). This allows you to navigate forward and back to previous and next records and stay within the same found set. It also ensures that if you click on the list tab to return to the list view, it will retain your place in the list.
+
+Note that navigating within the same table it will also preserve your directives. E.g. If you specify the "-limit" directive to show 100 records per page:
+
+`index.php?-table=people&-action=list&-limit=100`
+
+And then you click on the details tab, it will retain your "-limit" parameter. Of course the "-limit" parameter is not actually used by the details action because it works on only one record at a time (it uses the "-cursor" parameter instead), when you click back on the list tab it will still show you 100 records per page.
+
+Because of this, we call the "-limit" parameter a preserved parameter. It is retained when navigating within the same table. Note: parameters are retained in the HTTP Query string, not in sessions or cookies. This ensures that there are no surprises when you enter a URL to your Xataface application.
+
+[discrete]
+==== Unpreserved Parameters
+
+If you don't want Xataface to preserve one of your parameters, you should prefix two hyphens to the parameter name. I.e. "--". One example of an unpreserved parameters throughout Xataface applications is the --msg parameter. The value of this parameter will be displayed on the page as an info message to the user. Clearly you don't want this parameter preserved across requests, as you only want the user to see a message once. E.g.
+
+`index.php?--msg=Record+Successfully+saved`
+
+Would display the mesage "Record Successfully Saved" at the top of the page. If you click on any link in the application, it will not retain the --msg parameter so you will not see the message on subsequent requests.
+
+This parameter is useful if you want to give feedback to the user about an action that has been carried out.
+
+[discrete]
+==== Summary
+
+[options="header"]
+|==========
+| Parameter Type	|Prefix	| Examples	| Description
+| Preserved	| `-`	| `-limit`, `-skip`, `-cursor`, `-action`, `-table`	| Parameter value is preserved when user navigates away from the page (within the same table).
+| Unpreserved Parameters	| `--`	| `--msg`	| Parameter is NOT retrained with the user navigates away from the page.
+|==========

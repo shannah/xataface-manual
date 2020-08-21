@@ -3,15 +3,116 @@
 
 Xataface defines a small set of Javascript events to notify subscribers of lifecycle events.
 
-[discrete]
+
 == Javascript Components
 
 Xataface includes a set of Javascript components that can be reused in many different contexts.  This section lists some of theme.  
 
 TODO: Add documentation on javascript components
 
+=== window.xataface
+
+The `window.xataface` object includes a number of utility classes and functions.  Some functions are always available.  Others require you to explicitly to load a script in order for them to be available.
+
+[discrete]
+==== Properties
+
+viewport::
+The current display viewport dimensions.  If the mobile footer and header are visible, then this viewport will be the bounds not covered by the header or footer.  Properties include `top`, `left`, `right`, `bottom`, `width`, and `height`.
++
+
+.Example Using viewport to position an element
+[source,javascript]
+----
+var viewport = xataface.viewport;
+if (viewport) {
+    // Position the settings wrapper 10 pixels above the footer
+    settingsWrapper.style.bottom = (viewport.bottom + 10) + 'px';
+}
+----
+
+
+=== xataface.Sheet
+
+image::images/Image-160820-125111.003.png[]
+
+A component for displaying content in a Sheet.  Sheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.
+
+
+[discrete]
+==== Bootstrapping
+
+.Loading Script in PHP
+[source,php]
+----
+xf_script('xataface/components/Sheet.js');
+----
+
+.Loading Script in Javascript using `require`
+[source,javascript]
+----
+//require <xataface/components/Sheet.js>
+----
+
+[discrete]
+==== Initialization Options
+
+Use `new Sheet(options)` to create a new sheet.  The following options are allowed:
+
+position:: The position where the sheet should be displayed. `top`, `left`, `right`, `bottom`.
+
+url:: The URL to load in the sheet.  *String*
+
+
+
+[discrete]
+==== Properties
+
+installed::
+A read-only property indicating whether the sheet is currently installed in the document.
+
+position::
+The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', or 'right'.
+
+[discrete]
+==== Methods
+
+load(url:string)::
+Load the given URL inside the Sheet.  This will be loaded inside an iframe.
+
+show()::
+Show the sheet.
+
+close()::
+Close the sheeet
+
+[discrete]
+==== Usage Example
+
+.Function that opens the sort options dialog inside a sheet.
+[source,javascript]
+----
+//require <xataface/actions/Sheet.js>
+
+// ...
+
+function openSortDialog() {
+    var qStr = window.location.search;
+    if (qStr.indexOf('-action=') !== -1) {
+        qStr = qStr.replace(/-action=[^&]*/, '-action=mobile_sort_dialog');
+    } else {
+        qStr += '&-action=mobile_sort_dialog';
+    }
+    var sheet = new xataface.Sheet({
+        url : qStr
+    });
+    sheet.show();
+}
+----
+    
+
 [#javascript-events]
-[discrete]aja
+[discrete]
 == Javascript Events
 
 xf-mobileenter::
