@@ -598,6 +598,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_javascript_components">Javascript Components</a>
 <ul class="sectlevel2">
 <li><a href="#_window_xataface">window.xataface</a></li>
+<li><a href="#_xataface_infinitescroll">xataface.InfiniteScroll</a></li>
 <li><a href="#_xataface_sheet">xataface.Sheet</a></li>
 </ul>
 </li>
@@ -5018,6 +5019,10 @@ A logo or icon that is rendered on the left side.  You can customize this image 
 </dd>
 </dl>
 </div>
+<h4 id="_infinite_scroll" class="discrete">Infinite Scroll</h4>
+<div class="paragraph">
+<p>You&#8217;ll notice that the mobile list view doesn&#8217;t include any paging buttons (e.g. "Previous" or "Next").  This is because it uses infinite scrolling.  When the user scrolls to the bottom of the list, it will automatically load the next 30 records and append them to the end of the list seamlessly.</p>
+</div>
 </div>
 </div>
 </div>
@@ -6580,6 +6585,67 @@ if (viewport) {
 </div>
 </div>
 <div class="sect2">
+<h3 id="_xataface_infinitescroll">xataface.InfiniteScroll</h3>
+<div class="paragraph">
+<p>A component that supports infinite scrolling.  This is used by default in the mobile theme&#8217;s list view.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+<h4 id="_bootstrapping" class="discrete">Bootstrapping</h4>
+<div class="listingblock">
+<div class="title">Loading Script in PHP</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">xf_script('xataface/components/InfiniteScroll.js');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Loading Script in Javascript using <code>require</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/InfiniteScroll.js&gt;</code></pre>
+</div>
+</div>
+<h4 id="_properties_2" class="discrete">Properties</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">scrollEl</dt>
+<dd>
+<p>HTMLElement to which the scroll listener should be added.  Defaults to <code>&lt;body&gt;</code></p>
+</dd>
+<dt class="hdlist1">parentEl</dt>
+<dd>
+<p>HTMLElement that should have elements added to it.  Defaults to the <code>.mobile-listing</code> div, which is the result list in mobile view.</p>
+</dd>
+<dt class="hdlist1">action</dt>
+<dd>
+<p>The Xataface action to use for fetching new rows.</p>
+</dd>
+<dt class="hdlist1">pageSize</dt>
+<dd>
+<p>The number of records to load each time.  Default is 30.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_methods" class="discrete">Methods</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">loadMore()</dt>
+<dd>
+<p>Loads the next page of results.  If either no rows are loaded, or there is a problem loading rows (due to a network error), the InfiniteScroll&#8217;s <code>reachedEnd</code> flag is set, which will prevent it from attempting to load any more records.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_usage_example" class="discrete">Usage Example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">new xataface.InfiniteScroll({
+   scrollEl : $('body').get(0),
+   parentEl : $('.mobile-listing').get(0)
+});</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_xataface_sheet">xataface.Sheet</h3>
 <div class="imageblock">
 <div class="content">
@@ -6589,7 +6655,10 @@ if (viewport) {
 <div class="paragraph">
 <p>A component for displaying content in a Sheet.  Sheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.</p>
 </div>
-<h4 id="_bootstrapping" class="discrete">Bootstrapping</h4>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+<h4 id="_bootstrapping_2" class="discrete">Bootstrapping</h4>
 <div class="listingblock">
 <div class="title">Loading Script in PHP</div>
 <div class="content">
@@ -6618,7 +6687,7 @@ if (viewport) {
 </dd>
 </dl>
 </div>
-<h4 id="_properties_2" class="discrete">Properties</h4>
+<h4 id="_properties_3" class="discrete">Properties</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">installed</dt>
@@ -6631,7 +6700,7 @@ if (viewport) {
 </dd>
 </dl>
 </div>
-<h4 id="_methods" class="discrete">Methods</h4>
+<h4 id="_methods_2" class="discrete">Methods</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">load(url:string)</dt>
@@ -6648,7 +6717,7 @@ if (viewport) {
 </dd>
 </dl>
 </div>
-<h4 id="_usage_example" class="discrete">Usage Example</h4>
+<h4 id="_usage_example_2" class="discrete">Usage Example</h4>
 <div class="listingblock">
 <div class="title">Function that opens the sort options dialog inside a sheet.</div>
 <div class="content">

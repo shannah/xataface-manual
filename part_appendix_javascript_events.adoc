@@ -31,6 +31,60 @@ if (viewport) {
 }
 ----
 
+=== xataface.InfiniteScroll
+
+A component that supports infinite scrolling.  This is used by default in the mobile theme's list view.
+
+**Since 3.0**
+
+[discrete]
+==== Bootstrapping
+
+.Loading Script in PHP
+[source,php]
+----
+xf_script('xataface/components/InfiniteScroll.js');
+----
+
+.Loading Script in Javascript using `require`
+[source,javascript]
+----
+//require <xataface/components/InfiniteScroll.js>
+----
+
+
+[discrete]
+==== Properties
+
+scrollEl::
+HTMLElement to which the scroll listener should be added.  Defaults to `<body>`
+
+parentEl::
+HTMLElement that should have elements added to it.  Defaults to the `.mobile-listing` div, which is the result list in mobile view.
+
+action::
+The Xataface action to use for fetching new rows.
+
+pageSize::
+The number of records to load each time.  Default is 30.
+
+[discrete]
+==== Methods
+
+loadMore()::
+Loads the next page of results.  If either no rows are loaded, or there is a problem loading rows (due to a network error), the InfiniteScroll's `reachedEnd` flag is set, which will prevent it from attempting to load any more records.
+
+[discrete]
+==== Usage Example
+
+[source,javascript]
+----
+new xataface.InfiniteScroll({
+   scrollEl : $('body').get(0),
+   parentEl : $('.mobile-listing').get(0) 
+});
+----
+        
 
 === xataface.Sheet
 
@@ -38,6 +92,7 @@ image::images/Image-160820-125111.003.png[]
 
 A component for displaying content in a Sheet.  Sheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.
 
+**Since 3.0**
 
 [discrete]
 ==== Bootstrapping

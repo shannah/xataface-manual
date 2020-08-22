@@ -251,4 +251,8 @@ mobile-title::
 mobile-description::
 `<div>` tag wrapping the record description.
 
+[discrete]
+==== Infinite Scroll
+
+You'll notice that the mobile list view doesn't include any paging buttons (e.g. "Previous" or "Next").  This is because it uses infinite scrolling.  When the user scrolls to the bottom of the list, it will automatically load the next 30 records and append them to the end of the list seamlessly.
 
