@@ -1,13 +1,15 @@
+[#preference-directives]
 == Preferences Directives
 
 [discrete]
 === How to Set Preferences
 
-Xataface preferences can be defined in 3 ways:
+Xataface preferences can be defined in 4 ways:
 
 . In the `[_prefs]` section of the conf.ini file for global static preferences.
 . Implementing the `getPreferences()` method in the Application Delegate Class
 . In the `__prefs__` section of the fields.ini file for a table for static preferences on that table. (Limited to only certain preferences).
+. Using the `prefs.key` fields.ini directive on fields of the users table to specify that the value of that field should be used as a preference for the currently logged in user.
 
 .Example [_prefs] section in the conf.ini
 [source,ini]
@@ -65,6 +67,7 @@ function getPreferences(){
 |result_list_use_geturl	|Use the getURL() method to link to records in the list view rather than the default (which uses the -cursor parameter).	|0	|0.7
 |disable_ajax_record_details	|Whether to disable the ajax record details (the '+' sign beside each record in list view that expands to show the record details.	|1	|0.7
 |use_old_resultlist_controller	As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.	|0	|1.1
+|user_stylesheet	The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app's `css` directory, or the `xataface/css` directory. See <<user-specific-stylesheet>>	|None	|3.0
 |====================
 
 [discrete]

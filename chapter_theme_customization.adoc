@@ -3,7 +3,7 @@
 
 The following sections form a sort of cook book with recipes for customizing themes in Xataface.
 
-
+[#adding-a-custom-stylesheet]
 === Adding a Custom Stylesheet
 
 [discrete]
@@ -104,5 +104,267 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 ----
 
 ====
+
+[#changing-color-scheme]
+=== Changing the Color Scheme
+
+[discrete]
+==== Problem
+
+You want to override the default color scheme with your own color scheme.
+
+[discrete]
+=== Solution
+
+**Add a custom stylesheet that redefines Xataface's theme color variables**
+
+Xataface uses CSS variables to define the colors for its theme.  You can create an entirely new color scheme by simply creating a custom stylesheet (see <<adding-a-custom-stylesheet>>) which redefines these variables.  Here is a bare-bones example of such a "theme" stylesheet:
+
+[source,css]
+----
+:root {
+
+    --mainBgColor: white; /* Body background color */
+    --mainTextColor: black; /* Default text color */
+    --secondaryTextColor: #666666; /* Used for descriptions text*/
+    
+    /* Link text colors */
+    --linkTextColor: #0366d6; 
+    --linkTextVisitedColor: Purple;
+    --linkTextActiveColor: Red;
+    
+    /* Colors used for block borders */
+    --highlightColor: rgb(225, 228, 232);
+    --highlightColorLight: rgb(236, 239, 241);
+    
+    --trimBgColor:#f6f8fa; /* Alt background color used for striping or providing contrast */
+    
+    /** Color of text in main buttons and menu items **/
+    --buttonColor: rgb(118, 118, 118);
+    --buttonBgColor: #28a745;
+    
+    /** Color of text in main buttons and menu items when selected */
+    --buttonSelectedColor: black;
+    
+    /** Navigation tab top border color when tab is selected */
+    --tabRidgeSelectedColor: darkorange;
+    --menuSelectedColor: black;
+    --menuBorderColor: rgb(218, 220, 224);
+    --menuBgColor: #fefefe;
+    --menuColor: #888888;
+    
+    /** Navigation tab top border color when hovering over the tab. */
+    --tabRidgeHoverColor: purple;
+    
+    /** The navigation tab ridge color when not selected. */
+    --tabRidgeColor: #eeeeee;
+    
+    /** Bg color of tab when hovering */
+    --tabHoverBgColor: rgb(244, 246, 250);
+    
+    --inputBgColor: var(--mainBgColor);
+    --inputTextColor: var(--mainTextColor);
+    --inputBorderColor: #666666;
+    --inputFocusedBorderColor: #ffa500;
+    
+    /** Login Form-specific Colors */
+    --loginFieldBgColor: #f5f5f5;   /* Input fields background */
+    --loginFieldUnderlineColor: #666666;  /* Input fields underline */
+    --loginFieldUnderlineFocusedColor: #28a745;
+    --loginFieldLabelColor: #888888;    
+    --loginFieldLabelFocusedColor: #28a745;
+    
+    /* Submit buttons */
+    --submitButtonBgColor: #28a745;
+    --submitButtonBgImage: linear-gradient(-180deg,#34d058,#28a745 90%);
+    --submitButtonTextColor: #fff;
+    
+    /* Alert and error message colors */
+    --messageBorderColor: #222;
+    --messageBgColor: #eaeaea;
+    --messageTextColor: #333;
+    
+    /* Mobile theme footer colors.  E.g. for bottom tabs */
+    --mobileFooterBgColor: #fefefe;
+    --mobileFooterBorderColor: #666666;
+    --mobileTabIconColor: #999999;
+    --mobileTabLabelColor: #999999;
+    --mobileTabIconSelectedColor: rgb(10,132,255);
+    --mobileTabLabelSelectedColor: rgb(10,132,255);
+    
+    /* Mobile theme status bar/titlebar */
+    --mobileStatusBarBgColor: black;
+    --mobileStatusBarBorderColor: black;
+    --mobileTitleTextColor: white;
+    
+    
+    /* Mobile theme sidebar */
+    --sidebarMenuTextColor: #fff;
+    --sidebarTextColor: rgba(255, 255, 255, 0.50);
+    
+}
+
+
+----
+
+NOTE: The list of CSS variables may grow or change over time.  Refer to the plone.css file in the Xataface root directory for a definitive list of styles.
+
+The following is an example "dark" theme for Xataface defined wholly overriding CSS color variables:
+
+[source,css]
+----
+:root {
+    --mainBgColor: black;
+    --trimBgColor:#333333;
+    --stripeBgColor: #333;
+    --mainTextColor: white;
+    --secondaryTextColor: #eaeaea;
+    --buttonColor:white;
+    --menuColor:#ddd;
+    --highlightColor: #333;
+    --highlightColorLight: #222;
+    --menuBorderColor: #111;
+    --menuBgColor:#222;
+    --tabHoverBgColor: #444;
+    --menuSelectedColor: white;
+    --linkTextColor: #eee;
+    --linkTextVisitedColor: #ddd;
+    
+    --loginFieldBgColor: #333;
+    --loginFieldUnderlineColor: #666;
+    --loginFieldUnderlineFocusedColor: #999;
+    --loginFieldLabelColor: #eee;
+    --loginFieldLabelFocusedColor: #fff;
+    --submitButtonBgColor: #444;
+    --submitButtonBgImage: linear-gradient(-180deg,#555,#333 90%);
+    
+    --mobileFooterBgColor: #333;
+    --mobileFooterBorderColor: #555;
+    
+    --inputBgColor: #333;
+    --inputBorderColor: #eee;
+    
+
+}
+----
+
+The result is:
+
+image::images/Image-151020-070807.242.png[]
+
+image::images/Image-151020-070904.513.png[]
+
+image::images/Image-151020-070931.742.png[]
+
+[#user-specific-stylesheet]
+=== Using Preferences to Override Color Scheme
+
+[discrete]
+==== Problem
+
+You want to use a different color scheme depending on which user is logged in, or other run-time environment factors.
+
+[discrete]
+==== Solution
+
+**Use the `user_stylesheet` preference to specify the name of a stylesheet to use.**
+
+The "user_stylesheet" preference (See <<preference-directives>>) allows you to specify the name of a stylesheet to inject into the current request.  Since preferences can be dynamically defined using the Application delegate's `getPreferences()` method, you can easily use environment information such as the current user or the current URL to define a custom color scheme on a per-user basis.
+
+For example:
+
+.A `getPreferences()` method inside the conf/ApplicationDelegate.php file for an application that defines a custom stylesheet for user "fred".
+[source,php]
+----
+<?php
+function getPreferences() {
+    $prefs = [];
+    if (getUserName() == 'fred') {
+        // Assuming you've defined your own getUserName() function somewhere
+        $prefs['user_stylesheet'] = 'fred.css';
+        
+    }
+    return $prefs;
+}
+----
+
+Now add a CSS file as "css/fred.css" with your custom styles for fred.
+
+See <<changing-color-scheme>> for details on changing the color scheme usinc CSS variables.
+
+[TIP]
+====
+Since preferences can also be defined statically in the conf.ini file, you can also provide a custom default stylesheet by specifying the "user_stylesheet" preference there.  E.g.
+
+[source,ini]
+----
+[_prefs]
+    user_stylesheet=fred.css
+----
+
+In this case every user would receive the fred.css file. 
+====
+
+[#user-selected-color-scheme]
+=== Allowing Users to Choose Their Own Color Scheme
+
+[discrete]
+==== Problem
+
+You want users to be able to select their own preferred color scheme.
+
+[discrete]
+==== Solution
+
+**Add a field to the "users" table with the `prefs.key=user_stylesheet` fields.ini property.**
+
+Xataface allows you to override preferences values using data from the currently logged in user's record.  The `prefs.key` fields.ini directive allows you to specify that the value of the field, in the currently logged in user record, will be used as a value for the specified preference.
+
+As an example, let's add a `VARCHAR(100)` column named "stylesheet" to the "users" table.
+
+Add the following to the "tables/users/fields.ini" file:
+
+.fields.ini file definition for "stylesheet" field.
+[source,ini]
+----
+[stylesheet]
+    prefs.key=user_stylesheet
+    vocabulary=stylesheets <1>
+    widget:type=select
+    widget:label="Theme"
+    widget:description="Select your preferred theme"
+----
+
+NOTE: I specify the location as "tables/users/fields.ini", but, of course, your path will depend on the name of your users table.
+
+
+Notice that we specified a vocabulary for the vield.  We'll define that in the valuelists.ini file.
+
+E.g.
+
+."stylesheets" vocabulary defined in the valuelists.ini file; used as options in the stylesheet select list.
+[source,ini]
+----
+[stylesheets]
+dark.css="Dark Theme"
+ocean.css="Ocean Theme"
+.. etc..
+----
+
+And, finally, ensure that we have added our stylesheets (dark.css and ocean.css) into the "css" directory of our app.
+
+For details on creating custom color schemes using CSS, see <<changing-color-scheme>>.
+
+Now the user can change their own color scheme, by simply editing their profile inside the app.
+
+[IMPORTANT]
+====
+The user will require edit permissions for the "stylesheet"  field of their own user record in order for this solution to work.
+====
+
+
+
+
+
 
 

@@ -1,0 +1,12 @@
+[getting_started]
+= Getting Started
+
+This section provides the tools to get you bootstrapped in Xataface.  In general, you can read the sections of this book in any order, but I recommend you at least start with this section as it will give you the vocabulary and experience to understand the content in all other sections.
+
+include::introduction.adoc[]
+
+include::installation.adoc[]
+
+include::Hello-World.adoc[]
+
+include::faculty-of-widgetry-tutorial.adoc[]

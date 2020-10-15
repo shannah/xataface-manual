@@ -461,7 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_outgrowing_the_mould">Outgrowing the Mould</a></li>
 </ul>
 </li>
-<li><a href="#_fundmentals">Fundmentals</a></li>
+<li><a href="#_getting_started">Getting Started</a></li>
 <li><a href="#_introduction">Introduction</a>
 <ul class="sectlevel2">
 <li><a href="#_requirements">Requirements</a></li>
@@ -518,7 +518,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#theme_customization">Theme Customization</a>
 <ul class="sectlevel2">
-<li><a href="#_adding_a_custom_stylesheet">Adding a Custom Stylesheet</a></li>
+<li><a href="#adding-a-custom-stylesheet">Adding a Custom Stylesheet</a></li>
+<li><a href="#changing-color-scheme">Changing the Color Scheme</a></li>
+<li><a href="#user-specific-stylesheet">Using Preferences to Override Color Scheme</a></li>
+<li><a href="#user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</a></li>
 </ul>
 </li>
 <li><a href="#form_customization">Form Customization</a>
@@ -586,7 +589,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
 <li><a href="#_fields_ini_directives">Fields.ini Directives</a></li>
-<li><a href="#_preferences_directives">Preferences Directives</a></li>
+<li><a href="#preference-directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
 <ul class="sectlevel2">
 <li><a href="#rss-getfeed"><code>getFeed()</code> Delegate Method</a></li>
@@ -890,10 +893,10 @@ Xataface 3.0 finally eliminates the original theme (nearly) entirely, but if you
 </div>
 </div>
 <div class="sect1">
-<h2 id="_fundmentals">Fundmentals</h2>
+<h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section covers the fundamentals of Xataface</p>
+<p>This section provides the tools to get you bootstrapped in Xataface.  In general, you can read the sections of this book in any order, but I recommend you at least start with this section as it will give you the vocabulary and experience to understand the content in all other sections.</p>
 </div>
 </div>
 </div>
@@ -2654,7 +2657,7 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 <p>The following sections form a sort of cook book with recipes for customizing themes in Xataface.</p>
 </div>
 <div class="sect2">
-<h3 id="_adding_a_custom_stylesheet">Adding a Custom Stylesheet</h3>
+<h3 id="adding-a-custom-stylesheet">Adding a Custom Stylesheet</h3>
 <h4 id="_problem_5" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.</p>
@@ -2764,6 +2767,317 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="changing-color-scheme">Changing the Color Scheme</h3>
+<h4 id="_problem_6" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to override the default color scheme with your own color scheme.</p>
+</div>
+<h3 id="_solution_6" class="discrete">Solution</h3>
+<div class="paragraph">
+<p><strong>Add a custom stylesheet that redefines Xataface&#8217;s theme color variables</strong></p>
+</div>
+<div class="paragraph">
+<p>Xataface uses CSS variables to define the colors for its theme.  You can create an entirely new color scheme by simply creating a custom stylesheet (see <a href="#adding-a-custom-stylesheet">Adding a Custom Stylesheet</a>) which redefines these variables.  Here is a bare-bones example of such a "theme" stylesheet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-css" data-lang="css">:root {
+
+    --mainBgColor: white; /* Body background color */
+    --mainTextColor: black; /* Default text color */
+    --secondaryTextColor: #666666; /* Used for descriptions text*/
+
+    /* Link text colors */
+    --linkTextColor: #0366d6;
+    --linkTextVisitedColor: Purple;
+    --linkTextActiveColor: Red;
+
+    /* Colors used for block borders */
+    --highlightColor: rgb(225, 228, 232);
+    --highlightColorLight: rgb(236, 239, 241);
+
+    --trimBgColor:#f6f8fa; /* Alt background color used for striping or providing contrast */
+
+    /** Color of text in main buttons and menu items **/
+    --buttonColor: rgb(118, 118, 118);
+    --buttonBgColor: #28a745;
+
+    /** Color of text in main buttons and menu items when selected */
+    --buttonSelectedColor: black;
+
+    /** Navigation tab top border color when tab is selected */
+    --tabRidgeSelectedColor: darkorange;
+    --menuSelectedColor: black;
+    --menuBorderColor: rgb(218, 220, 224);
+    --menuBgColor: #fefefe;
+    --menuColor: #888888;
+
+    /** Navigation tab top border color when hovering over the tab. */
+    --tabRidgeHoverColor: purple;
+
+    /** The navigation tab ridge color when not selected. */
+    --tabRidgeColor: #eeeeee;
+
+    /** Bg color of tab when hovering */
+    --tabHoverBgColor: rgb(244, 246, 250);
+
+    --inputBgColor: var(--mainBgColor);
+    --inputTextColor: var(--mainTextColor);
+    --inputBorderColor: #666666;
+    --inputFocusedBorderColor: #ffa500;
+
+    /** Login Form-specific Colors */
+    --loginFieldBgColor: #f5f5f5;   /* Input fields background */
+    --loginFieldUnderlineColor: #666666;  /* Input fields underline */
+    --loginFieldUnderlineFocusedColor: #28a745;
+    --loginFieldLabelColor: #888888;
+    --loginFieldLabelFocusedColor: #28a745;
+
+    /* Submit buttons */
+    --submitButtonBgColor: #28a745;
+    --submitButtonBgImage: linear-gradient(-180deg,#34d058,#28a745 90%);
+    --submitButtonTextColor: #fff;
+
+    /* Alert and error message colors */
+    --messageBorderColor: #222;
+    --messageBgColor: #eaeaea;
+    --messageTextColor: #333;
+
+    /* Mobile theme footer colors.  E.g. for bottom tabs */
+    --mobileFooterBgColor: #fefefe;
+    --mobileFooterBorderColor: #666666;
+    --mobileTabIconColor: #999999;
+    --mobileTabLabelColor: #999999;
+    --mobileTabIconSelectedColor: rgb(10,132,255);
+    --mobileTabLabelSelectedColor: rgb(10,132,255);
+
+    /* Mobile theme status bar/titlebar */
+    --mobileStatusBarBgColor: black;
+    --mobileStatusBarBorderColor: black;
+    --mobileTitleTextColor: white;
+
+
+    /* Mobile theme sidebar */
+    --sidebarMenuTextColor: #fff;
+    --sidebarTextColor: rgba(255, 255, 255, 0.50);
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The list of CSS variables may grow or change over time.  Refer to the plone.css file in the Xataface root directory for a definitive list of styles.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following is an example "dark" theme for Xataface defined wholly overriding CSS color variables:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-css" data-lang="css">:root {
+    --mainBgColor: black;
+    --trimBgColor:#333333;
+    --stripeBgColor: #333;
+    --mainTextColor: white;
+    --secondaryTextColor: #eaeaea;
+    --buttonColor:white;
+    --menuColor:#ddd;
+    --highlightColor: #333;
+    --highlightColorLight: #222;
+    --menuBorderColor: #111;
+    --menuBgColor:#222;
+    --tabHoverBgColor: #444;
+    --menuSelectedColor: white;
+    --linkTextColor: #eee;
+    --linkTextVisitedColor: #ddd;
+
+    --loginFieldBgColor: #333;
+    --loginFieldUnderlineColor: #666;
+    --loginFieldUnderlineFocusedColor: #999;
+    --loginFieldLabelColor: #eee;
+    --loginFieldLabelFocusedColor: #fff;
+    --submitButtonBgColor: #444;
+    --submitButtonBgImage: linear-gradient(-180deg,#555,#333 90%);
+
+    --mobileFooterBgColor: #333;
+    --mobileFooterBorderColor: #555;
+
+    --inputBgColor: #333;
+    --inputBorderColor: #eee;
+
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result is:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-151020-070807.242.png" alt="Image 151020 070807.242">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-151020-070904.513.png" alt="Image 151020 070904.513">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-151020-070931.742.png" alt="Image 151020 070931.742">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="user-specific-stylesheet">Using Preferences to Override Color Scheme</h3>
+<h4 id="_problem_7" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to use a different color scheme depending on which user is logged in, or other run-time environment factors.</p>
+</div>
+<h4 id="_solution_7" class="discrete">Solution</h4>
+<div class="paragraph">
+<p><strong>Use the <code>user_stylesheet</code> preference to specify the name of a stylesheet to use.</strong></p>
+</div>
+<div class="paragraph">
+<p>The "user_stylesheet" preference (See <a href="#preference-directives">Preferences Directives</a>) allows you to specify the name of a stylesheet to inject into the current request.  Since preferences can be dynamically defined using the Application delegate&#8217;s <code>getPreferences()</code> method, you can easily use environment information such as the current user or the current URL to define a custom color scheme on a per-user basis.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="title">A <code>getPreferences()</code> method inside the conf/ApplicationDelegate.php file for an application that defines a custom stylesheet for user "fred".</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+function getPreferences() {
+    $prefs = [];
+    if (getUserName() == 'fred') {
+        // Assuming you've defined your own getUserName() function somewhere
+        $prefs['user_stylesheet'] = 'fred.css';
+
+    }
+    return $prefs;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now add a CSS file as "css/fred.css" with your custom styles for fred.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#changing-color-scheme">Changing the Color Scheme</a> for details on changing the color scheme usinc CSS variables.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Since preferences can also be defined statically in the conf.ini file, you can also provide a custom default stylesheet by specifying the "user_stylesheet" preference there.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_prefs]
+    user_stylesheet=fred.css</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case every user would receive the fred.css file.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</h3>
+<h4 id="_problem_8" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want users to be able to select their own preferred color scheme.</p>
+</div>
+<h4 id="_solution_8" class="discrete">Solution</h4>
+<div class="paragraph">
+<p><strong>Add a field to the "users" table with the <code>prefs.key=user_stylesheet</code> fields.ini property.</strong></p>
+</div>
+<div class="paragraph">
+<p>Xataface allows you to override preferences values using data from the currently logged in user&#8217;s record.  The <code>prefs.key</code> fields.ini directive allows you to specify that the value of the field, in the currently logged in user record, will be used as a value for the specified preference.</p>
+</div>
+<div class="paragraph">
+<p>As an example, let&#8217;s add a <code>VARCHAR(100)</code> column named "stylesheet" to the "users" table.</p>
+</div>
+<div class="paragraph">
+<p>Add the following to the "tables/users/fields.ini" file:</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini file definition for "stylesheet" field.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[stylesheet]
+    prefs.key=user_stylesheet
+    vocabulary=stylesheets <b class="conum">(1)</b>
+    widget:type=select
+    widget:label="Theme"
+    widget:description="Select your preferred theme"</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+I specify the location as "tables/users/fields.ini", but, of course, your path will depend on the name of your users table.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Notice that we specified a vocabulary for the vield.  We&#8217;ll define that in the valuelists.ini file.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">"stylesheets" vocabulary defined in the valuelists.ini file; used as options in the stylesheet select list.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[stylesheets]
+dark.css="Dark Theme"
+ocean.css="Ocean Theme"
+.. etc..</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And, finally, ensure that we have added our stylesheets (dark.css and ocean.css) into the "css" directory of our app.</p>
+</div>
+<div class="paragraph">
+<p>For details on creating custom color schemes using CSS, see <a href="#changing-color-scheme">Changing the Color Scheme</a>.</p>
+</div>
+<div class="paragraph">
+<p>Now the user can change their own color scheme, by simply editing their profile inside the app.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The user will require edit permissions for the "stylesheet"  field of their own user record in order for this solution to work.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2774,11 +3088,11 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </div>
 <div class="sect2">
 <h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
-<h4 id="_problem_6" class="discrete">Problem</h4>
+<h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h4 id="_solution_6" class="discrete">Solution</h4>
+<h4 id="_solution_9" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -3058,11 +3372,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
-<h4 id="_problem_7" class="discrete">Problem</h4>
+<h4 id="_problem_10" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h4 id="_solution_7" class="discrete">Solution</h4>
+<h4 id="_solution_10" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -3098,11 +3412,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
-<h4 id="_problem_8" class="discrete">Problem</h4>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h4 id="_solution_8" class="discrete">Solution</h4>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -3149,11 +3463,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</h3>
-<h4 id="_problem_9" class="discrete">Problem</h4>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h4 id="_solution_9" class="discrete">Solution</h4>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -3237,11 +3551,11 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 <div class="sect2">
 <h3 id="display-field-preview-using-ajax">Displaying Field Preview using AJAX</h3>
-<h4 id="_problem_10" class="discrete">Problem</h4>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h4 id="_solution_10" class="discrete">Solution</h4>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -3413,11 +3727,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
-<h4 id="_problem_11" class="discrete">Problem</h4>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h4 id="_solution_11" class="discrete">Solution</h4>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -3433,11 +3747,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
-<h4 id="_problem_12" class="discrete">Problem</h4>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h4 id="_solution_12" class="discrete">Solution</h4>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -3476,11 +3790,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
-<h4 id="_problem_13" class="discrete">Problem</h4>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h4 id="_solution_13" class="discrete">Solution</h4>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -3512,7 +3826,7 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
-<h4 id="_problem_14" class="discrete">Problem</h4>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -3525,7 +3839,7 @@ class actions_ajax_post_preview {
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h4 id="_solution_14" class="discrete">Solution</h4>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -3545,11 +3859,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_sorting_filter_results">Sorting Filter Results</h3>
-<h4 id="_problem_15" class="discrete">Problem</h4>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h4 id="_solution_15" class="discrete">Solution</h4>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -3567,11 +3881,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
-<h4 id="_problem_16" class="discrete">Problem</h4>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h4 id="_solution_16" class="discrete">Solution</h4>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -3610,11 +3924,11 @@ class tables_MyTable {
 </div>
 <div class="sect2">
 <h3 id="_adding_row_actions">Adding Row Actions</h3>
-<h4 id="_problem_17" class="discrete">Problem</h4>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h4 id="_solution_17" class="discrete">Solution</h4>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -3672,11 +3986,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
-<h4 id="_problem_18" class="discrete">Problem</h4>
+<h4 id="_problem_21" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h4 id="_solution_18" class="discrete">Solution</h4>
+<h4 id="_solution_21" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -3705,11 +4019,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
-<h4 id="_problem_19" class="discrete">Problem</h4>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h4 id="_solution_19" class="discrete">Solution</h4>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -3798,11 +4112,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
-<h4 id="_problem_20" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h4 id="_solution_20" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -4095,11 +4409,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
-<h4 id="_problem_21" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h4 id="_solution_21" class="discrete">Solution</h4>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
@@ -4109,12 +4423,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="default-sort">Specifying Default Sorting</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the records in a particular table to be sorted on a particular column by default.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_22">Solution</h4>
+<h4 id="_solution_25">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_sort</code> property of the fields.ini file.</p>
 </div>
@@ -4136,11 +4450,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -4164,11 +4478,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -4194,12 +4508,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_25">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -4261,11 +4575,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_26" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -4301,11 +4615,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_27" class="discrete">Solution</h4>
+<h4 id="_solution_30" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -4336,11 +4650,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_31" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -4352,11 +4666,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_29" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -4429,11 +4743,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_30" class="discrete">Solution</h4>
+<h4 id="_solution_33" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -4468,11 +4782,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_34" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -4517,11 +4831,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_32" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -4545,11 +4859,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_33" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -5494,6 +5808,13 @@ widget:type=static
 <p><strong>Since 0.6</strong></p>
 </div>
 </dd>
+<dt class="hdlist1">prefs.key</dt>
+<dd>
+<p>The name of a preference to set with the value of this field in the currently logged-in user record.  See <a href="#preferences-directives">[preferences-directives]</a> for more information about preferences.  See <a href="#user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</a> for an example using <code>prefs.key=user_stylesheet</code>.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">relationship</dt>
 <dd>
 <p>Used only with complex fields that involve editing related records (e.g. grid). This is the name of the relationship that the field should be edited.</p>
@@ -5975,11 +6296,11 @@ If no columns in the table define the <code>sortable</code> property, then all c
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preferences_directives">Preferences Directives</h2>
+<h2 id="preference-directives">Preferences Directives</h2>
 <div class="sectionbody">
 <h3 id="_how_to_set_preferences" class="discrete">How to Set Preferences</h3>
 <div class="paragraph">
-<p>Xataface preferences can be defined in 3 ways:</p>
+<p>Xataface preferences can be defined in 4 ways:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -5991,6 +6312,9 @@ If no columns in the table define the <code>sortable</code> property, then all c
 </li>
 <li>
 <p>In the <code><em>prefs</em></code> section of the fields.ini file for a table for static preferences on that table. (Limited to only certain preferences).</p>
+</li>
+<li>
+<p>Using the <code>prefs.key</code> fields.ini directive on fields of the users table to specify that the value of that field should be used as a preference for the currently logged in user.</p>
 </li>
 </ol>
 </div>
@@ -6214,6 +6538,12 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <td class="tableblock halign-left valign-top"><p class="tableblock">Whether to disable the ajax record details (the '+' sign beside each record in list view that expands to show the record details.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use_old_resultlist_controller	As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user_stylesheet	The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app&#8217;s <code>css</code> directory, or the <code>xataface/css</code> directory. See <a href="#user-specific-stylesheet">Using Preferences to Override Color Scheme</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -7279,7 +7609,7 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-21 07:15:03 -0700
+Last updated 2020-08-30 05:42:09 -0700
 </div>
 </div>
 </body>

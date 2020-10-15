@@ -8,7 +8,7 @@ Steve Hannah
 
 include::preface.adoc[]
 
-include::part_fundamentals.adoc[]
+include::part_getting_started.adoc[]
 
 include::part_sorting_and_filtering.adoc[]
 

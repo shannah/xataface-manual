@@ -1,0 +1,18 @@
+[customization]
+= Customization
+
+In the <<getting_started,previous section>> you learned the basics of setting up a Xataface application.  You should now be ready to take what you learned and dig deeper.  The "Xataface" philosophy is for applications to work out of the box, but to allow infinite customization using both configuration files, and PHP.
+
+The first things you'll want to customize are:
+
+The list View::
+Configure the layout of each row of your list.  Whether to use a grid (rows and columns) or more of a news-style list.
+
+Filters and Sorting::
+Configure which columns can be used to filter and sort result sets, and what type of filters should be used for each field.
+
+Details View::
+Configure how the details view looks for each record.  You can use a default template, which displays the record's data as a table of key-value pairs, or you can use your own custom template.
+
+New/Edit Record Forms::
+Configure the forms for editing 

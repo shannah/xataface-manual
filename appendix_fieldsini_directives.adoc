@@ -346,6 +346,11 @@ The order of the field when laid out on forms and lists. Can contain any floatin
 +
 *Since 0.6*
 
+prefs.key::
+The name of a preference to set with the value of this field in the currently logged-in user record.  See <<preferences-directives>> for more information about preferences.  See <<user-selected-color-scheme>> for an example using `prefs.key=user_stylesheet`.
++
+*Since 3.0*
+
 relationship::	
 Used only with complex fields that involve editing related records (e.g. grid). This is the name of the relationship that the field should be edited.	
 +
