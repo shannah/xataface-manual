@@ -3,6 +3,45 @@
 
 The following chapters cover all things security-related in Xataface.
 
+[#oauth2]
+=== OAuth2 Authentication
+
+Xataface supports Oauth2 authentication via the https://github.com/shannah/xataface-module-oauth[oauth module].  This module provides all of core functionality to support OAuth2.  
+There are also modules built to provide Oauth support for specific services, such as https://github.com/shannah/xataface-module-oauth-facebook[Facebook], https://github.com/shannah/xataface-module-oauth-twitter[Twitter], https://github.com/shannah/xataface-module-oauth-linkedin[LinkedIn], and https://github.com/shannah/xataface-module-oauth-instagram[Instagram]. These "sub" modules all depend on the core https://github.com/shannah/xataface-module-oauth[oauth module].  They simply provide a few specific configuration settings to support OAuth2 on those services.
+
+[TIP]
+====
+OAuth 2.0 is the industry-standard protocol for authorization. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices. This specification and its extensions are being developed within the IETF OAuth Working Group.
+
+For more information about the Oauth2 spec, see https://oauth.net/2/[the official OAuth 2.0 website].
+====
+
+==== Adding OAuth2 Login Support
+
+The first step toward adding OAuth2 support in your app, is to download the https://github.com/shannah/xataface-module-oauth[oauth module] into the `modules` directory of your application. E.g.
+
+`modules/oauth/oauth.php`
+
+And add a a corresponding entry to the `[_modules]` section of your conf.ini file:
+
+[source,ini]
+----
+[_modules]
+  modules_oauth=modules/oauth/oauth.php
+----
+
+You'll also need to add the `pre_auth_types` entry to the `[_auth]` section oc your conf.ini file:
+
+.Adding `pre_auth_types=oauth_token` to the `_auth` section of your conf.ini file instructs Xataface to attempt authentication using the oauth
+[source,ini]
+----
+[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    pre_auth_types=oauth_token
+----
+
 === API Authentication
 
 .Login sequence using example curl HTTP request.

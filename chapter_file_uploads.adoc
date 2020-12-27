@@ -25,3 +25,59 @@ Now, when users click on the link for this field, the browser will navigate to t
 
 TIP: The `contentDisposition` directive will be used to set the `Content-Disposition` HTTP header.  Learn more about this header https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition[here].
 
+[#generating-thumbnails]
+=== Generating Thumbnails
+
+[discrete]
+==== Problem
+
+I want to automatically resize uploaded images to specific dimensions.
+
+[discrete]
+==== Solution
+
+Use the `transform` property on the Container field in the fields.ini file.
+
+[source,ini]
+----
+[file]
+    Type=container
+    widget:description="Select image to upload"
+    transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"
+----
+
+In the above snippet, I've defined two thumbnail sizes for uploaded images:
+
+. *itunes300*, which resizes images to 300 pixels wide and 300 pixels high, and crops the image so that it fills the entire image (so it may cut off some of the image on top/bottom or left/right.
+. *itunes1400*, which resizes images to be 1400 pixels high and wide.  It also fills the entire image, so may cut off some of hte image on top/bottom or left/right.
+
+
+[discrete]
+==== The Right Thumbnail for the Right Occasion
+
+The *transform* directive will cause images to be automatically resized at the time that the images are uploaded, but it doesn't specify how and when the thumbnails are used.  You might want a small (100px) thumbnail used when displaying the record in list view, and a slightly larger image (640x480) used in the view tab.  In the above example we've defined two thumbnail sizes "itunes300" and "itunes1400".
+
+The default behaviour is to display the *first* thumbnail type defined in all situations.  If you want a particular action to use a different thumbnail by default, then you can use the `thumbnail.ACTIONNAME` fields.ini directive to specify this.
+
+For example, if you want the "view" action to use the "itunes1400" thumbnail, you would add the following:
+
+[source,ini]
+----
+thumbnail.view=itunes1400
+----
+
+So the full snippet becomes:
+
+[source,ini]
+----
+[file]
+    Type=container
+    widget:description="Select image to upload"
+    transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"
+    thumbnail.list = itunes1400
+----
+
+
+
+
+

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.12">
 <meta name="author" content="Steve Hannah">
 <title>Xataface Definitive Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -48,7 +48,7 @@ textarea{overflow:auto;vertical-align:top}
 table{border-collapse:collapse;border-spacing:0}
 *,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 html,body{font-size:100%}
-body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
 a:hover{cursor:pointer}
 img,object,embed{max-width:100%;height:auto}
 object,embed{height:100%}
@@ -63,10 +63,8 @@ img{-ms-interpolation-mode:bicubic}
 img,object,svg{display:inline-block;vertical-align:middle}
 textarea{height:auto;min-height:50px}
 select{width:100%}
-.center{margin-left:auto;margin-right:auto}
-.stretch{width:100%}
 .subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
-div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
 a{color:#2156a5;text-decoration:underline;line-height:inherit}
 a:hover,a:focus{color:#1d4b8f}
 a img{border:0}
@@ -106,19 +104,22 @@ h1{font-size:2.75em}
 h2{font-size:2.3125em}
 h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
 h4{font-size:1.4375em}}
-table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede;word-wrap:normal}
 table thead,table tfoot{background:#f7f8f7}
 table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
 table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
 table tr.even,table tr.alt{background:#f8f8f7}
-table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
 h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
 h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
 .clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
 .clearfix::after,.float-group::after{clear:both}
-:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
-:not(pre)>code.nobreak{word-wrap:normal}
-:not(pre)>code.nowrap{white-space:nowrap}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
 pre>code{display:block}
@@ -183,7 +184,7 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
 #content #toc>:first-child{margin-top:0}
 #content #toc>:last-child{margin-bottom:0}
-#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
 #footer-text{color:rgba(255,255,255,.8);line-height:1.44}
 #content{margin-bottom:.625em}
 .sect1{padding-bottom:.625em}
@@ -206,7 +207,7 @@ table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font
 .admonitionblock>table td.icon{text-align:center;width:80px}
 .admonitionblock>table td.icon img{max-width:none}
 .admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
-.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
 .exampleblock>.content>:first-child{margin-top:0}
@@ -216,7 +217,7 @@ table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font
 .sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
 .exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
-.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
@@ -262,21 +263,20 @@ pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
 .quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
 .quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
-table.tableblock{max-width:100%;border-collapse:separate}
 p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
 td.tableblock>.content>:last-child{margin-bottom:-1.25em}
-td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
 table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
-table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
-table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
-table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
-table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
-table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
-table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
-table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
 table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
 table.frame-sides{border-width:0 1px}
-table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
 table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
@@ -285,7 +285,7 @@ th.valign-top,td.valign-top{vertical-align:top}
 th.valign-bottom,td.valign-bottom{vertical-align:bottom}
 th.valign-middle,td.valign-middle{vertical-align:middle}
 table thead th,table tfoot th{font-weight:bold}
-tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th{background:#f7f8f7}
 tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
 p.tableblock>code:only-child{background:none;padding:0}
 p.tableblock{font-size:1em}
@@ -314,6 +314,7 @@ ol.lowergreek{list-style-type:lower-greek}
 .hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
 td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
 td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
 .literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
 .colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
 .colist td:not([class]):first-child img{max-width:none}
@@ -386,7 +387,7 @@ a span.icon>.fa{cursor:inherit}
 .admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
 .admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
 .admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
-.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:50%;border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
 .conum[data-value] *{color:#fff!important}
 .conum[data-value]+b{display:none}
 .conum[data-value]::after{content:attr(data-value)}
@@ -413,6 +414,7 @@ thead{display:table-header-group}
 svg{max-width:100%}
 p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
 h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
 #toc,.sidebarblock,.exampleblock>.content{background:none!important}
 #toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
 body.book #header{text-align:center}
@@ -513,6 +515,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#security">Security</a>
 <ul class="sectlevel2">
+<li><a href="#oauth2">OAuth2 Authentication</a></li>
 <li><a href="#_api_authentication">API Authentication</a></li>
 </ul>
 </li>
@@ -560,6 +563,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#file_uploads">File Uploads</a>
 <ul class="sectlevel2">
 <li><a href="#_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</a></li>
+<li><a href="#generating-thumbnails">Generating Thumbnails</a></li>
 </ul>
 </li>
 <li><a href="#http_request_handling">HTTP Request Handling</a>
@@ -588,12 +592,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
-<li><a href="#_fields_ini_directives">Fields.ini Directives</a></li>
+<li><a href="#fieldsini-directives">Fields.ini Directives</a></li>
 <li><a href="#preference-directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
 <ul class="sectlevel2">
 <li><a href="#rss-getfeed"><code>getFeed()</code> Delegate Method</a></li>
 <li><a href="#rss-getfeeditem"><code>getFeedItem()</code> Delegate Method</a></li>
+</ul>
+</li>
+<li><a href="#_thumbnail_handling">Thumbnail Handling</a>
+<ul class="sectlevel2">
+<li><a href="#_how_it_works">How it works</a></li>
+<li><a href="#_php_api">PHP API</a></li>
 </ul>
 </li>
 <li><a href="#_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</a></li>
@@ -2585,6 +2595,61 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following chapters cover all things security-related in Xataface.</p>
+</div>
+<div class="sect2">
+<h3 id="oauth2">OAuth2 Authentication</h3>
+<div class="paragraph">
+<p>Xataface supports Oauth2 authentication via the <a href="https://github.com/shannah/xataface-module-oauth">oauth module</a>.  This module provides all of core functionality to support OAuth2.
+There are also modules built to provide Oauth support for specific services, such as <a href="https://github.com/shannah/xataface-module-oauth-facebook">Facebook</a>, <a href="https://github.com/shannah/xataface-module-oauth-twitter">Twitter</a>, <a href="https://github.com/shannah/xataface-module-oauth-linkedin">LinkedIn</a>, and <a href="https://github.com/shannah/xataface-module-oauth-instagram">Instagram</a>. These "sub" modules all depend on the core <a href="https://github.com/shannah/xataface-module-oauth">oauth module</a>.  They simply provide a few specific configuration settings to support OAuth2 on those services.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>OAuth 2.0 is the industry-standard protocol for authorization. OAuth 2.0 focuses on client developer simplicity while providing specific authorization flows for web applications, desktop applications, mobile phones, and living room devices. This specification and its extensions are being developed within the IETF OAuth Working Group.</p>
+</div>
+<div class="paragraph">
+<p>For more information about the Oauth2 spec, see <a href="https://oauth.net/2/">the official OAuth 2.0 website</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_adding_oauth2_login_support">Adding OAuth2 Login Support</h4>
+<div class="paragraph">
+<p>The first step toward adding OAuth2 support in your app, is to download the <a href="https://github.com/shannah/xataface-module-oauth">oauth module</a> into the <code>modules</code> directory of your application. E.g.</p>
+</div>
+<div class="paragraph">
+<p><code>modules/oauth/oauth.php</code></p>
+</div>
+<div class="paragraph">
+<p>And add a a corresponding entry to the <code>[_modules]</code> section of your conf.ini file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_modules]
+  modules_oauth=modules/oauth/oauth.php</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll also need to add the <code>pre_auth_types</code> entry to the <code>[_auth]</code> section oc your conf.ini file:</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding <code>pre_auth_types=oauth_token</code> to the <code>_auth</code> section of your conf.ini file instructs Xataface to attempt authentication using the oauth</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    pre_auth_types=oauth_token</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_api_authentication">API Authentication</h3>
@@ -4605,6 +4670,65 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="generating-thumbnails">Generating Thumbnails</h3>
+<h4 id="_problem_30" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>I want to automatically resize uploaded images to specific dimensions.</p>
+</div>
+<h4 id="_solution_30" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[file]
+    Type=container
+    widget:description="Select image to upload"
+    transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above snippet, I&#8217;ve defined two thumbnail sizes for uploaded images:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>itunes300</strong>, which resizes images to 300 pixels wide and 300 pixels high, and crops the image so that it fills the entire image (so it may cut off some of the image on top/bottom or left/right.</p>
+</li>
+<li>
+<p><strong>itunes1400</strong>, which resizes images to be 1400 pixels high and wide.  It also fills the entire image, so may cut off some of hte image on top/bottom or left/right.</p>
+</li>
+</ol>
+</div>
+<h4 id="_the_right_thumbnail_for_the_right_occasion" class="discrete">The Right Thumbnail for the Right Occasion</h4>
+<div class="paragraph">
+<p>The <strong>transform</strong> directive will cause images to be automatically resized at the time that the images are uploaded, but it doesn&#8217;t specify how and when the thumbnails are used.  You might want a small (100px) thumbnail used when displaying the record in list view, and a slightly larger image (640x480) used in the view tab.  In the above example we&#8217;ve defined two thumbnail sizes "itunes300" and "itunes1400".</p>
+</div>
+<div class="paragraph">
+<p>The default behaviour is to display the <strong>first</strong> thumbnail type defined in all situations.  If you want a particular action to use a different thumbnail by default, then you can use the <code>thumbnail.ACTIONNAME</code> fields.ini directive to specify this.</p>
+</div>
+<div class="paragraph">
+<p>For example, if you want the "view" action to use the "itunes1400" thumbnail, you would add the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">thumbnail.view=itunes1400</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So the full snippet becomes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[file]
+    Type=container
+    widget:description="Select image to upload"
+    transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"
+    thumbnail.list = itunes1400</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -4615,11 +4739,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_30" class="discrete">Solution</h4>
+<h4 id="_solution_31" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -4650,11 +4774,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -4666,11 +4790,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_32" class="discrete">Solution</h4>
+<h4 id="_solution_33" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -4743,11 +4867,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_33" class="discrete">Solution</h4>
+<h4 id="_solution_34" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -4782,11 +4906,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_34" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_34" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -4831,11 +4955,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_35" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -4859,11 +4983,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_36" class="discrete">Problem</h4>
+<h4 id="_problem_37" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -5349,7 +5473,7 @@ A logo or icon that is rendered on the left side.  You can customize this image 
 </div>
 </div>
 <div class="sect1">
-<h2 id="_fields_ini_directives">Fields.ini Directives</h2>
+<h2 id="fieldsini-directives">Fields.ini Directives</h2>
 <div class="sectionbody">
 <h3 id="_overview" class="discrete">Overview</h3>
 <div class="paragraph">
@@ -5917,6 +6041,59 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p>Boolean value (0 or 1) indicating whether this field should be treated as a title field.</p>
 <div class="paragraph">
 <p><strong>Since 0.7</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">transform</dt>
+<dd>
+<p>String defining rules for generating thumbnails for uploaded images.  This directive is only used with Container fields.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Syntax</strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>transform=name1 [op1:]w1xh1; ...;nameN [opN:]wNxhN</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>name1</code> &#8230;&#8203; <code>nameN</code> are names of the thumbnail sizes you wish to resize images to.</p>
+</li>
+<li>
+<p><code>w1</code> &#8230;&#8203; <code>wN</code> are corresponding widths in pixels,</p>
+</li>
+<li>
+<p><code>h1</code> &#8230;&#8203; <code>hN</code> are corresponding heights in pixels, and</p>
+</li>
+<li>
+<p><code>op1</code> &#8230;&#8203; <code>opN</code> are the corresponding operations to perform for resizing.  Currently the only operations supported are "fit" and "fill".  "fit" will cause the image to be resized to "fit" completely inside the dimensions of the thumbnail size, and "fill" will cause the image to fill the thumbnail space completely, possibly cropping some off edges to make it fit.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="paragraph">
+<p><code>transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"</code></p>
+</div>
+<div class="paragraph">
+<p>Defines two thumbnail types "itunes300" and "itunes1400" with sizes 300x300 pixels and 1400x1400 pixels respectively. This means that images uploaded to this container field will automatically have thumbnails generated in those two sizes.  Both of these thumbnail types use the "fill" operation so images will be resized to fill the space, and may have some cropped off the edges.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This directive is commonly used with <code>thumbnail.ACTIONNAME</code> directives which specify which thumbnail should be used in which action.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#generating-thumbnails">Generating Thumbnails</a> for a recipe on how to use this directive.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
 </div>
 </dd>
 <dt class="hdlist1">transient</dt>
@@ -6867,6 +7044,244 @@ RSS feeds will work perfectly well without defining this method. This just allow
 </div>
 </div>
 <div class="sect1">
+<h2 id="_thumbnail_handling">Thumbnail Handling</h2>
+<div class="sectionbody">
+<h3 id="_overview_2" class="discrete">Overview</h3>
+<div class="paragraph">
+<p>Xataface 3.0 includes automatic thumbnail generation for Container fields.  See the <a href="#generating-thumbnails">Generating Thumbnails</a> recipe for an example of how to use this feature.  You can also refer to the <a href="#fieldsini-directives">Fields.ini Directives</a> section to see the syntax of the  <code>transform</code> and <code>thumbnail.ACTIONAME</code> directives.</p>
+</div>
+<div class="paragraph">
+<p>This section describes the PHP and HTTP APIs for Xataface&#8217;s thumbnail feature.</p>
+</div>
+<div class="sect2">
+<h3 id="_how_it_works">How it works</h3>
+<div class="paragraph">
+<p>If you add the <code>transform</code> directive to your container field, Xataface will automatically generate thumbnails for images that are uploaded to that field, at the time that they are uploaded.</p>
+</div>
+<div class="paragraph">
+<p>e.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first thumbnail (in this case itunes300) will be displayed by default whenever displaying this field&#8217;s image.  You can configure a specific thumbnail to be used for a given action using the <code>thumbnail.ACTIONNAME</code> directive.  E.g. If you wanted to use the "itunes1400" thumbnail for the "list" action you would add:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">thumbnail.list=itunes1400</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When using <code>Dataface_Record::display($fieldname)</code> and <code>Dataface_Record::htmlValue($fieldname)</code> it will respect these directives.  E.g. If you call <code>$record&#8594;display('myimage')</code> it will return the URL for the "itunes300" thumbnail when called inside a request for most actions, but it will return the URL for the "itunes1400" thumbnail when called inside a request for the "list" action.</p>
+</div>
+<div class="paragraph">
+<p>If you look at the resulting URL generated by the <code>display()</code> method, you&#8217;ll see something like:</p>
+</div>
+<div class="paragraph">
+<p><code>index.php?-action=getBlob&amp;&#8230;&#8203;&amp;-thumb=itunes300</code></p>
+</div>
+<div class="paragraph">
+<p>It is the "-thumb" query parameter at the end that specifies the thumbnail.  If you remove that parameter, it will just return the full-sized image.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_php_api">PHP API</h3>
+<div class="paragraph">
+<p>The <code>Dataface_Record</code> and <code>Datafae_Table</code> classes include a few methods for dealing with thumbnails.  Some of these methods include:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">`Dataface_Record::thumbnail($fieldname, $thumbnailType) : String `</dt>
+<dd>
+<p>Returns the URL for a thumbnail of the given type of thumbnail.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Getting thumbnail of type itunes1400 for the "logo" field in the record.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">$imageUrl = $record-&gt;thumbnail('logo', 'itunes1400');
+echo $imageUrl;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output:</p>
+</div>
+<div class="listingblock">
+<div class="title">Output shows that the "-thumb" GET parameter is set to "itunes1400", which is caused by the 2nd parameter of the above <code>thumbnail()</code> call.</div>
+<div class="content">
+<pre class="highlight"><code class="language-listing" data-lang="listing">http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes1400</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>Dataface_Record::getThumbnailForAction($fieldname, $actionName) : String</code></dt>
+<dd>
+<p>Returns the URL for the thumbnail that should be used for the specified action name.  This is configured via the <code>thumbnail.$actionName</code> directive in the fields.ini file.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini file definition for the logo field.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[logo]
+Type=container
+transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"
+thumbnail.list=itunes1400</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">PHP code getting URL for the "logo" field in three different ways.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">echo $record-&gt;display('logo') ."\n";
+echo $record-&gt;getThumbnailForAction('logo', 'list')."\n";
+echo $record-&gt;getThumbnailForAction('logo', 'view');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output when request was for the "list" action.</div>
+<div class="content">
+<pre class="highlight"><code class="language-listing" data-lang="listing">http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes1400 <b class="conum">(1)</b>
+http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes1400 <b class="conum">(2)</b>
+http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes300 <b class="conum">(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p><code>display()</code> returns URL with <code>-thumb=itunes1400</code> because of the "thumbnail.list=itunes1400" in the fields.ini file, and because the current request is for the "list" action.</p>
+</li>
+<li>
+<p><code>getThumbnailForAction('logo', 'list')</code> returns "itunes1400" because of the "thumbnail.list" directive in the fields.ini file.</p>
+</li>
+<li>
+<p><code>getThumbnailForAction('logo', 'view')</code> returns "itunes300" because there is no explicit "thumbnail.view" directive in the fields.ini file so it defaults to the first thumbnail type defined in the "transform" directive.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Output when request is for the "view" action.</div>
+<div class="content">
+<pre class="highlight"><code class="language-listing" data-lang="listing">http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes300 <b class="conum">(1)</b>
+http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes1400
+http://example.com/index.php?-action=getBlob&amp;...&amp;-thumb=itunes300</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Notice that the output of <code>display()</code> is different when it is executed as part of the "view" action.  In this case it adds the "-thumb=300" GET parameter because that is the effective thumbnail type for this action - no <code>thumbnail.view</code> directive is defined, so it falls back to the first thumbnail type defined in the <code>transform</code> directive.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>Dataface_Record::getThumbnailTypeForAction($fieldname, $actionName) : String</code></dt>
+<dd>
+<p>Returns the thumbnail type for the given action.  If there is an explicit directive for <code>thumbnail.$actionName</code> in the fields.ini file, then its value will be used.  Otherwise it will return the first thumbnail type defined in the <code>transform</code> directive.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini file definition for the logo field.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[logo]
+Type=container
+transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"
+thumbnail.list=itunes1400</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Sample PHP code</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">echo $record-&gt;getThumbnailTypeForAction('logo', 'list')."\n";
+echo $record-&gt;getThumbnailForTypeAction('logo', 'view');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Sample Output</div>
+<div class="content">
+<pre class="highlight"><code class="language-listing" data-lang="listing">itunes1400 <b class="conum">(1)</b>
+itunes300 <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>When <code>$actionName</code> is 'list' it outputs "itunes1400" because of the <code>thumbnail.list=itunes1400</code> directive in the fields.ini file.</p>
+</li>
+<li>
+<p>When <code>$actionName</code> is 'view' it outputs "itunes300" because there is no <code>thumbnail.view</code> directive defined in the fields.ini file so it falls back to the first thumbnail type defined in the <code>transform</code> directive.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>Dataface_Record::hasThumbnail($fieldname, $thumbName) : boolean</code></dt>
+<dd>
+<p>Checks if a record has a thumbnail of the given type for the specified field.  If the <code>transform</code> directive defines a thumbnail of the given <code>$thumbName</code> but the current record doesn&#8217;t actually have a thumbnail stored of that type, then this will return <code>false</code>.  It only returns true if the record actually has a thumbnail of this type that can be displayed.  E.g. if the field is empty (has no image), then this also returns <code>false</code>.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">if ($record-&gt;hasThumbnail('logo', 'itunes1400')) {
+    // The record has a thumbnail of itunes1400 type.
+    $thumbUrl = $record-&gt;thumbnail('logo', 'itunes1400');
+    // ..
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1"><code>Dataface_Record::getThumbnailTypes($fieldname) : string[]</code> </dt>
+<dd>
+<p>Returns a list of the thumbnails that are currently available for this record.  This only includes thumbnail types that actually exist.  It isn&#8217;t sufficient for them to be listed in the <code>transform</code> directive.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example:</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">PHP Source</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">$types = $record-&gt;getThumbnailTypes('logo');
+print_r($types);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Output</div>
+<div class="content">
+<pre class="highlight"><code class="language-listing" data-lang="listing">array(
+    0 =&gt; itunes300,
+    1 =&gt; itunes1400
+)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</h2>
 <div class="sectionbody">
 
@@ -7144,8 +7559,10 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 <dl>
 <dt class="hdlist1">-action</dt>
 <dd>
-<p>Specifies the action to perform. E.g. browse, list, find, edit, new, &#8230;&#8203; etc..	Default value is "list". <br>
-<strong>Since 0.1</strong></p>
+<p>Specifies the action to perform. E.g. browse, list, find, edit, new, &#8230;&#8203; etc..	Default value is "list".</p>
+<div class="paragraph">
+<p><strong>Since 0.1</strong></p>
+</div>
 </dd>
 <dt class="hdlist1">-table</dt>
 <dd>
@@ -7164,9 +7581,7 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 <div class="title">Tip</div>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>Not to be confused with the -cursor parameter which is used to specify which record to view in the details tab.</p>
-</div>
+Not to be confused with the <code>-cursor</code> parameter which is used to specify which record to view in the "details" tab.
 </td>
 </tr>
 </table>
@@ -7229,8 +7644,10 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 </dd>
 <dt class="hdlist1">--no-query=1</dt>
 <dd>
-<p>A flag to indicate that xataface should not query the database by default. This flag is used in the new record form to prevent the form parameters from being interpreted as query parameters to search in the database. If you set this flag, it likely result in a message saying "No records found". Generally you would only use this in a custom action where you are not relying on Xataface&#8217;s default found set.
-<strong>Since 1.3</strong></p>
+<p>A flag to indicate that xataface should not query the database by default. This flag is used in the new record form to prevent the form parameters from being interpreted as query parameters to search in the database. If you set this flag, it likely result in a message saying "No records found". Generally you would only use this in a custom action where you are not relying on Xataface&#8217;s default found set.</p>
+<div class="paragraph">
+<p><strong>Since 1.3</strong></p>
+</div>
 </dd>
 </dl>
 </div>
@@ -7609,7 +8026,7 @@ window.addEventListener('xf-viewport-changed', updatePosition);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-30 05:42:09 -0700
+Last updated 2020-12-27 12:57:21 -0800
 </div>
 </div>
 </body>

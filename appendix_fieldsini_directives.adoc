@@ -1,3 +1,4 @@
+[#fieldsini-directives]
 == Fields.ini Directives
 
 [discrete]
@@ -412,6 +413,36 @@ timestamp::	Indicates when a timestamp should be set in the field (only applicab
 title::	Boolean value (0 or 1) indicating whether this field should be treated as a title field.	
 +
 *Since 0.7*
+
+transform::
+String defining rules for generating thumbnails for uploaded images.  This directive is only used with Container fields.  
++
+====
+*Syntax*
+
+
+  transform=name1 [op1:]w1xh1; ...;nameN [opN:]wNxhN
+
+Where:
+
+. `name1` ... `nameN` are names of the thumbnail sizes you wish to resize images to. 
+. `w1` ... `wN` are corresponding widths in pixels, 
+. `h1` ... `hN` are corresponding heights in pixels, and 
+. `op1` ... `opN` are the corresponding operations to perform for resizing.  Currently the only operations supported are "fit" and "fill".  "fit" will cause the image to be resized to "fit" completely inside the dimensions of the thumbnail size, and "fill" will cause the image to fill the thumbnail space completely, possibly cropping some off edges to make it fit. 
+
+
+*Example*
+
+`transform="itunes300 fill:300x300; itunes1400 fill:1400x1400"`
+
+Defines two thumbnail types "itunes300" and "itunes1400" with sizes 300x300 pixels and 1400x1400 pixels respectively. This means that images uploaded to this container field will automatically have thumbnails generated in those two sizes.  Both of these thumbnail types use the "fill" operation so images will be resized to fill the space, and may have some cropped off the edges.
+====
++
+This directive is commonly used with `thumbnail.ACTIONNAME` directives which specify which thumbnail should be used in which action.
++
+See <<generating-thumbnails>> for a recipe on how to use this directive.
++
+*Since 3.0*
 
 transient::	Boolean value (0 or 1) indicating whether this field is a transient field or not. A transient field is a field that is defined in the fields.ini file but not in the database. Hence the values that are input into this field on the edit form are not saved to the database.	
 +
