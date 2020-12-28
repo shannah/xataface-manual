@@ -592,5 +592,28 @@ And the result:
 
 image::images/Image-281220-071824.428.png[]
 
-NOTE: This example uses the `onclick` directive of the action to bind it to a Javascript function.  See <<javascript-action>> for details on triggering javascript functions with actions.
+[TIP]
+====
+This example uses the `onclick` directive of the action to bind it to a Javascript function.  See <<javascript-action>> for details on triggering javascript functions with actions.  In this case, since the script is only needed on the edit form for this table, I would place `xf_script()` call inside the "before_feed_cover_art_url_widget" block:
+
+.Defining the before_feed_cover_art_url_widget block inside the table delegate class.
+[source,php]
+----
+function block__before_feed_cover_art_url_widget() {
+    xf_script('uploadCoverArt.func.js');
+}
+----
+
+Then, I would create my Javascript file inside at "js/uploadCoverArt.func.js":
+
+.Implementing the uploadCoverArt function in js/uploadCoverArt.func.js
+[source,javascript]
+----
+window.uploadCoverArt = function(source) {
+     // Do the upload cover art stuff here.
+};
+----
+
+====
+
 
