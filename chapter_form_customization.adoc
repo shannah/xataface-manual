@@ -550,3 +550,47 @@ class tables_students {
 }
 ----
 
+[#field-actions]
+=== Adding Actions to Fields
+
+[discrete]
+==== Problem
+
+You want to add an an action button next to a field in your form.  For example, suppose you have a text field that stores the URL to a logo for the record, and you want to provide a link for the user to be able to upload an image, and then copy its URL into the field.  Ideally the field would have an "upload" button next to it.
+
+[discrete]
+==== Solution
+
+Use the `actions` directive of the fields.ini file to specify an action category on the field, and then define an "upload" action with that category.
+
+E.g.
+
+.The fields.ini definition for our field.  Notice the `actions` directive.
+[source,ini]
+----
+[feed_cover_art_url]
+    logo=1
+	group=details
+	order=-10
+	widget:type=text
+	display=inline
+    actions=feed_cover_art_url_actions
+----
+
+.The upload_feed_cover_art action definition in the actions.ini file.  Notice that it is added to the "feed_cover_art_url_actions" category.
+[source,ini]
+----
+[upload_feed_cover_art]
+    category=feed_cover_art_url_actions
+    label="Upload"
+    description="Upload cover art for this feed"
+    url="javascript:void(0)"
+    onclick="uploadCoverArt(this)"
+----
+
+And the result:
+
+image::images/Image-281220-071824.428.png[]
+
+NOTE: This example uses the `onclick` directive of the action to bind it to a Javascript function.  See <<javascript-action>> for details on triggering javascript functions with actions.
+

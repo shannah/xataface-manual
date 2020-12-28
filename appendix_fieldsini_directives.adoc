@@ -149,6 +149,11 @@ widget:type=static
 
 The following directives may be added to a field's section of the fields.ini file to customize the field's behavior. Some directives are not applicable to all fields.
 
+actions::
+Optional actions category for actions which should be rendered next to the field on the edit form.  See <<field-actions>> for a usage example.
++
+*Since 2.0*
+
 ajax_value::
 Make the field dynamically update whenever one or more other fields on the same form is changed. When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.  See <<recipe-auto-updating-field>> for a usage example.
 +
