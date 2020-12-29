@@ -614,6 +614,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_window_xataface">window.xataface</a></li>
 <li><a href="#_xataface_infinitescroll">xataface.InfiniteScroll</a></li>
+<li><a href="#recordbrowser">xataface.RecordBrowser</a></li>
 <li><a href="#_xataface_sheet">xataface.Sheet</a></li>
 </ul>
 </li>
@@ -3891,14 +3892,47 @@ class actions_ajax_post_preview {
 <img src="images/Image-281220-071824.428.png" alt="Image 281220 071824.428">
 </div>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock tip">
 <table>
 <tr>
 <td class="icon">
-<div class="title">Note</div>
+<div class="title">Tip</div>
 </td>
 <td class="content">
-This example uses the <code>onclick</code> directive of the action to bind it to a Javascript function.  See <a href="#javascript-action">Triggering Javascript Function with Action</a> for details on triggering javascript functions with actions.
+<div class="paragraph">
+<p>This example uses the <code>onclick</code> directive of the action to bind it to a Javascript function.  See <a href="#javascript-action">Triggering Javascript Function with Action</a> for details on triggering javascript functions with actions.  In this case, since the script is only needed on the edit form for this table, I would place <code>xf_script()</code> call inside the "before_feed_cover_art_url_widget" block:</p>
+</div>
+<div class="listingblock">
+<div class="title">Defining the before_feed_cover_art_url_widget block inside the table delegate class.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function block__before_feed_cover_art_url_widget() {
+    xf_script('uploadCoverArt.func.js');
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, I would create my Javascript file inside at "js/uploadCoverArt.func.js":</p>
+</div>
+<div class="listingblock">
+<div class="title">Implementing the uploadCoverArt function in js/uploadCoverArt.func.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">window.uploadCoverArt = function(source) {
+     // Do the upload cover art stuff here.
+};</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an example implementation of the <code>uploadCoverArt()</code> function that allows the user to actually select records from a table, and upload images.
 </td>
 </tr>
 </table>
@@ -7545,6 +7579,171 @@ if (viewport) {
 </div>
 </div>
 <div class="sect2">
+<h3 id="recordbrowser">xataface.RecordBrowser</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-291220-115848.591.png" alt="Image 291220 115848.591">
+</div>
+</div>
+<div class="paragraph">
+<p>A component for selecting a record from the database.  This is used by the lookup widget for selecting records, but can be used directly via its Javascript API.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 1.0</strong></p>
+</div>
+<h4 id="_bootstrapping_2" class="discrete">Bootstrapping</h4>
+<div class="listingblock">
+<div class="title">Loading Script in PHP</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">xf_script('RecordDialog/RecordDialog.js)');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Loading Script in Javascript using <code>require</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;RecordDialog/RecordDialog.js&gt;</code></pre>
+</div>
+</div>
+<h4 id="_initialization_options" class="discrete">Initialization Options</h4>
+<div class="paragraph">
+<p>Use <code>new RecordBrowser(options)</code> to create a new dialog, and display it with the <code>display()</code> method.  The options are:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">table</dt>
+<dd>
+<p>The name of the table from which to select records.</p>
+</dd>
+<dt class="hdlist1">value</dt>
+<dd>
+<p>The name of the column to use for the value in the select list.  Set this value to <code>__id__</code> to use the record ID.  Default, if left blank:  If primary key of table is a single column then it will use the primary key column. If the table has a compound primary key, then it uses <code>__id__</code> as the default.</p>
+<div class="paragraph">
+<p>You can use the optional <code>display:</code> prefix for the value to use the result of <code>Dataface_Record::display()</code> for the field rather than simply <code>Dataface_Record::val()</code>.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">new xataface.RecordDialog({
+    value : 'display:file'
+    //...
+});</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">text</dt>
+<dd>
+<p>The name of the column to use for the text/label in the select list.  Set this value to <code>__title__</code> to use the record title.  This is the default, if left blank.</p>
+</dd>
+<dt class="hdlist1">image</dt>
+<dd>
+<p>Optional column containing an image.  If you set this value, then each row in the select list will also display an image.</p>
+</dd>
+<dt class="hdlist1">imageWidth</dt>
+<dd>
+<p>Optional image width in pixels.</p>
+</dd>
+<dt class="hdlist1">imageHeight</dt>
+<dd>
+<p>Optional image height in pixels.</p>
+</dd>
+<dt class="hdlist1">filters</dt>
+<dd>
+<p>Dictionary if filters to add to the AJAX requests.  You can use Xataface&#8217;s URL conventions here.</p>
+</dd>
+<dt class="hdlist1">callback</dt>
+<dd>
+<p>Callback function that is called when the user selects a record from the record browser. It will receive an Object with key/value pairs of the selected records, where the "keys" are the values and the values are the text.</p>
+</dd>
+<dt class="hdlist1">editParams</dt>
+<dd>
+<p>Dictionary of GET parameters to pass to the edit form for editing records in the record browser.</p>
+</dd>
+<dt class="hdlist1">newParams</dt>
+<dd>
+<p>Dictionary of GET parameters to pass to the new record form for adding new records.</p>
+</dd>
+<dt class="hdlist1">allowAddNew</dt>
+<dd>
+<p>boolean value indicating whether the record browser supports adding new records.  Default is <code>true</code>.  If true, then an "Add New" button is included in the dialog.  When the user clicks on it, it will open a New Record Form inside a <code>RecordDialog</code> component.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_methods_2" class="discrete">Methods</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">display()</dt>
+<dd>
+<p>Displays the dialog.</p>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="recordbrowser-example">Usage Example</h4>
+<div class="listingblock">
+<div class="title">A simple example implementing  function, <code>uploadCoverArt()</code> which can be triggered to allow the user to select records from the <code>nn_media</code> table.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;jquery.packed.js&gt;
+//require &lt;RecordBrowser/RecordBrowser.js&gt;
+(function() {
+    var $ = jQuery;
+    window.uploadCoverArt = function(button) {
+
+        // Callback function that will be called with the user
+        // selects a record.
+        function callback(data) {
+            // the data will contain something like:
+            // {'admin.php?-action=getBlob&amp;...&amp;-thumb=itunes300' : 'doc-martin.jpeg'}
+
+            // Find the parent div with the "field" class.
+            var fieldDiv = $(button).parents('.field');
+
+            // Find the text input in this field.
+            var textInput = fieldDiv.find('input[type=text]');
+
+            for (var url in data) {
+                // We put this in a for loop, but really
+                // data should only contain one value.
+                textInput.val(url);
+            }
+        }
+
+        // Create a new record browser.
+        new xataface.RecordBrowser({
+            // Browse only records in the nn_media table
+            table : 'nn_media',
+
+            // The "file" column contains an image for the record.
+            // use that in the browser.
+            image : 'file',
+
+            // The value column (which we are interested in) is the
+            // file column.  We use the `display` operation to get the result of
+            // $record-&gt;display('file') instead of just $record-&gt;val('file')
+            value : 'display:file',
+
+            // The callback to call when the user selects a record.
+            callback : callback
+
+        }).display();
+
+    }
+})();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+In the above example, we called this <code>uploadCoverArt()</code> by adding <code>onclick=window.uploadCoverArt(this)</code> to an action.  See <a href="#field-actions">Adding Actions to Fields</a> for more details on this specific example.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_xataface_sheet">xataface.Sheet</h3>
 <div class="imageblock">
 <div class="content">
@@ -7557,7 +7756,7 @@ if (viewport) {
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
 </div>
-<h4 id="_bootstrapping_2" class="discrete">Bootstrapping</h4>
+<h4 id="_bootstrapping_3" class="discrete">Bootstrapping</h4>
 <div class="listingblock">
 <div class="title">Loading Script in PHP</div>
 <div class="content">
@@ -7570,7 +7769,7 @@ if (viewport) {
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/Sheet.js&gt;</code></pre>
 </div>
 </div>
-<h4 id="_initialization_options" class="discrete">Initialization Options</h4>
+<h4 id="_initialization_options_2" class="discrete">Initialization Options</h4>
 <div class="paragraph">
 <p>Use <code>new Sheet(options)</code> to create a new sheet.  The following options are allowed:</p>
 </div>
@@ -7599,7 +7798,7 @@ if (viewport) {
 </dd>
 </dl>
 </div>
-<h4 id="_methods_2" class="discrete">Methods</h4>
+<h4 id="_methods_3" class="discrete">Methods</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">load(url:string)</dt>

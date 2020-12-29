@@ -616,4 +616,6 @@ window.uploadCoverArt = function(source) {
 
 ====
 
+TIP: See <<recordbrowser-example, the RecordBrowser usage example>> for an example implementation of the `uploadCoverArt()` function that allows the user to actually select records from a table, and upload images.
+
 
