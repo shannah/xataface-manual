@@ -100,13 +100,13 @@ A component for selecting a record from the database.  This is used by the looku
 .Loading Script in PHP
 [source,php]
 ----
-xf_script('RecordDialog/RecordDialog.js)');
+xf_script('RecordBrowser/RecordBrowser.js)');
 ----
 
 .Loading Script in Javascript using `require`
 [source,javascript]
 ----
-//require <RecordDialog/RecordDialog.js>
+//require <RecordBrowser/RecordBrowser.js>
 ----
 
 [discrete]
@@ -124,7 +124,7 @@ You can use the optional `display:` prefix for the value to use the result of `D
 +
 [source,javascript]
 ----
-new xataface.RecordDialog({
+new xataface.RecordBrowser({
     value : 'display:file'
     //...
 });
