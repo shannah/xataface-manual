@@ -1,0 +1,24 @@
+[#relationships]
+== Relationships
+
+[#default-related-sort]
+=== Setting Default Sort for Related Lists
+
+[discrete]
+==== Problem
+
+You want sort the related record tab on a particular column by default.
+
+[discrete]
+==== Solution
+
+Use the `table.default_sort.RELATIONSHIP_NAME` fields.ini directive.
+
+Suppose we want to sort our "posts" relationship by date posted in descending order (i.e. newest first).  Then we would add the following directive to the beginning of the fields.ini file.
+
+[source,ini]
+----
+table.default_sort.posts=date_posted desc
+----
+
+TIP: See <<default-sort>> to learn how to set the default sorting behaviour of the list view (i.e. for sorting NON-related records).

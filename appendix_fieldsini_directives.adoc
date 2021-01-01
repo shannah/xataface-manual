@@ -590,10 +590,20 @@ Sets preferences for this table and its records. This directive is an array, so 
 +
 *Since 1.0b4*
 
-label::	
+table.default_sort::
+Sets the default sort column for the table.  See <<default-sort>>.
++
+*Since 3.0*
+
+table.default_sort.RELATIONSHIPNAME::
+Sets the default sort column for the given relationship.  E.g. `table.default_sort.posts=date posted desc`.  See <<default-related-sort>>.
++
+*Since 3.0*
+
+table.label::	
 Sets the friendly name for this table. This is the equivalent of using the [_tables] section in the conf.ini file, except without imposing the requirement that these tables appear in the application's primary navigation menu. E.g. label = "Table Name"
 
-title::	
+table.title::	
 A string SQL select expression that is used to describe the title of records. This is the equivalent of the `titleColumn()` function used in Delegate_class_methods.
 
 [discrete]

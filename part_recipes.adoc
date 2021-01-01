@@ -5,6 +5,8 @@ This section of the book includes recipes for common patterns in Xataface applic
 
 include::chapter_actions.adoc[]
 
+include::chapter_relationships.adoc[]
+
 include::chapter_security.adoc[]
 
 include::chapter_theme_customization.adoc[]

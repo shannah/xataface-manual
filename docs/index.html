@@ -513,6 +513,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#tables-navigation-menu">Customising Navigation Menu</a></li>
 </ul>
 </li>
+<li><a href="#relationships">Relationships</a>
+<ul class="sectlevel2">
+<li><a href="#default-related-sort">Setting Default Sort for Related Lists</a></li>
+</ul>
+</li>
 <li><a href="#security">Security</a>
 <ul class="sectlevel2">
 <li><a href="#oauth2">OAuth2 Authentication</a></li>
@@ -2594,6 +2599,42 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 </div>
 </div>
 <div class="sect1">
+<h2 id="relationships">Relationships</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="default-related-sort">Setting Default Sort for Related Lists</h3>
+<h4 id="_problem_5" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want sort the related record tab on a particular column by default.</p>
+</div>
+<h4 id="_solution_5" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Use the <code>table.default_sort.RELATIONSHIP_NAME</code> fields.ini directive.</p>
+</div>
+<div class="paragraph">
+<p>Suppose we want to sort our "posts" relationship by date posted in descending order (i.e. newest first).  Then we would add the following directive to the beginning of the fields.ini file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">table.default_sort.posts=date_posted desc</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+See <a href="#default-sort">Specifying Default Sorting</a> to learn how to set the default sorting behaviour of the list view (i.e. for sorting NON-related records).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="security">Security</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -2726,11 +2767,11 @@ There are also modules built to provide Oauth support for specific services, suc
 </div>
 <div class="sect2">
 <h3 id="adding-a-custom-stylesheet">Adding a Custom Stylesheet</h3>
-<h4 id="_problem_5" class="discrete">Problem</h4>
+<h4 id="_problem_6" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.</p>
 </div>
-<h4 id="_solution_5" class="discrete">Solution</h4>
+<h4 id="_solution_6" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>The <code>xf_stylesheet()</code> function can be used to inject a stylesheet into either the <code>&lt;head&gt;</code> section of the app&#8217;s page, or into the CSS bundle that is compiled by the <code>CSSTool</code>.  Let&#8217;s start with the simplest case, where you want to include the stylesheet in the entire application (i.e. it should be loaded in every page of the app), and the stylesheet is hosted on a CDN (content-delivery network).  In this case, you should place the call to <code>xf_stylesheet()</code> inside the <code>beforeHandleRequest()</code> method of the application delegate class.</p>
 </div>
@@ -2837,11 +2878,11 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </div>
 <div class="sect2">
 <h3 id="changing-color-scheme">Changing the Color Scheme</h3>
-<h4 id="_problem_6" class="discrete">Problem</h4>
+<h4 id="_problem_7" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to override the default color scheme with your own color scheme.</p>
 </div>
-<h3 id="_solution_6" class="discrete">Solution</h3>
+<h3 id="_solution_7" class="discrete">Solution</h3>
 <div class="paragraph">
 <p><strong>Add a custom stylesheet that redefines Xataface&#8217;s theme color variables</strong></p>
 </div>
@@ -3006,11 +3047,11 @@ The list of CSS variables may grow or change over time.  Refer to the plone.css 
 </div>
 <div class="sect2">
 <h3 id="user-specific-stylesheet">Using Preferences to Override Color Scheme</h3>
-<h4 id="_problem_7" class="discrete">Problem</h4>
+<h4 id="_problem_8" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to use a different color scheme depending on which user is logged in, or other run-time environment factors.</p>
 </div>
-<h4 id="_solution_7" class="discrete">Solution</h4>
+<h4 id="_solution_8" class="discrete">Solution</h4>
 <div class="paragraph">
 <p><strong>Use the <code>user_stylesheet</code> preference to specify the name of a stylesheet to use.</strong></p>
 </div>
@@ -3067,11 +3108,11 @@ function getPreferences() {
 </div>
 <div class="sect2">
 <h3 id="user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</h3>
-<h4 id="_problem_8" class="discrete">Problem</h4>
+<h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want users to be able to select their own preferred color scheme.</p>
 </div>
-<h4 id="_solution_8" class="discrete">Solution</h4>
+<h4 id="_solution_9" class="discrete">Solution</h4>
 <div class="paragraph">
 <p><strong>Add a field to the "users" table with the <code>prefs.key=user_stylesheet</code> fields.ini property.</strong></p>
 </div>
@@ -3156,11 +3197,11 @@ ocean.css="Ocean Theme"
 </div>
 <div class="sect2">
 <h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
-<h4 id="_problem_9" class="discrete">Problem</h4>
+<h4 id="_problem_10" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h4 id="_solution_9" class="discrete">Solution</h4>
+<h4 id="_solution_10" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -3440,11 +3481,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
-<h4 id="_problem_10" class="discrete">Problem</h4>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h4 id="_solution_10" class="discrete">Solution</h4>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -3480,11 +3521,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
-<h4 id="_problem_11" class="discrete">Problem</h4>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h4 id="_solution_11" class="discrete">Solution</h4>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -3531,11 +3572,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</h3>
-<h4 id="_problem_12" class="discrete">Problem</h4>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h4 id="_solution_12" class="discrete">Solution</h4>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -3619,11 +3660,11 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 <div class="sect2">
 <h3 id="display-field-preview-using-ajax">Displaying Field Preview using AJAX</h3>
-<h4 id="_problem_13" class="discrete">Problem</h4>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h4 id="_solution_13" class="discrete">Solution</h4>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -3795,11 +3836,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
-<h4 id="_problem_14" class="discrete">Problem</h4>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h4 id="_solution_14" class="discrete">Solution</h4>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -3815,11 +3856,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
-<h4 id="_problem_15" class="discrete">Problem</h4>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h4 id="_solution_15" class="discrete">Solution</h4>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -3850,11 +3891,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="field-actions">Adding Actions to Fields</h3>
-<h4 id="_problem_16" class="discrete">Problem</h4>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an an action button next to a field in your form.  For example, suppose you have a text field that stores the URL to a logo for the record, and you want to provide a link for the user to be able to upload an image, and then copy its URL into the field.  Ideally the field would have an "upload" button next to it.</p>
 </div>
-<h4 id="_solution_16" class="discrete">Solution</h4>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>actions</code> directive of the fields.ini file to specify an action category on the field, and then define an "upload" action with that category.</p>
 </div>
@@ -3948,11 +3989,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
-<h4 id="_problem_17" class="discrete">Problem</h4>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h4 id="_solution_17" class="discrete">Solution</h4>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -3984,7 +4025,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
-<h4 id="_problem_18" class="discrete">Problem</h4>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -3997,7 +4038,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h4 id="_solution_18" class="discrete">Solution</h4>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -4017,11 +4058,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_sorting_filter_results">Sorting Filter Results</h3>
-<h4 id="_problem_19" class="discrete">Problem</h4>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h4 id="_solution_19" class="discrete">Solution</h4>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -4039,11 +4080,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
-<h4 id="_problem_20" class="discrete">Problem</h4>
+<h4 id="_problem_21" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h4 id="_solution_20" class="discrete">Solution</h4>
+<h4 id="_solution_21" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -4082,11 +4123,11 @@ class tables_MyTable {
 </div>
 <div class="sect2">
 <h3 id="_adding_row_actions">Adding Row Actions</h3>
-<h4 id="_problem_21" class="discrete">Problem</h4>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h4 id="_solution_21" class="discrete">Solution</h4>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -4144,11 +4185,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h4 id="_solution_22" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -4177,11 +4218,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -4270,11 +4311,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -4567,11 +4608,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h4 id="_solution_25" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
@@ -4581,20 +4622,32 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="default-sort">Specifying Default Sorting</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the records in a particular table to be sorted on a particular column by default.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_26">Solution</h4>
+<h4 id="_solution_27">Solution</h4>
 <div class="paragraph">
-<p>Use the <code>default_sort</code> property of the fields.ini file.</p>
+<p>Use the <code>table.default_sort</code> property of the fields.ini file.</p>
 </div>
 <div class="listingblock">
-<div class="title">Using the <code>default_sort</code> property in the fields.ini file to sort records in descending order on the date_posted field.</div>
+<div class="title">Using the <code>table.default_sort</code> property in the fields.ini file to sort records in descending order on the date_posted field.</div>
 <div class="content">
-<pre class="highlight"><code class="language-ini" data-lang="ini">default_sort=date_posted desc</code></pre>
+<pre class="highlight"><code class="language-ini" data-lang="ini">table.default_sort=date_posted desc</code></pre>
 </div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> to learn how to set the default sort order on a related tab.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -4608,11 +4661,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_27" class="discrete">Solution</h4>
+<h4 id="_solution_28" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -4636,11 +4689,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -4666,12 +4719,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -4733,11 +4786,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_30" class="discrete">Solution</h4>
+<h4 id="_solution_31" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -4765,11 +4818,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -4824,11 +4877,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_32" class="discrete">Solution</h4>
+<h4 id="_solution_33" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -4920,11 +4973,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_33" class="discrete">Solution</h4>
+<h4 id="_solution_34" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -4955,11 +5008,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_34" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_34" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -4971,11 +5024,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_35" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -5048,11 +5101,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_36" class="discrete">Problem</h4>
+<h4 id="_problem_37" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -5087,11 +5140,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_37" class="discrete">Problem</h4>
+<h4 id="_problem_38" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_37" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -5136,11 +5189,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_38" class="discrete">Problem</h4>
+<h4 id="_problem_39" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_39" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -5164,11 +5217,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_39" class="discrete">Solution</h4>
+<h4 id="_solution_40" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -6505,11 +6558,25 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><strong>Since 1.0b4</strong></p>
 </div>
 </dd>
-<dt class="hdlist1">label</dt>
+<dt class="hdlist1">table.default_sort</dt>
+<dd>
+<p>Sets the default sort column for the table.  See <a href="#default-sort">Specifying Default Sorting</a>.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">table.default_sort.RELATIONSHIPNAME</dt>
+<dd>
+<p>Sets the default sort column for the given relationship.  E.g. <code>table.default_sort.posts=date posted desc</code>.  See <a href="#default-related-sort">Setting Default Sort for Related Lists</a>.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">table.label</dt>
 <dd>
 <p>Sets the friendly name for this table. This is the equivalent of using the [_tables] section in the conf.ini file, except without imposing the requirement that these tables appear in the application&#8217;s primary navigation menu. E.g. label = "Table Name"</p>
 </dd>
-<dt class="hdlist1">title</dt>
+<dt class="hdlist1">table.title</dt>
 <dd>
 <p>A string SQL select expression that is used to describe the title of records. This is the equivalent of the <code>titleColumn()</code> function used in Delegate_class_methods.</p>
 </dd>

@@ -519,13 +519,15 @@ You want the records in a particular table to be sorted on a particular column b
 
 ==== Solution
 
-Use the `default_sort` property of the fields.ini file.
+Use the `table.default_sort` property of the fields.ini file.
 
-.Using the `default_sort` property in the fields.ini file to sort records in descending order on the date_posted field.
+.Using the `table.default_sort` property in the fields.ini file to sort records in descending order on the date_posted field.
 [source,ini]
 ----
-default_sort=date_posted desc
+table.default_sort=date_posted desc
 ----
+
+TIP: See <<default-related-sort>> to learn how to set the default sort order on a related tab.
 
 
 
