@@ -367,7 +367,7 @@ Also notice that there is still a "Forgot password" option, in case the user wou
 
 ==== Disabling Password Login
 
-If you have email login enabled, you can optionally disable password login entirely.  This may make sense for some services, in the spirit of "less is more" in terms of usability.  You can use the `enable_password_login=0` directive in the `_auth` section of the conf.ini file to achieve this:
+If you have email login enabled, you can optionally disable password login entirely.  This may make sense for some services, in the spirit of "less is more" in terms of usability.  You can use the `allow_password_login=0` directive in the `_auth` section of the conf.ini file to achieve this:
 
 .conf.ini file with password login disabled.
 [source,ini]
