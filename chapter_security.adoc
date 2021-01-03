@@ -197,7 +197,7 @@ The difference between the registration form and the New record form is that the
 ====
 **Recommended Users Table Permissions**
 
-The registration form includes all fields of the users table that grants the "register" permission.  The register permission is the *only* permission that is part of the "NO ACCESS", and it is not included in any of the default roles.  Ideally you should be explicit about which fields of the users table you grant the "register" permission on.
+The registration form includes all fields of the users table that grants the "register" permission.  The register permission is the *only* permission that is part of the "NO ACCESS" role, and it is not included in any of the default roles.  Ideally you should be explicit about which fields of the users table you grant the "register" permission on.
 
 The following is a snippet from the delegate class for the users table of an application which demonstrates one way to define permissions.
 
