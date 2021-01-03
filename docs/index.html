@@ -520,6 +520,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#security">Security</a>
 <ul class="sectlevel2">
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#user-registration">Allowing User Registration</a></li>
+<li><a href="#email-login">Enabling Email Login</a></li>
 <li><a href="#oauth2">OAuth2 Authentication</a></li>
 <li><a href="#_api_authentication">API Authentication</a></li>
 </ul>
@@ -2641,6 +2644,661 @@ See <a href="#default-sort">Specifying Default Sorting</a> to learn how to set t
 <p>The following chapters cover all things security-related in Xataface.</p>
 </div>
 <div class="sect2">
+<h3 id="authentication">Authentication</h3>
+<div class="paragraph">
+<p>Xataface comes with authentication ready to roll out of the box. With a couple of configuration options in the conf.ini file, you can activate the default authentication scheme which uses a table (of your choice) in the database to authenticate against. It supports password encryption, and even includes a registration form if you choose to allow registrations for your application.</p>
+</div>
+<div class="paragraph">
+<p>In addition Xataface&#8217;s authentication is pluggable, meaning you can write your own plug-ins to integrate your application with any authentication scheme you choose. Some authentication modules that already exist include:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><a href="https://github.com/shannah/xataface-module-auth-cas">Yale CAS</a></dt>
+<dd>
+<p>A module to use <a href="https://developers.yale.edu/cas-central-authentication-service">Yale&#8217;s Central Authentication Service</a> for authentication.</p>
+</dd>
+<dt class="hdlist1"><a href="https://github.com/shannah/xataface-module-auth-ldap">LDAP</a></dt>
+<dd>
+<p>A module to use <a href="https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol">LDAP</a> for authentication.  There is also another, more advanced LDAP module developed by Viharm available <a href="https://bitbucket.org/viharm/xatafaceldapauth/">here</a>.</p>
+</dd>
+<dt class="hdlist1"><a href="https://github.com/shannah/xataface-module-auth-http">HTTP</a></dt>
+<dd>
+<p>A module to use standard HTTP basic authentication.</p>
+</dd>
+<dt class="hdlist1"><a href="https://github.com/shannah/xataface-module-oauth">OAuth</a></dt>
+<dd>
+<p>A module to use an <a href="https://oauth.net/">OAuth</a> service for authentication.  This module provides all of the common infrastructure required to support OAuth.  There are also modules built on this module which provide authentication using a few popular web sites such as <a href="https://github.com/shannah/xataface-module-oauth-facebook">Facebook</a>, <a href="https://github.com/shannah/xataface-module-oauth-twitter">Twitter</a>, <a href="https://github.com/shannah/xataface-module-oauth-linkedin">LinkedIn</a>, and <a href="https://github.com/shannah/xataface-module-oauth-instagram">Instagram</a>.</p>
+<div class="paragraph">
+<p>See <a href="#oauth">Adding OAuth2 Login Support</a> for more information about setting up OAuth authentication.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_setting_up_basic_authentication">Setting up Basic Authentication</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create a table (if you haven&#8217;t already) to store your application&#8217;s users. At the bare minimum, this table should have fields to store the username and password (you may call these fields whatever you like). An example table might be:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">CREATE TABLE `users` (
+   `username` VARCHAR(32) NOT NULL,
+   `password` VARCHAR(32) NOT NULL,
+   PRIMARY KEY (`username`)
+)</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add the following (<code>_auth</code> section) to your <code>conf.ini</code> file:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This tells Xataface which table you are storing your user accounts in, and the names of the username and password columns.</p>
+</div>
+</li>
+<li>
+<p>Add a sample user record to the <strong>users</strong> table if one does not exist yet.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">INSERT INTO `users` (`username`,`password`) VALUES ('steve','mypass')</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Load your application in your web browser and you&#8217;ll notice a "login" link in the upper right that allows you to log in.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_encryption_for_the_password">Using Encryption for the Password</h4>
+<div class="paragraph">
+<p>It is good practice to perform some type of encryption on passwords that you store in a database, so that they will be safe, even if your server&#8217;s security is compromised. Some common forms of encryption are SHA1 and MD5. You can apply encryption to your passwords by defining the encryption property to the <code>password</code> field&#8217;s section of the users table <code>fields.ini file</code>. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini definition on the users table password field to store passwords with md5 encryption</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[password]
+    encryption=md5</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This tells Xataface to save data to the password field of the users table with MD5 encryption.</p>
+</div>
+<div class="listingblock">
+<div class="title">fields.ini definition on the users table password field to store passwords with <a href="https://en.wikipedia.org/wiki/SHA-1">sha1</a> encryption</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[password]
+    encryption=sha1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This tells Xataface to save data to the password field of the users table with <a href="https://en.wikipedia.org/wiki/SHA-1">SHA1</a> encryption.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In order to switch to MD5 or SHA1 encryption with an existing Xataface installation, all un-encrypted (plain text) passwords must be first converted to MD5. There are several ways to do this. One method is to directly convert the passwords in the database with the MySQL MD5 or SHA1 function. This can be done from the command-line or using a tool such as phpMyAdmin.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you only have a small number of user accounts that require encryption to be updated, it may be easier to just change the passwords manually through Xataface by editing the user records.  They will be automatically encrypted according to the <code>encryption</code> directive in the fields.ini file.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_limiting_access_based_on_user">Limiting Access Based on User</h4>
+<div class="paragraph">
+<p>Authentication and permissions are distinct issues, but they are related. It is quite common to require a user to log in to access a section of an application. Permissions can be defined in either the Application delegate class or a table&#8217;s delegate class - or both.</p>
+</div>
+<div class="paragraph">
+<p>As an example, if we want to require users to log in to access our application we could define the following <code>getPermissions()</code> method to our application delegate class:</p>
+</div>
+<div class="listingblock">
+<div class="title">Application delegate class with <code>getPermissions()</code> implemented.  This implementation allows ALL access to logged in users, and NO access otherwise.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class conf_ApplicationDelegate {
+    function getPermissions(Dataface_Record $record=null){
+        // $record is a Dataface_Record object
+        $auth = Dataface_AuthenticationTool::getInstance();
+        $user = $auth-&gt;getLoggedInUser();
+        if ( $user ) return Dataface_PermissionsTool::ALL();
+        else return Dataface_PermissionsTool::NO_ACCESS();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_checking_who_is_logged_in">Checking Who Is Logged In</h4>
+<div class="paragraph">
+<p>The <code>Dataface_AuthenticationTool</code> class handles all of the dirty work of Xataface&#8217;s authentication. It provides public methods to check who is logged in and perform authentication if necessary. Anywhere inside your Xataface application you can find out who is logged in using one of the following two methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>getLoggedInUser()</code> - Returns a Dataface_Record object representing a record from the users table.</p>
+</li>
+<li>
+<p><code>getLoggedInUsername()</code> - Returns a string.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It is quite useful in the <code>getPermissions()</code> method of your delegate classes to find out who is logged in:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getPermissions(Dataface_Record $record=null){
+    $auth = Dataface_AuthenticationTool::getInstance();
+    $user = $auth-&gt;getLoggedInUser();
+    if ( $user and $user-&gt;val('username') == 'shannah' ){
+        // Steve is logged in so we give him special permissions
+        return Dataface_PermissionsTool::ALL();
+    } else {
+        // Steve is not logged in so we give only read only permissions
+        return Dataface_PermissionsTool::READ_ONLY();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_checking_who_is_logged_in_from_a_template">Checking Who is Logged In from a Template</h4>
+<div class="paragraph">
+<p>All templates in Xataface have access to the <code>$ENV</code> array that contains references to lots of useful information, including the currently logged in user:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>$ENV.user</code></dt>
+<dd>
+<p>The user object of the currently logged in user (or null if nobody is logged in). This is a Dataface_Record object.</p>
+</dd>
+<dt class="hdlist1"><code>$ENV.username</code></dt>
+<dd>
+<p>The name of the currently logged in user. A string.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;!--
+     Print 'Hello Steve' if Steve is logged in,
+     'Hello Helen' if Helen is logged in, or just
+     'Hello' if nobody is logged in.
+--&gt;
+Hello {$ENV.username}
+
+&lt;!-- Print some personal user info --&gt;
+{if $ENV.user}
+    Phone number: {$ENV.user-&gt;val('phone')}&lt;br/&gt;
+    Email address: {$ENV.user-&gt;val('email')}&lt;br/&gt;
+{/if}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example presumes that the users table has <code>phone</code> and <code>email</code> fields.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="user-registration">Allowing User Registration</h3>
+<div class="paragraph">
+<p>By default, there is no way for users to create an account themselves.  A user account would need to be set up by the system administrator first.  If you want users to be able to register for accounts themselves, you can add the <code>allow_register=1</code> directive to the <code>_auth</code> section of the conf.ini file.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email <b class="conum">(1)</b>
+    allow_register=1 <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>email_column</code> directive specifies the column that should store the user&#8217;s email address. This is required for user registration since it needs to send an activation email to verify the user&#8217;s email address.</p>
+</li>
+<li>
+<p>The <code>allow_register=1</code> directive turns on user registration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>With these settings, the login form will now contain a "Register" link as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-074342.100.png" alt="Image 030121 074342.100">
+</div>
+</div>
+<div class="paragraph">
+<p>If the user clicks on this link, they&#8217;ll be taken to a registration form, which is basically a "new record" form on the Users table.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-074655.819.png" alt="Image 030121 074655.819">
+</div>
+<div class="title">Figure 32. A plain-Jane registration form which contains fields from the users table.</div>
+</div>
+<div class="paragraph">
+<p>The difference between the registration form and the New record form is that the registration form doesn&#8217;t immediately add records into the database.  When the user submits the form, it stores the data in a special registrations table, and sends the user an email with a link to confirm their registration.  If the user clicks on this link, it will then copy the registration information into an actual record of the users table and save it.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Recommended Users Table Permissions</strong></p>
+</div>
+<div class="paragraph">
+<p>The registration form includes all fields of the users table that grants the "register" permission.  The register permission is the <strong>only</strong> permission that is part of the "NO ACCESS", and it is not included in any of the default roles.  Ideally you should be explicit about which fields of the users table you grant the "register" permission on.</p>
+</div>
+<div class="paragraph">
+<p>The following is a snippet from the delegate class for the users table of an application which demonstrates one way to define permissions.</p>
+</div>
+<div class="listingblock">
+<div class="title">Delegate class of users table which provides read-only access to the user record owner, and no access to other users.  It also grants the 'register' permission on the "username", "password", and "email" fields.</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class tables_users {
+
+    /**
+     * Record/Table-level permissions.
+     * Admins = ALL access
+     * Owner (i.e. the user whose record this represents) = READ ONLY access
+     * Non-logged in user = Only 'register' permission
+     * Other users = NO ACCESS
+     */
+    function getPermissions(Dataface_Record $rec = null) { <b class="conum">(1)</b>
+        if (isAdmin()) {
+            // Admins get ALL access (this defers to application delegate class
+            // which grants all access to admin).
+            return null;
+        }
+        $user = getUser();
+        if ($user and $rec and $rec-&gt;val('userid') == $user-&gt;val('userid')) {
+            // This record is the user record for the current user.
+            // give him read only access.
+            return Dataface_PermissionsTool::READ_ONLY();
+        }
+        $user = getUser();
+        if (!$user) {
+            // User is not logged in.
+            // Grant the 'register' permission to allow the register action
+            // to work properly.
+            return array('register' =&gt; 1);
+        }
+
+        // No access to anyone else.
+        // This defers to the application delegate class which grants no
+        // access to non-admin users.
+        return null;
+    }
+
+    /**
+     * Default field permissions.
+     * Non-Logged-in users = Deny the 'register' permission
+     * All other users = Defer to record-level permissions.
+     */
+    function __field__permissions(Dataface_Record $rec = null) { <b class="conum">(2)</b>
+        $user = getUser();
+        if (!$user) {
+            return array('register' =&gt; 0);
+        }
+    }
+
+    /**
+     * Permissions for username field.
+     * Non-logged-in users = Allow the 'register' permission.
+     * All other users = Default to default field permissions.
+     */
+    function username__permissions(Dataface_Record $rec = null) { <b class="conum">(3)</b>
+        $user = getUser();
+        if (!$user) {
+            return array('register' =&gt; 1);
+        }
+    }
+
+    /**
+     * Permissions for password field.
+     * Non-logged-in users = Allow the 'register' permission.
+     * All other users = Default to default field permissions.
+     */
+    function password__permissions(Dataface_Record $rec = null) { <b class="conum">(4)</b>
+        $user = getUser();
+        if (!$user) {
+            return array('register' =&gt; 1);
+        }
+    }
+
+    /**
+     * Permissions for the email field.
+     * Non-logged-in users = Allow register permission.
+     * All other users = Default to default field permissions.
+     */
+    function email__permissions(Dataface_Record $rec = null) { <b class="conum">(5)</b>
+        $user = getUser();
+        if (!$user) {
+            return array('register' =&gt; 1);
+        }
+    }
+
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p><code>getPermissions()</code> defines record-level permissions.</p>
+</li>
+<li>
+<p><code><em>field</em>permissions()</code> defines default field-level permission overrides.  In this case we are denying the "register" permission by default so that no fields appear on the registration form by default.</p>
+</li>
+<li>
+<p><code>username__permissions()</code> overrides permissions of the "username" field to grant the "register" permission, so that it will appear on the registration form.</p>
+</li>
+<li>
+<p><code>password__permissions()</code> overrides the permissions of the "password" field to grant the "register" permission, so that it will appear on the registration form.</p>
+</li>
+<li>
+<p><code>email__permissions()</code> overrides permissions of the "email" field.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+This snippet makes use of the <code>getUser()</code> and <code>isAdmin()</code> functions which are not a part of the Xataface public API.  They are defined separately in this app. You can see sample implementations of these functions <a href="https://github.com/shannah/xataface/blob/master/snippets/functions.inc.php">here</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_disabling_email_validation">Disabling Email Validation</h4>
+<div class="paragraph">
+<p>By default the registration form doesn&#8217;t create the account directly.  It will first send a validation email to the user.  When the user clicks on the "activation link" in this email, the account is created and the user is automatically logged in.</p>
+</div>
+<div class="paragraph">
+<p>If you with to skip this step, and have the registration form create accounts directly, you can override the "register" action in your actions.ini file and override the "email_validation" directive as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">actions.ini file overriding "register" action to skip the email validation step.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[register &gt; register]
+  email_validation=0</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="email-login">Enabling Email Login</h3>
+<div class="paragraph">
+<p>I hate passwords.  I hate having to think of a new password every time I register for a website, as I know I won&#8217;t remember it.  When visiting a website for the first time in a while, I almost always need to use the "Forgot Password" function.  This process is painful as it requires several extra steps, and, at the end of it all, I&#8217;m forced to create yet another password that I won&#8217;t remember.</p>
+</div>
+<div class="paragraph">
+<p>In many cases a better option is for the site to support "Email Login" directly.  The workflow for email login is simple:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The login form has a single field for "Email", and a button "Email Login Link" as shown here:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-082425.813.png" alt="Image 030121 082425.813">
+</div>
+</div>
+</li>
+<li>
+<p>The user enters their email address and presses "Email Login Link".</p>
+</li>
+<li>
+<p>An email is sent to the user&#8217;s email with a single-use link to log into the app.  The email looks like the following:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-071452.674.png" alt="Image 030121 071452.674">
+</div>
+</div>
+</li>
+<li>
+<p>The user clicks on the link and they are logged in directly without being hassled to enter a password.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To enable Email login, your users table must have an email field.  You may use the "username" field to store the email address if you like, but the <code>_auth</code> section of the conf.ini file needs to declare which field contains the email.</p>
+</div>
+<div class="listingblock">
+<div class="title">conf.ini authentication settings which enables email login.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email <b class="conum">(1)</b>
+    allow_email_login=1 <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p><code>email_column</code> directive, specifying that the user email address is stored in the "email" column.</p>
+</li>
+<li>
+<p><code>allow_email_login</code> directive enables Email login.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you are allowing users to log in with their email address, you should take some care to prevent duplicate emails.  Xataface puts some automatic safe-guards in place such as login won&#8217;t work if it finds two user accounts with the same email address.  You should additionally add a Unique Key/Index on your email column to further prevent users from having the same email address.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>While you <strong>can</strong> use the same field for the username and email address, but I don&#8217;t recommend this as users sometimes change their email address, and the username should stay unchanged to ensure referential integrity.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With these directives in place, the login form will look something like the following:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-082425.813.png" alt="Image 030121 082425.813">
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that there is a link to "log in with password".  Pressing this link will toggle back to the password login form:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-082619.526.png" alt="Image 030121 082619.526">
+</div>
+</div>
+<div class="paragraph">
+<p>Also notice that there is still a "Forgot password" option, in case the user would prefer to log in with their password.</p>
+</div>
+<div class="sect3">
+<h4 id="_disabling_password_login">Disabling Password Login</h4>
+<div class="paragraph">
+<p>If you have email login enabled, you can optionally disable password login entirely.  This may make sense for some services, in the spirit of "less is more" in terms of usability.  You can use the <code>enable_password_login=0</code> directive in the <code>_auth</code> section of the conf.ini file to achieve this:</p>
+</div>
+<div class="listingblock">
+<div class="title">conf.ini file with password login disabled.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email
+    allow_email_login=1
+    allow_password_login=0 <b class="conum">(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>allow_password_login</code> directive disables password login so that email login is the only option.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>With these options, the login form will not include the "or log in with password" link as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-082708.897.png" alt="Image 030121 082708.897">
+</div>
+<div class="title">Figure 33. Login form with password login disabled</div>
+</div>
+<div class="paragraph">
+<p>Also notice that the "Forgot Password" option is no longer displayed.  With <code>allow_password_login=0</code> you&#8217;ll also notice that there is no "Change Password" option once logged in.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="email-registration">Email Registration</h4>
+<div class="paragraph">
+<p>The email login examples shown thus far have not included user registration. (See <a href="#user-registration">Allowing User Registration</a>), but it is fully supported.  If the user clicks on the "Email Login Link", and there is a valid email address in the Email field, it will always at least "pretend" to send a login email.  I.e. it will always display the following dialog:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-083336.042.png" alt="Image 030121 083336.042">
+</div>
+</div>
+<div class="paragraph">
+<p>This is for security purposes to prevent malicious actors from testing different email addresses to see if they have an account.</p>
+</div>
+<div class="paragraph">
+<p>However, depending on your authentication configuration, it will do something different.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">If <code>allow_register=0</code> or <code>allow_register</code> is not set</dt>
+<dd>
+<p>The system won&#8217;t send an email at all, but it will log this to the PHP error log.</p>
+</dd>
+<dt class="hdlist1">If <code>allow_register=1</code></dt>
+<dd>
+<p>The system will send an email, but instead of a login link, it will include a link to the registration form.  The email will look something like:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-030121-083758.534.png" alt="Image 030121 083758.534">
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enabling_auto_registration">Enabling Auto-Registration</h4>
+<div class="paragraph">
+<p>Xataface supports an auto-registration feature that helps to minimize the amount of friction involved in creating a user account.  When Auto-registration is enabled, the "Email login link" will work (almost) identically for existing user accounts as they do for non-existent accounts.</p>
+</div>
+<div class="paragraph">
+<p>To enable auto-registration, you can add the <code>auto_register=1</code> directive to the <code>_auth</code> section of your conf.ini file.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email
+    allow_register=1 <b class="conum">(1)</b>
+    allow_email_login=1
+    auto_register=1 <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>auto_register=1</code> directive turns on auto-registration.</p>
+</li>
+<li>
+<p>The <code>allow_register=1</code> directive is required for auto-registration to work.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Auto-registration pertains to the scenario when a user presses the "Email Login Link" and they don&#8217;t already have an account on the system.  The "normal" workflow, in this case is to send a registration link (if <code>allow_register=1</code>), which takes the user to the registration form.</p>
+</div>
+<div class="paragraph">
+<p>With <code>auto_register=1</code>, the register link simply creates an account for the user and logs them in directly, without visiting any registration form.</p>
+</div>
+<div class="paragraph">
+<p>This presents the minimum amount of friction possible for creating new accounts.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>The Register Action</strong></p>
+</div>
+<div class="paragraph">
+<p>If you have email authentication enabled (i.e. <code>allow_email_login=1</code>), password authentication disabled (i.e. <code>allow_password_login=0</code>), and auto registration enabled (i.e. <code>auto_register=1</code> and <code>allow_register=1</code>), then the "Register" link will still appear on the login form, <strong>but</strong> it will merly display a prompt advising the user to use the "Email Login Link" button to create an account.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="oauth2">OAuth2 Authentication</h3>
 <div class="paragraph">
 <p>Xataface supports Oauth2 authentication via the <a href="https://github.com/shannah/xataface-module-oauth">oauth module</a>.  This module provides all of core functionality to support OAuth2.
@@ -2664,7 +3322,7 @@ There are also modules built to provide Oauth support for specific services, suc
 </table>
 </div>
 <div class="sect3">
-<h4 id="_adding_oauth2_login_support">Adding OAuth2 Login Support</h4>
+<h4 id="oauth">Adding OAuth2 Login Support</h4>
 <div class="paragraph">
 <p>The first step toward adding OAuth2 support in your app, is to download the <a href="https://github.com/shannah/xataface-module-oauth">oauth module</a> into the <code>modules</code> directory of your application. E.g.</p>
 </div>
@@ -2701,7 +3359,7 @@ There are also modules built to provide Oauth support for specific services, suc
 <div class="content">
 <img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
 </div>
-<div class="title">Figure 32. Login sequence using example curl HTTP request.</div>
+<div class="title">Figure 34. Login sequence using example curl HTTP request.</div>
 </div>
 <div class="paragraph">
 <p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
@@ -3475,7 +4133,7 @@ class tables_new_contact_form {
 <div class="content">
 <img src="images/Image-140420-010101.342.png" alt="Image 140420 010101.342">
 </div>
-<div class="title">Figure 33. Sequence diagram for inserting a new record in the Contacts table</div>
+<div class="title">Figure 35. Sequence diagram for inserting a new record in the Contacts table</div>
 </div>
 </div>
 </div>
@@ -3811,7 +4469,7 @@ class actions_ajax_post_preview {
 <div class="content">
 <img src="images/Image-070620-011602.097.png" alt="Image 070620 011602.097">
 </div>
-<div class="title">Figure 34. Ajax preview displayed below the post_url field.</div>
+<div class="title">Figure 36. Ajax preview displayed below the post_url field.</div>
 </div>
 <div class="paragraph">
 <p><strong>Bonus Points</strong></p>
@@ -4011,13 +4669,13 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="content">
 <img src="images/Image-150520-070017.404.png" alt="Image 150520 070017.404">
 </div>
-<div class="title">Figure 35. List View when a filter field defined.</div>
+<div class="title">Figure 37. List View when a filter field defined.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-150520-070032.226.png" alt="Image 150520 070032.226">
 </div>
-<div class="title">Figure 36. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
+<div class="title">Figure 38. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
 </div>
 <div class="paragraph">
 <p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
@@ -4033,7 +4691,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="content">
 <img src="images/Image-150520-065039.669.png" alt="Image 150520 065039.669">
 </div>
-<div class="title">Figure 37. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
+<div class="title">Figure 39. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
 </div>
 <div class="paragraph">
 <p>We want to hide this.</p>
@@ -4180,7 +4838,7 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="content">
 <img src="images/Image-140620-091333.203.png" alt="Image 140620 091333.203">
 </div>
-<div class="title">Figure 38. The "play_post" action appears in the left-most column of the list view</div>
+<div class="title">Figure 40. The "play_post" action appears in the left-most column of the list view</div>
 </div>
 </div>
 <div class="sect2">
@@ -5327,31 +5985,31 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 <div class="content">
 <img src="images/Image-060820-013308.455.png" alt="Image 060820 013308.455">
 </div>
-<div class="title">Figure 39. List view</div>
+<div class="title">Figure 41. List view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013349.259.png" alt="Image 060820 013349.259">
 </div>
-<div class="title">Figure 40. Details view</div>
+<div class="title">Figure 42. Details view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013500.872.png" alt="Image 060820 013500.872">
 </div>
-<div class="title">Figure 41. New Record Form</div>
+<div class="title">Figure 43. New Record Form</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013559.078.png" alt="Image 060820 013559.078">
 </div>
-<div class="title">Figure 42. Hamburger Menu</div>
+<div class="title">Figure 44. Hamburger Menu</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013629.481.png" alt="Image 060820 013629.481">
 </div>
-<div class="title">Figure 43. Login form</div>
+<div class="title">Figure 45. Login form</div>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll notice quite a few differences from the desktop theme:</p>
@@ -5439,13 +6097,13 @@ window.addEventListener('xf-mobileexit', function() {
 <div class="content">
 <img src="images/Image-060820-022427.761.png" alt="Image 060820 022427.761">
 </div>
-<div class="title">Figure 44. The mobile header</div>
+<div class="title">Figure 46. The mobile header</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-022505.157.png" alt="Image 060820 022505.157">
 </div>
-<div class="title">Figure 45. The mobile footer</div>
+<div class="title">Figure 47. The mobile footer</div>
 </div>
 <div class="paragraph">
 <p>The size of these components may change as it is possible to add and remove contents from these components.  It is also possible to hide them in some contexts.</p>
@@ -5534,7 +6192,7 @@ jQuery(mobileFooter).prepend(myElement);</code></pre>
 <div class="content">
 <img src="images/Image-060820-025517.027.png" alt="Image 060820 025517.027">
 </div>
-<div class="title">Figure 46. The mobile table tabs.</div>
+<div class="title">Figure 48. The mobile table tabs.</div>
 </div>
 <div class="paragraph">
 <p>The table tabs (i.e. "Details", "List", and "Find") are rendered in the mobile footer by default. These are taken from the same actions as the table tabs in the desktop UI.  You can add/remove options to this menu by adding actions to the "table_tabs" category.</p>
@@ -5571,19 +6229,19 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-025738.446.png" alt="Image 060820 025738.446">
 </div>
-<div class="title">Figure 47. FAB with one action</div>
+<div class="title">Figure 49. FAB with one action</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-025922.987.png" alt="Image 060820 025922.987">
 </div>
-<div class="title">Figure 48. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
+<div class="title">Figure 50. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-030005.881.png" alt="Image 060820 030005.881">
 </div>
-<div class="title">Figure 49. FAB expanded to show actions.</div>
+<div class="title">Figure 51. FAB expanded to show actions.</div>
 </div>
 <div class="paragraph">
 <p>The <strong>table actions menu</strong> is rendered using a floating action button.  You can hide this by adding the "no-fab" CSS class to the <code>body</code> tag.</p>
@@ -5627,7 +6285,7 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-031126.567.png" alt="Image 060820 031126.567">
 </div>
-<div class="title">Figure 50. A row in the mobile theme.</div>
+<div class="title">Figure 52. A row in the mobile theme.</div>
 </div>
 <div class="dlist">
 <dl>
@@ -6020,7 +6678,7 @@ widget:type=static
 <div class="content">
 <img src="images/Image-210820-090958.753.png" alt="Image 210820 090958.753">
 </div>
-<div class="title">Figure 51. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
+<div class="title">Figure 53. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
@@ -6669,13 +7327,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <div class="content">
 <img src="images/Image-080820-070623.789.png" alt="Image 080820 070623.789">
 </div>
-<div class="title">Figure 52. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
+<div class="title">Figure 54. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-080820-070748.070.png" alt="Image 080820 070748.070">
 </div>
-<div class="title">Figure 53. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
+<div class="title">Figure 55. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
