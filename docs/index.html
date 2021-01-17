@@ -523,6 +523,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#authentication">Authentication</a></li>
 <li><a href="#user-registration">Allowing User Registration</a></li>
 <li><a href="#email-login">Enabling Email Login</a></li>
+<li><a href="#session-config">Session Configuration</a></li>
+<li><a href="#auto-login">Auto-Login Support</a></li>
 <li><a href="#oauth2">OAuth2 Authentication</a></li>
 <li><a href="#_api_authentication">API Authentication</a></li>
 </ul>
@@ -3295,6 +3297,110 @@ This snippet makes use of the <code>getUser()</code> and <code>isAdmin()</code> 
 <p>If you have email authentication enabled (i.e. <code>allow_email_login=1</code>), password authentication disabled (i.e. <code>allow_password_login=0</code>), and auto registration enabled (i.e. <code>auto_register=1</code> and <code>allow_register=1</code>), then the "Register" link will still appear on the login form, <strong>but</strong> it will merly display a prompt advising the user to use the "Email Login Link" button to create an account.</p>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="session-config">Session Configuration</h3>
+<div class="paragraph">
+<p>By default, Xataface authentication uses <a href="https://www.php.net/manual/en/book.session.php">PHP sessions</a>, which relies on a SESSION ID cookie to link requests to a session file on the server file system.  The logged in username is stored in the <code>$_SESSION['UserName']</code> variable.  If you want to log the user out programmatically, you could simply unset this variable, or destroy the session.  Most of the time, however, it is recommended that you just use the built-in Xataface workflows for login/logout.</p>
+</div>
+<div class="paragraph">
+<p>The three most common aspects of sessions that developers want to configure are:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>The Cookie Timeout</strong> - E.g. When should the cookie expire.  This can be configured using the <code>session_timeout</code> property in the <code>_auth</code> section of the conf.ini file.  The default value is "0", meaning that the cookie will persist in the browser until the browser is closed.</p>
+</li>
+<li>
+<p><strong>The Cookie Path</strong> - E.g. What path in your app&#8217;s domain will have access to the session cookie.  By default the cookie is only availalble to the application root.  E.g. If your application is located at <code><a href="http://example.com/path/to/myapp/index.php" class="bare">http://example.com/path/to/myapp/index.php</a></code>, then the cookie path will be "/path/to/myapp/".  Therefore scripts running under "/path/to/anotherapp/" won&#8217;t be able to access the cookie (and thus won&#8217;t share sessions with this app).  Neither will scripts in a parent directory (e.g. <code><a href="http://example.com/anotherscript.php" class="bare">http://example.com/anotherscript.php</a></code>).  Only scripts under the path <code>/path/to/myapp/&#8230;&#8203;</code> will have access to the session cookie.  This can be configured using the <code>cookie_path</code> property in the <code>_auth</code> secton of the conf.ini file.</p>
+</li>
+<li>
+<p><strong>Garbage Collection Timeout</strong> - E.g. How long after a session is idle, before the server will delete the session files.  By default this is set to 5 minutes longer than the cookie timeout, and thus, can be configured using the same <code>session_timeout</code> property.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Example Settings</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">Example session configuration in conf.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+  session_timeout = 86400   ; 1 day
+  cookie_path=/             ; Session cookie available to whole domain
+  session_name=my_app_sid   ; Optional custom session name to avoid collisions with other apps</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="auto-login">Auto-Login Support</h3>
+<div class="paragraph">
+<p>In some cases you may want your sessions to last "forever".  I.e. If the user logs in once, you want them to stay logged in forever- or until they explicitly log out.  Your first instinct might be to use the <code>session_timeout</code> directive to a really big number so that sessions last for 10 years.  This is problematic for two reasons:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Keeping session files lingering for 10 years can fill up your server disk space pretty quickly.  Especially on sites that get a lot of traffic.</p>
+</li>
+<li>
+<p>Some servers may thwart your intentions and delete the session files despite your explicit intention to keep them.  Especially on a shared server, it can be difficult to get full cooperation of the server to <strong>not</strong> delete those session files.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>A better alternative is to activate "auto-login" support in your app.  With auto-login support enabled, the login form will include a "Remember me" checkbox as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-170121-124319.613.png" alt="Image 170121 124319.613">
+</div>
+</div>
+<div class="paragraph">
+<p>If the user checks this box, it will save a token on the server (in the <code>dataface__autologins</code> table), add a long-lived cookie.  If the user tries to load a page a few days later, Xataface will first try to load the session.  If none is found, it will look for an "autologin" cookie to and, if found, it will log the user in automatically, starting a new session seamlessly.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">Sample conf.ini file with auto-login support enabled.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email
+    allow_register=1
+    allow_email_login=1
+    allow_password_login=1
+    auto_register=1
+    autologin=1 <b class="conum">(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>autologin</code> directive which enables autologin support.</p>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_auto_login_configuration_directives">Auto-Login Configuration Directives</h4>
+<div class="paragraph">
+<p>You can customize the behaviour of the auto-login support using the following directives, which all go in the <code>_auth</code> section of the conf.ini file.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>autologin_cookie</code></dt>
+<dd>
+<p>The name of the cookie to use for storing the autologin token.  Default is "xf_pulse"</p>
+</dd>
+<dt class="hdlist1"><code>autologin.logout_all_devices</code></dt>
+<dd>
+<p>Set to "1" to cause the autologin tokens to be invalidated for ALL devices when the user logs out.  By default, when the user logs out, it will invalidate the autologin token in the current device, but if they are logged in on other devices, it will leave those untouched.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>

@@ -441,6 +441,74 @@ If you have email authentication enabled (i.e. `allow_email_login=1`), password 
 
 ====
 
+
+
+[#session-config]
+=== Session Configuration
+
+By default, Xataface authentication uses https://www.php.net/manual/en/book.session.php[PHP sessions], which relies on a SESSION ID cookie to link requests to a session file on the server file system.  The logged in username is stored in the `$_SESSION['UserName']` variable.  If you want to log the user out programmatically, you could simply unset this variable, or destroy the session.  Most of the time, however, it is recommended that you just use the built-in Xataface workflows for login/logout.
+
+The three most common aspects of sessions that developers want to configure are:
+
+1. **The Cookie Timeout** - E.g. When should the cookie expire.  This can be configured using the `session_timeout` property in the `_auth` section of the conf.ini file.  The default value is "0", meaning that the cookie will persist in the browser until the browser is closed.
+2. **The Cookie Path** - E.g. What path in your app's domain will have access to the session cookie.  By default the cookie is only availalble to the application root.  E.g. If your application is located at `http://example.com/path/to/myapp/index.php`, then the cookie path will be "/path/to/myapp/".  Therefore scripts running under "/path/to/anotherapp/" won't be able to access the cookie (and thus won't share sessions with this app).  Neither will scripts in a parent directory (e.g. `http://example.com/anotherscript.php`).  Only scripts under the path `/path/to/myapp/...` will have access to the session cookie.  This can be configured using the `cookie_path` property in the `_auth` secton of the conf.ini file.
+3. **Garbage Collection Timeout** - E.g. How long after a session is idle, before the server will delete the session files.  By default this is set to 5 minutes longer than the cookie timeout, and thus, can be configured using the same `session_timeout` property.
+
+**Example Settings**
+
+.Example session configuration in conf.ini file
+[source,ini]
+----
+[_auth]
+  session_timeout = 86400   ; 1 day
+  cookie_path=/             ; Session cookie available to whole domain
+  session_name=my_app_sid   ; Optional custom session name to avoid collisions with other apps
+----
+
+[#auto-login]
+=== Auto-Login Support
+
+In some cases you may want your sessions to last "forever".  I.e. If the user logs in once, you want them to stay logged in forever- or until they explicitly log out.  Your first instinct might be to use the `session_timeout` directive to a really big number so that sessions last for 10 years.  This is problematic for two reasons:
+
+1. Keeping session files lingering for 10 years can fill up your server disk space pretty quickly.  Especially on sites that get a lot of traffic.
+2. Some servers may thwart your intentions and delete the session files despite your explicit intention to keep them.  Especially on a shared server, it can be difficult to get full cooperation of the server to *not* delete those session files.
+
+A better alternative is to activate "auto-login" support in your app.  With auto-login support enabled, the login form will include a "Remember me" checkbox as shown below:
+
+image::images/Image-170121-124319.613.png[]
+
+If the user checks this box, it will save a token on the server (in the `dataface__autologins` table), add a long-lived cookie.  If the user tries to load a page a few days later, Xataface will first try to load the session.  If none is found, it will look for an "autologin" cookie to and, if found, it will log the user in automatically, starting a new session seamlessly.
+
+**Example**
+
+.Sample conf.ini file with auto-login support enabled.
+[source,ini]
+----
+[_auth]
+    users_table=users
+    username_column=username
+    password_column=password
+    email_column=email
+    allow_register=1
+    allow_email_login=1
+    allow_password_login=1
+    auto_register=1
+    autologin=1 <1>
+----
+<1> The `autologin` directive which enables autologin support.
+
+
+==== Auto-Login Configuration Directives
+
+You can customize the behaviour of the auto-login support using the following directives, which all go in the `_auth` section of the conf.ini file.
+
+`autologin_cookie`::
+The name of the cookie to use for storing the autologin token.  Default is "xf_pulse"
+
+`autologin.logout_all_devices`::
+Set to "1" to cause the autologin tokens to be invalidated for ALL devices when the user logs out.  By default, when the user logs out, it will invalidate the autologin token in the current device, but if they are logged in on other devices, it will leave those untouched. 
+
+
 [#oauth2]
 === OAuth2 Authentication
 
@@ -453,6 +521,7 @@ OAuth 2.0 is the industry-standard protocol for authorization. OAuth 2.0 focuses
 
 For more information about the Oauth2 spec, see https://oauth.net/2/[the official OAuth 2.0 website].
 ====
+
 
 [#oauth]
 ==== Adding OAuth2 Login Support
