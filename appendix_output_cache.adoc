@@ -1,0 +1,94 @@
+[#output-cache]
+== Output Cache
+
+====
+**TLDR:** Enable the output cache by adding the following to your conf.ini.php file.
+
+[source,ini]
+----
+[_output_cache]
+   enabled=1
+----
+
+====
+Xataface does quite a bit of heavy lifting on each page request. If your application is getting a lot of traffic that is slowing your server down, you may want to look at enabling the Xataface output cache.
+
+=== Features
+
+. Improve speed of application dramatically - especially for seldom updated sites.
+. Supports multiple languages.
+. Supports multiple users (each user has own cache).
+. Provides GZIP compression for improved performance.
+
+=== How it works?
+
+When you receive a request, Xataface will return a cached version of the page if the page has been accessed before. If the page doesn't yet exist in the cache it generates the page, saves it to the cache and outputs it to the user transparently. The cache is completely transparent to your users.
+
+
+=== FAQ
+
+[discrete]
+==== Where is the cache stored?
+
+Xataface creates a table called `__output_cache` that stores all of the cached content for your application. This table stores both a GZIPed and regular version of each page. If the user's browser supports GZIP compression, Xataface will automatically return the GZIP version. This results in further performance improvements.
+
+[discrete]
+==== What if I make changes to the database?
+
+Xataface records which tables were in use when a page is cached. If any of those tables are modified after the page is cached, Xataface will mark that cached page as out of date and regenerate it the next time that it is requested.
+
+[discrete]
+==== What if I make changes to my configuration files and templates?
+
+The output cache will have to be manually cleared if you make any changes to your source files (e.g. PHP, templates, and INI files). Clearing the cache is as easy as deleting or emptying the `__output_cache` table.
+
+[discrete]
+==== How do I enable the Cache?
+
+Add the following to your conf.ini file:
+
+[source,ini]
+----
+[_output_cache]
+  enabled=1
+----
+
+[discrete]
+==== How do I disable the Cache?
+
+Simply comment out or remove the [_output_cache] section of your conf.ini file. E.g.
+
+[source,ini]
+----
+;[_output_cache]
+;   enabled=1
+----
+
+[discrete]
+==== Configuration Options
+
+The following directives can be added to the `[_output_cache]` section of your conf.ini file to customize how your output cache works.
+
+lifeTime::
+Number of seconds before cached page is considered out of date.
++
+**Since** 0.7
+
+tableName::
+The name of the table to store the cached pages. Default '__output_cache'.
++
+**Since** 0.7
+ignoredTables::
+A comma-delimited list of tables that don't affect the output cache (i.e. these tables can be changed without causing the output cache to be refreshed.
++
+**Since** 0.7
+
+observedTables::
+A comma-delimited list of tables that should affect the status of the output cache for every page (whether the table is explicitly used by the page or not). This is a useful way to tell Xataface to refresh your cache.
++
+**Since** 0.7
+
+exemptActions::
+A comma-delimited list of actions that are exempt from the output cache (and thus should not be cached).
++
+**Since** 0.7

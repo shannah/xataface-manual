@@ -27,3 +27,5 @@ include::part_appendix_javascript_events.adoc[]
 
 include::part_appendix_url_conventions.adoc[]
 
+include::part_appendix_performance.adoc[]
+

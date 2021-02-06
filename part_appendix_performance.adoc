@@ -1,0 +1,8 @@
+[part_appendix_performance]
+= Appendix: Performance
+
+This section includes documentation for Xataface features related to performance tuning.
+
+include::appendix_output_cache.adoc[]
+
+include::appendix_opcache.adoc[]

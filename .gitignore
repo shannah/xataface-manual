@@ -1,3 +1,4 @@
 *.html
 !docs/*.html
 !*-docinfo.html
+.idea

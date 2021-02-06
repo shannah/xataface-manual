@@ -1,0 +1,57 @@
+[#templates]
+== Templates
+
+The following sections form a sort of cook book with recipes for working with Smarty Templates in Xataface
+
+[#block-parameters]
+=== Passing Parameters to Blocks
+
+[discrete]
+==== Problem
+
+You want to pass a parameter from the template to a block so that the block can output different content depending on the parameters.
+
+[discrete]
+==== Solution
+
+Add parameters as as smarty parameters on the `{block}` tag.
+
+E.g.
+
+.Smarty template defining a block named "product_description", which passes a product ID from the `$productId` smarty variable.
+[source,html]
+----
+{block name="product_description" productId=$productId}
+----
+
+The block implementation inside a delegate class may look like:
+
+[source,php]
+----
+function block__product_description($params = []) {
+    if (@$params['productId']) {
+        echo "<p>A description for product {$params[productId]}</p>";
+e
+    } else {
+        echo "<p>A generic description</p>";
+    }
+}
+----
+
+[IMPORTANT]
+====
+**Special Parameter Names**
+
+A small set of parameter names are treated specially by Xataface, so make sure your custom parameters don't collide with these.  These special parameter names are:
+
+name::
+The name of the block. (**Required**)
+
+table::
+The table name.  This dictate's which table delegate class's implementation for the block will be used.  The default value is the current table.  (i.e. `$query['-table]`).
+
+record::
+A `Dataface_Record` object referring to the record on which this parameter should operate.  This record's table's delegate class's implementation for the block will be used, unless the `table` parameter is also explicitly supplied.
+
+
+====

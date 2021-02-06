@@ -537,6 +537,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</a></li>
 </ul>
 </li>
+<li><a href="#templates">Templates</a>
+<ul class="sectlevel2">
+<li><a href="#block-parameters">Passing Parameters to Blocks</a></li>
+</ul>
+</li>
 <li><a href="#form_customization">Form Customization</a>
 <ul class="sectlevel2">
 <li><a href="#_multiple_tabs_in_forms">Multiple Tabs in Forms</a></li>
@@ -593,6 +598,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</a></li>
 </ul>
 </li>
+<li><a href="#deployment-and-administration">Deployment and Administration</a>
+<ul class="sectlevel2">
+<li><a href="#whereis-phpini">Where is my php.ini file?</a></li>
+<li><a href="#_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</a></li>
+</ul>
+</li>
 <li><a href="#_user_interface_and_themes">User Interface and Themes</a></li>
 <li><a href="#responsive-ui">Responsive UI</a>
 <ul class="sectlevel2">
@@ -604,6 +615,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_appendix_1_configuration_directives">Appendix 1: Configuration Directives</a></li>
+<li><a href="#confini-directives">Conf.ini Directives</a>
+<ul class="sectlevel2">
+<li><a href="#_stand_alone_attributes">Stand-alone Attributes</a></li>
+</ul>
+</li>
 <li><a href="#fieldsini-directives">Fields.ini Directives</a></li>
 <li><a href="#preference-directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
@@ -629,6 +645,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_appendix_4_url_conventions">Appendix 4: URL Conventions</a></li>
+<li><a href="#_appendix_performance">Appendix: Performance</a></li>
+<li><a href="#output-cache">Output Cache</a>
+<ul class="sectlevel2">
+<li><a href="#_features">Features</a></li>
+<li><a href="#_how_it_works_2">How it works?</a></li>
+<li><a href="#_faq">FAQ</a></li>
+</ul>
+</li>
+<li><a href="#opcache">PHP Opcache</a>
+<ul class="sectlevel2">
+<li><a href="#_getting_more_out_of_opcache">Getting More Out of Opcache</a></li>
+<li><a href="#_refreshing_the_opcache">Refreshing the Opcache</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -3954,6 +3984,82 @@ ocean.css="Ocean Theme"
 </div>
 </div>
 <div class="sect1">
+<h2 id="templates">Templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following sections form a sort of cook book with recipes for working with Smarty Templates in Xataface</p>
+</div>
+<div class="sect2">
+<h3 id="block-parameters">Passing Parameters to Blocks</h3>
+<h4 id="_problem_10" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to pass a parameter from the template to a block so that the block can output different content depending on the parameters.</p>
+</div>
+<h4 id="_solution_10" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Add parameters as as smarty parameters on the <code>{block}</code> tag.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">Smarty template defining a block named "product_description", which passes a product ID from the <code>$productId</code> smarty variable.</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">{block name="product_description" productId=$productId}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The block implementation inside a delegate class may look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function block__product_description($params = []) {
+    if (@$params['productId']) {
+        echo "&lt;p&gt;A description for product {$params[productId]}&lt;/p&gt;";
+e
+    } else {
+        echo "&lt;p&gt;A generic description&lt;/p&gt;";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Special Parameter Names</strong></p>
+</div>
+<div class="paragraph">
+<p>A small set of parameter names are treated specially by Xataface, so make sure your custom parameters don&#8217;t collide with these.  These special parameter names are:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">name</dt>
+<dd>
+<p>The name of the block. (<strong>Required</strong>)</p>
+</dd>
+<dt class="hdlist1">table</dt>
+<dd>
+<p>The table name.  This dictate&#8217;s which table delegate class&#8217;s implementation for the block will be used.  The default value is the current table.  (i.e. <code>$query['-table]</code>).</p>
+</dd>
+<dt class="hdlist1">record</dt>
+<dd>
+<p>A <code>Dataface_Record</code> object referring to the record on which this parameter should operate.  This record&#8217;s table&#8217;s delegate class&#8217;s implementation for the block will be used, unless the <code>table</code> parameter is also explicitly supplied.</p>
+</dd>
+</dl>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="form_customization">Form Customization</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -3961,11 +4067,11 @@ ocean.css="Ocean Theme"
 </div>
 <div class="sect2">
 <h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
-<h4 id="_problem_10" class="discrete">Problem</h4>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h4 id="_solution_10" class="discrete">Solution</h4>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -4245,11 +4351,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
-<h4 id="_problem_11" class="discrete">Problem</h4>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h4 id="_solution_11" class="discrete">Solution</h4>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -4285,11 +4391,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
-<h4 id="_problem_12" class="discrete">Problem</h4>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h4 id="_solution_12" class="discrete">Solution</h4>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -4336,11 +4442,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</h3>
-<h4 id="_problem_13" class="discrete">Problem</h4>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h4 id="_solution_13" class="discrete">Solution</h4>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -4424,11 +4530,11 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 <div class="sect2">
 <h3 id="display-field-preview-using-ajax">Displaying Field Preview using AJAX</h3>
-<h4 id="_problem_14" class="discrete">Problem</h4>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h4 id="_solution_14" class="discrete">Solution</h4>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -4600,11 +4706,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
-<h4 id="_problem_15" class="discrete">Problem</h4>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h4 id="_solution_15" class="discrete">Solution</h4>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -4620,11 +4726,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
-<h4 id="_problem_16" class="discrete">Problem</h4>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h4 id="_solution_16" class="discrete">Solution</h4>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -4655,11 +4761,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="field-actions">Adding Actions to Fields</h3>
-<h4 id="_problem_17" class="discrete">Problem</h4>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an an action button next to a field in your form.  For example, suppose you have a text field that stores the URL to a logo for the record, and you want to provide a link for the user to be able to upload an image, and then copy its URL into the field.  Ideally the field would have an "upload" button next to it.</p>
 </div>
-<h4 id="_solution_17" class="discrete">Solution</h4>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>actions</code> directive of the fields.ini file to specify an action category on the field, and then define an "upload" action with that category.</p>
 </div>
@@ -4753,11 +4859,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
-<h4 id="_problem_18" class="discrete">Problem</h4>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h4 id="_solution_18" class="discrete">Solution</h4>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -4789,7 +4895,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
-<h4 id="_problem_19" class="discrete">Problem</h4>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -4802,7 +4908,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h4 id="_solution_19" class="discrete">Solution</h4>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -4822,11 +4928,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_sorting_filter_results">Sorting Filter Results</h3>
-<h4 id="_problem_20" class="discrete">Problem</h4>
+<h4 id="_problem_21" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h4 id="_solution_20" class="discrete">Solution</h4>
+<h4 id="_solution_21" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -4844,11 +4950,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
-<h4 id="_problem_21" class="discrete">Problem</h4>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h4 id="_solution_21" class="discrete">Solution</h4>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -4887,11 +4993,11 @@ class tables_MyTable {
 </div>
 <div class="sect2">
 <h3 id="_adding_row_actions">Adding Row Actions</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h4 id="_solution_22" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -4949,11 +5055,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -4982,11 +5088,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -5075,11 +5181,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h4 id="_solution_25" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -5372,11 +5478,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h4 id="_solution_26" class="discrete">Solution</h4>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
@@ -5386,12 +5492,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="default-sort">Specifying Default Sorting</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the records in a particular table to be sorted on a particular column by default.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_27">Solution</h4>
+<h4 id="_solution_28">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>table.default_sort</code> property of the fields.ini file.</p>
 </div>
@@ -5425,11 +5531,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -5453,11 +5559,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_29" class="discrete">Solution</h4>
+<h4 id="_solution_30" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -5483,12 +5589,12 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_30">Solution</h4>
+<h4 id="_solution_31">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -5550,11 +5656,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -5582,11 +5688,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_32" class="discrete">Solution</h4>
+<h4 id="_solution_33" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -5641,11 +5747,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_33" class="discrete">Solution</h4>
+<h4 id="_solution_34" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -5737,11 +5843,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_34" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_34" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -5772,11 +5878,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_35" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -5788,11 +5894,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_36" class="discrete">Problem</h4>
+<h4 id="_problem_37" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -5865,11 +5971,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_37" class="discrete">Problem</h4>
+<h4 id="_problem_38" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_37" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -5904,11 +6010,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_38" class="discrete">Problem</h4>
+<h4 id="_problem_39" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_39" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -5953,11 +6059,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_39" class="discrete">Solution</h4>
+<h4 id="_solution_40" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -5981,11 +6087,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_40" class="discrete">Problem</h4>
+<h4 id="_problem_41" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_40" class="discrete">Solution</h4>
+<h4 id="_solution_41" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -6066,6 +6172,99 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deployment-and-administration">Deployment and Administration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following section includes recipes for administration and deployment of your Xataface applications.  This includes things like managing development, staging, and production servers, and dealing with versions and upgrades.</p>
+</div>
+<div class="sect2">
+<h3 id="whereis-phpini">Where is my php.ini file?</h3>
+<h3 id="_problem_42" class="discrete">Problem</h3>
+<div class="paragraph">
+<p>You need to change a setting in your php.ini file but you don&#8217;t know where it is, or your server has multiple php.ini files and you don&#8217;t know which one is the correct one.</p>
+</div>
+<h3 id="_solution_42" class="discrete">Solution</h3>
+<div class="paragraph">
+<p>Create a file inside your application directory named "phpinfo.php" with the following contents:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+phpinfo();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Load this page in your web browser and search for "php.ini".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/phpinfo-phpini-location.png" alt="phpinfo phpini location">
+</div>
+</div>
+<div class="paragraph">
+<p>Now open that file and make your changes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</h3>
+<h4 id="_problem_43" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.</p>
+</div>
+<div class="sect3">
+<h4 id="_solution_43">Solution</h4>
+<div class="paragraph">
+<p>Use the <a href="#confini-include-directive"><code>__include__</code></a> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the <code>{host}</code> placeholder to specify a different config file depending on the host name of the current request.</p>
+</div>
+<div class="paragraph">
+<p>E.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">conf.ini.php file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;
+__include__=hosts/{host}/{host}.conf.ini.php
+
+[_tables]
+  table1=My First Table
+  table2=My Second Table</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title"><code>hosts/localhost/localhost.conf.ini.php</code> Config file when application is accessed via localhost.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;
+;; Development Server Config
+[_database]
+    host=localhost
+    name=mydb
+    user=root
+    password=mypass
+
+[_output_cache]
+    enabled=0 ;; Disable output cache on development server</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title"><code>hosts/example.com/example.com.conf.ini.php</code> Config file when application is accessed via localhost.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;
+;; Production Server Config
+[_database]
+    host=localhost
+    name=mydb
+    user=mydbuser
+    password=mydbuserpass
+
+[_output_cache]
+    enabled=1 ;; Enable output cache on production server</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -6471,9 +6670,354 @@ A logo or icon that is rendered on the left side.  You can customize this image 
 </div>
 </div>
 <div class="sect1">
-<h2 id="fieldsini-directives">Fields.ini Directives</h2>
+<h2 id="confini-directives">Conf.ini Directives</h2>
 <div class="sectionbody">
 <h3 id="_overview" class="discrete">Overview</h3>
+<div class="paragraph">
+<p>The conf.ini file is where most of the application-level configuration information is stored for a Xataface application. It contains information such as:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>database connection information</p>
+</li>
+<li>
+<p>which tables should appear in the tables menu.</p>
+</li>
+<li>
+<p>preference settings</p>
+</li>
+<li>
+<p>authentication settings</p>
+</li>
+<li>
+<p>which add-on modules are to be used</p>
+</li>
+<li>
+<p>output caching settings</p>
+</li>
+<li>
+<p>history/undo settings</p>
+</li>
+<li>
+<p>other misc settings.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+This section documents some of the built-in configuration directives that Xataface supports, however, this file is extensible so you can add your own configuration directives as well (which you access in your PHP and Action definitions).
+</td>
+</tr>
+</table>
+</div>
+<h3 id="_sections" class="discrete">Sections</h3>
+<div class="paragraph">
+<p>Every conf.ini file must contain at least the following sections:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">_database</dt>
+<dd>
+<p>Contains database connection info.</p>
+<div class="listingblock">
+<div class="title">Example <code>_database</code> section</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_database]
+  name=spokenpage
+  user=root
+  password=password
+  host=localhost
+  driver=mysqli</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+It is recommended to place the <code>[<em>database]</code> section in a separate file named <code>conf.db.ini.php</code> and include it in the <code>__includes__</em></code> directive to make your app more portable.
+</td>
+</tr>
+</table>
+</div>
+</dd>
+<dt class="hdlist1">_tables</dt>
+<dd>
+<p>Contains a list of tables that are to be included in the navigation menu of the application.</p>
+<div class="listingblock">
+<div class="title">Example <code>_tables</code> section</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_tables]
+    people=People
+    publications=Publications</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>The following optional sections may also be included:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">_allowed_tables</dt>
+<dd>
+<p>Specifies tables that should be explicitly allowed to override disallowed tables listed or matched in the _disallowed_tables section.	Since 0.7</p>
+</dd>
+<dt class="hdlist1">_auth</dt>
+<dd>
+<p>Contains information about authentication.	Since 0.6</p>
+</dd>
+<dt class="hdlist1">_disallowed_tables</dt>
+<dd>
+<p>A list of tables or patterns that match tables that should be blocked from being accessed directly through the application. By default any table beginning with an underscore, 'dataface_', or ending in '__history' are blocked. This prevents unintended access to some of the automatically created tables in Xataface.	Since 0.7</p>
+</dd>
+<dt class="hdlist1">_feed</dt>
+<dd>
+<p>Configuration options for RSS feeds that are generated by the application.	Since 1.0</p>
+</dd>
+<dt class="hdlist1">_history</dt>
+<dd>
+<p>Settings pertaining to the history feature (e.g. whether it has been enabled).	Since 0.7</p>
+</dd>
+<dt class="hdlist1">_index</dt>
+<dd>
+<p>Settings for the full site search indexing.	Since 1.0</p>
+</dd>
+<dt class="hdlist1">_modules</dt>
+<dd>
+<p>A list of modules that are enabled for this application.	Since 1.0</p>
+</dd>
+<dt class="hdlist1">_output_cache</dt>
+<dd>
+<p>Output cache settings. Using output caching can dramatically improve performance for busier sites.	Since 0.8</p>
+</dd>
+<dt class="hdlist1">_themes</dt>
+<dd>
+<p>A list of the themes that are to be applied to the application. Since 0.8</p>
+</dd>
+<dt class="hdlist1">table_labels</dt>
+<dd>
+<p>A list that defines friendly labels for displaying table names. Similar to the <code>[_tables]</code> section, but these tables do not appear in the application&#8217;s navigation menu by default. This is also the only method to display friendly table names in the search index results as of Xataface 2.1 or prior. (See Editing Search Results &gt;&gt; How Do I change table names). Also see the <a href="#fieldsini-table-label">label global directive in the fields.ini_file</a>.	Since always.</p>
+</dd>
+</dl>
+</div>
+<div class="sect2">
+<h3 id="_stand_alone_attributes">Stand-alone Attributes</h3>
+<div class="paragraph">
+<p>Stand-alone attributes for an INI file must appear at the beginning of the INI file (before any of the sections). The conf.ini may contain the following stand-alone attributes.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">cache_queries</dt>
+<dd>
+<p>Enables query caching. Enabling this feature can yield drastic performance improvements especially on busy sites with large databases.</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong>: boolean (0 or 1)</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong> 1.2</p>
+</div>
+</dd>
+<dt class="hdlist1">cache_queries_log</dt>
+<dd>
+<p>Enables logging of query caching to the file /tmp/querylog.log so that you can tell whether your queries are being cached, and which ones are being cached.</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong> boolean (0 or 1)</p>
+</div>
+<div class="paragraph">
+<p><strong>Since </strong> 1.2</p>
+</div>
+</dd>
+<dt class="hdlist1">default_action</dt>
+<dd>
+<p>The default action to be performed if it is not explicitly specified in the query (e.g. 'list', 'find', 'edit').</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong> string.  Name of action.</p>
+</div>
+<div class="paragraph">
+<p><strong>Default Value</strong> 'list'.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">debug</dt>
+<dd>
+<p>If this is set to 1, then the application will run in debug mode which displays the available slots and blocks on the screen, along with some other debug information.</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong> 0 or 1</p>
+</div>
+<div class="paragraph">
+<p><strong>Default Value</strong> 0</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">default_browse_action</dt>
+<dd>
+<p>The default action to perform in the details tab. E.g. When you click on the "details" tab there are a number of sub-tabs including 'view', 'edit', etc&#8230;&#8203; . The default value for this directive is 'view'. If you want to go directly to the edit form when clicking on a record in list view, you would set default_browse_action to 'edit'.	string</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">default_language</dt>
+<dd>
+<p>The default language to use. This is the 2-digit ISO language code. If this value is not specified it defaults to the first language listed in the [languages] section.	string (2-digit ISO language code)</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">default_limit</dt>
+<dd>
+<p>The default limit (i.e. the number of records to show per page) if none is explicitly specified in the query.</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong> positive integer.  E.g. 100</p>
+</div>
+<div class="paragraph">
+<p><strong>Default Value</strong> 30</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">default_table</dt>
+<dd>
+<p>The default table to show if none is specified by the query.</p>
+<div class="paragraph">
+<p><strong>Default Value:</strong> The first table listed in the <code>[_tables]</code> section.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong>	0.6</p>
+</div>
+</dd>
+<dt class="hdlist1">disable_session_ip_check</dt>
+<dd>
+<p>Default behaviour automatically tracks the IP address of the user when they log in. If a request is made for a session from a different IP then the session is automatically destroyed and the user is logged out.</p>
+<div class="paragraph">
+<p><strong>Accepted Values</strong> boolean	(0 or 1)</p>
+</div>
+<div class="paragraph">
+<p><strong>Since</strong> 1.3rc4</p>
+</div>
+</dd>
+<dt class="hdlist1">title</dt>
+<dd>
+<p>A title for the application (appears in the browser title bar).</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.6</p>
+</div>
+</dd>
+</dl>
+</div>
+<div id="confini-include-directive" class="dlist">
+<dl>
+<dt class="hdlist1">__include__</dt>
+<dd>
+<p>A comma-delimited list of configuration files that you wish to include.</p>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>This list can be used to separate your configuration into multiple files, or to provide different configurations for different host environments.  It is common, for example, to factor your database connection information into a separate file named "conf.db.ini.php" which is not kept in version control to make the application more portable.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example:</strong> Placing database configuration in separate file</p>
+</div>
+<div class="listingblock">
+<div class="title">conf.ini.php file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;
+
+__include__=conf.db.ini.php
+
+[_tables]
+   table1=My First Table
+   table2=My Second Table</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">conf.db.ini.php file</div>
+<div class="content">
+<pre>;&lt;?php exit;
+
+[_database]
+   host=localhost
+   name=mydb
+   user=mydbuser
+   password=dbpass</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+For security it is recommended to add the ".php" extension to all of your INI files to prevent the web server from publishing them.  The first line, then is always <code>;&lt;?php exit;</code> as this will be ignored when parsing the file as an INI file, and it will cause execution to exit when parsing as a PHP file.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Placeholder Variables</strong></p>
+</div>
+<div class="paragraph">
+<p>Since version 3.0, you can use placeholder variables in your __include__ directive which allow you to specify a different path based on the environment.  The following placeholders are supported:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>{host}</code></dt>
+<dd>
+<p>Will be replaced by the HTTP host name of the request.  E.g. if the app is being accessed at <code><a href="http://example.com" class="bare">http://example.com</a></code>, then <code>{host}</code> placeholders will be replaced with "example.com".</p>
+</dd>
+<dt class="hdlist1"><code>{port}</code></dt>
+<dd>
+<p>Will be replaced by the HTTP port for the request.</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="title">Example conf.ini.php using placeholders</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;
+
+__include__=conf.db.ini.php, hosts/{host}/{host}.conf.ini.php</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example, if the app is accessed at example.com, then it would include the conf file located at <code>hosts/example.com/example.com.conf.ini.php</code>, but if it is accessed at <code>localhost</code>, then it would load the config file at <code>hosts/localhost/localhost.conf.ini.php</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Optional Includes</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>TLDR:</strong>  Add <code>?</code> to the end of a file path to make it an optional include. E.g. <code>__include__=hosts/{host}/{host}.conf.ini.php?</code></p>
+</div>
+<div class="paragraph">
+<p>By default, if an include fails (because the included file doesn&#8217;t exist), then an exception will be thrown when the app is loaded.  In some cases you may want the include to be "optional" so that it just fails to load silently if the file can&#8217;t be found.  You can add <code>?</code> to the end of a file path to make it optional.</p>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fieldsini-directives">Fields.ini Directives</h2>
+<div class="sectionbody">
+<h3 id="_overview_2" class="discrete">Overview</h3>
 <div class="paragraph">
 <p>The fields.ini file is a configuration file which is associated with a single table of a database application. It provides metadata about the table&#8217;s fields to help Xataface dictate how they should be included in the application. This includes metadata such as</p>
 </div>
@@ -7445,6 +7989,10 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><strong>Since 3.0</strong></p>
 </div>
 </dd>
+</dl>
+</div>
+<div id="fieldsini-table-label" class="dlist">
+<dl>
 <dt class="hdlist1">label</dt>
 <dd>
 <p>Specifies the label that should be used for the field group.</p>
@@ -8065,7 +8613,7 @@ RSS feeds will work perfectly well without defining this method. This just allow
 <div class="sect1">
 <h2 id="_thumbnail_handling">Thumbnail Handling</h2>
 <div class="sectionbody">
-<h3 id="_overview_2" class="discrete">Overview</h3>
+<h3 id="_overview_3" class="discrete">Overview</h3>
 <div class="paragraph">
 <p>Xataface 3.0 includes automatic thumbnail generation for Container fields.  See the <a href="#generating-thumbnails">Generating Thumbnails</a> recipe for an example of how to use this feature.  You can also refer to the <a href="#fieldsini-directives">Fields.ini Directives</a> section to see the syntax of the  <code>transform</code> and <code>thumbnail.ACTIONAME</code> directives.</p>
 </div>
@@ -9207,10 +9755,226 @@ Not to be confused with the <code>-cursor</code> parameter which is used to spec
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_appendix_performance">Appendix: Performance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section includes documentation for Xataface features related to performance tuning.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="output-cache">Output Cache</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>TLDR:</strong> Enable the output cache by adding the following to your conf.ini.php file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_output_cache]
+   enabled=1</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Xataface does quite a bit of heavy lifting on each page request. If your application is getting a lot of traffic that is slowing your server down, you may want to look at enabling the Xataface output cache.</p>
+</div>
+<div class="sect2">
+<h3 id="_features">Features</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Improve speed of application dramatically - especially for seldom updated sites.</p>
+</li>
+<li>
+<p>Supports multiple languages.</p>
+</li>
+<li>
+<p>Supports multiple users (each user has own cache).</p>
+</li>
+<li>
+<p>Provides GZIP compression for improved performance.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_it_works_2">How it works?</h3>
+<div class="paragraph">
+<p>When you receive a request, Xataface will return a cached version of the page if the page has been accessed before. If the page doesn&#8217;t yet exist in the cache it generates the page, saves it to the cache and outputs it to the user transparently. The cache is completely transparent to your users.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_faq">FAQ</h3>
+<h4 id="_where_is_the_cache_stored" class="discrete">Where is the cache stored?</h4>
+<div class="paragraph">
+<p>Xataface creates a table called <code>__output_cache</code> that stores all of the cached content for your application. This table stores both a GZIPed and regular version of each page. If the user&#8217;s browser supports GZIP compression, Xataface will automatically return the GZIP version. This results in further performance improvements.</p>
+</div>
+<h4 id="_what_if_i_make_changes_to_the_database" class="discrete">What if I make changes to the database?</h4>
+<div class="paragraph">
+<p>Xataface records which tables were in use when a page is cached. If any of those tables are modified after the page is cached, Xataface will mark that cached page as out of date and regenerate it the next time that it is requested.</p>
+</div>
+<h4 id="_what_if_i_make_changes_to_my_configuration_files_and_templates" class="discrete">What if I make changes to my configuration files and templates?</h4>
+<div class="paragraph">
+<p>The output cache will have to be manually cleared if you make any changes to your source files (e.g. PHP, templates, and INI files). Clearing the cache is as easy as deleting or emptying the <code>__output_cache</code> table.</p>
+</div>
+<h4 id="_how_do_i_enable_the_cache" class="discrete">How do I enable the Cache?</h4>
+<div class="paragraph">
+<p>Add the following to your conf.ini file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_output_cache]
+  enabled=1</code></pre>
+</div>
+</div>
+<h4 id="_how_do_i_disable_the_cache" class="discrete">How do I disable the Cache?</h4>
+<div class="paragraph">
+<p>Simply comment out or remove the [_output_cache] section of your conf.ini file. E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;[_output_cache]
+;   enabled=1</code></pre>
+</div>
+</div>
+<h4 id="_configuration_options" class="discrete">Configuration Options</h4>
+<div class="paragraph">
+<p>The following directives can be added to the <code>[_output_cache]</code> section of your conf.ini file to customize how your output cache works.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">lifeTime</dt>
+<dd>
+<p>Number of seconds before cached page is considered out of date.</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.7</p>
+</div>
+</dd>
+<dt class="hdlist1">tableName</dt>
+<dd>
+<p>The name of the table to store the cached pages. Default '__output_cache'.</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.7</p>
+</div>
+</dd>
+<dt class="hdlist1">ignoredTables</dt>
+<dd>
+<p>A comma-delimited list of tables that don&#8217;t affect the output cache (i.e. these tables can be changed without causing the output cache to be refreshed.</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.7</p>
+</div>
+</dd>
+<dt class="hdlist1">observedTables</dt>
+<dd>
+<p>A comma-delimited list of tables that should affect the status of the output cache for every page (whether the table is explicitly used by the page or not). This is a useful way to tell Xataface to refresh your cache.</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.7</p>
+</div>
+</dd>
+<dt class="hdlist1">exemptActions</dt>
+<dd>
+<p>A comma-delimited list of actions that are exempt from the output cache (and thus should not be cached).</p>
+<div class="paragraph">
+<p><strong>Since</strong> 0.7</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="opcache">PHP Opcache</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PHP 7 comes with shiny, new, built-in <a href="https://www.php.net/manual/en/book.opcache.php">opcache</a> that can drastically improve your performance.  All you need to do is enable it in your php.ini file.</p>
+</div>
+<div class="paragraph">
+<p>Simply activating the opcache on your server should reduce application latency noticeably.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can enable your opcache by opening your php.ini file, and look for the following line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>;zend_extension=opcache.so</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uncomment this line and restart your web server.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#whereis-phpini">Where is my php.ini located?</a> if you don&#8217;t know where your php.ini file is located.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_getting_more_out_of_opcache">Getting More Out of Opcache</h3>
+<div class="paragraph">
+<p>When you enable the opcache you will get a performance boost due to PHP being able to cache compiled versions your app&#8217;s PHP files in RAM.  However, you can crank even more performance out of opcache by instructing Xataface to cache its configuration information in the opcache as well.</p>
+</div>
+<div class="paragraph">
+<p>Add the following to the beginning of your app&#8217;s index.php file in order to enable the opcache for caching Xataface configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">define('XF_USE_OPCACHE', function_exists('opcache_reset'));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Xataface will look for this <code>XF_USE_OPCACHE</code> constant and, if defined, and <code>true</code>, it will use the opcache to cache its configuration data.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+If <code>XF_USE_OPCACHE</code> is defined and <code>true</code>, changes that you make to your PHP files, database structure, and configuration files may not be reflected until you clear your cache, or increment your application version in <code>version.txt</code>.  **This includes disabling the <code>XF_USE_OPCACHE</code> directive because the PHP file may be cached in the opcache.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_refreshing_the_opcache">Refreshing the Opcache</h3>
+<div class="paragraph">
+<p>If you make changes to your app&#8217;s PHP or INI files, or make changes to the database structure (e.g. adding or removing columns), then you will need to refresh the opcache for the changes to be picked up.</p>
+</div>
+<div class="paragraph">
+<p>There are two ways to refresh the opcache:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use the <code>clear_cache</code> action.  E.g. <code>index.php?-action=clear_cache</code>, when logged in as someone with the "manage" permission.  You can also access this action in the "Control Panel".</p>
+</li>
+<li>
+<p>Increment the version number in your version.txt file.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-12-27 12:57:21 -0800
+Last updated 2021-02-06 06:58:10 -0800
 </div>
 </div>
 </body>

@@ -1,0 +1,46 @@
+[#opcache]
+== PHP Opcache
+
+PHP 7 comes with shiny, new, built-in https://www.php.net/manual/en/book.opcache.php[opcache] that can drastically improve your performance.  All you need to do is enable it in your php.ini file.
+
+Simply activating the opcache on your server should reduce application latency noticeably.
+
+[TIP]
+====
+You can enable your opcache by opening your php.ini file, and look for the following line:
+
+----
+;zend_extension=opcache.so
+----
+
+Uncomment this line and restart your web server.
+
+See <<whereis-phpini, Where is my php.ini located?>> if you don't know where your php.ini file is located.
+====
+
+=== Getting More Out of Opcache
+
+When you enable the opcache you will get a performance boost due to PHP being able to cache compiled versions your app's PHP files in RAM.  However, you can crank even more performance out of opcache by instructing Xataface to cache its configuration information in the opcache as well.
+
+Add the following to the beginning of your app's index.php file in order to enable the opcache for caching Xataface configuration:
+
+[source,php]
+----
+define('XF_USE_OPCACHE', function_exists('opcache_reset'));
+----
+
+Xataface will look for this `XF_USE_OPCACHE` constant and, if defined, and `true`, it will use the opcache to cache its configuration data.
+
+WARNING:  If `XF_USE_OPCACHE` is defined and `true`, changes that you make to your PHP files, database structure, and configuration files may not be reflected until you clear your cache, or increment your application version in `version.txt`.  **This includes disabling the `XF_USE_OPCACHE` directive because the PHP file may be cached in the opcache.
+
+=== Refreshing the Opcache
+
+If you make changes to your app's PHP or INI files, or make changes to the database structure (e.g. adding or removing columns), then you will need to refresh the opcache for the changes to be picked up.
+
+There are two ways to refresh the opcache:
+
+1. Use the `clear_cache` action.  E.g. `index.php?-action=clear_cache`, when logged in as someone with the "manage" permission.  You can also access this action in the "Control Panel".
+2. Increment the version number in your version.txt file.
+
+
+

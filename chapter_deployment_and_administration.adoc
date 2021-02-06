@@ -1,0 +1,85 @@
+[#deployment-and-administration]
+== Deployment and Administration
+
+The following section includes recipes for administration and deployment of your Xataface applications.  This includes things like managing development, staging, and production servers, and dealing with versions and upgrades.
+
+[#whereis-phpini]
+=== Where is my php.ini file?
+
+[discrete]
+=== Problem
+
+You need to change a setting in your php.ini file but you don't know where it is, or your server has multiple php.ini files and you don't know which one is the correct one.
+
+[discrete]
+=== Solution
+
+Create a file inside your application directory named "phpinfo.php" with the following contents:
+
+[source,php]
+----
+<?php
+phpinfo();
+----
+
+Load this page in your web browser and search for "php.ini".
+
+image::images/phpinfo-phpini-location.png[]
+
+Now open that file and make your changes.
+
+=== Using Different Config Files on Different Servers
+
+[discrete]
+==== Problem
+
+You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.
+
+==== Solution
+
+Use the <<confini-include-directive,`\\__include__`>> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the `{host}` placeholder to specify a different config file depending on the host name of the current request.
+
+E.g.
+
+.conf.ini.php file
+[source,ini]
+----
+;<?php exit;
+__include__=hosts/{host}/{host}.conf.ini.php
+
+[_tables]
+  table1=My First Table
+  table2=My Second Table
+----
+
+.`hosts/localhost/localhost.conf.ini.php` Config file when application is accessed via localhost.
+[source,ini]
+----
+;<?php exit;
+;; Development Server Config
+[_database]
+    host=localhost
+    name=mydb
+    user=root
+    password=mypass
+
+[_output_cache]
+    enabled=0 ;; Disable output cache on development server
+----
+
+.`hosts/example.com/example.com.conf.ini.php` Config file when application is accessed via localhost.
+[source,ini]
+----
+;<?php exit;
+;; Production Server Config
+[_database]
+    host=localhost
+    name=mydb
+    user=mydbuser
+    password=mydbuserpass
+
+[_output_cache]
+    enabled=1 ;; Enable output cache on production server
+----
+
+

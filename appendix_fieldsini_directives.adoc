@@ -668,6 +668,7 @@ image::images/Image-080820-070748.070.png[]
 +
 *Since 3.0*
 
+[#fieldsini-table-label]
 label::	
 Specifies the label that should be used for the field group.	
 +
