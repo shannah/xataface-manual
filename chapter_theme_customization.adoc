@@ -114,7 +114,7 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 You want to override the default color scheme with your own color scheme.
 
 [discrete]
-=== Solution
+==== Solution
 
 **Add a custom stylesheet that redefines Xataface's theme color variables**
 
@@ -362,7 +362,33 @@ Now the user can change their own color scheme, by simply editing their profile 
 The user will require edit permissions for the "stylesheet"  field of their own user record in order for this solution to work.
 ====
 
+[#customize-favicon]
+=== Using a Custom favicon
 
+[discrete]
+==== Problem
+
+You want to install a custom favicon for your app.
+
+[discrete]
+==== Solution
+
+Use the `favicon` block/slot.
+
+.Implementing the favicon block in your ApplicationDelegate class.
+[source,php]
+----
+function block__favicon($params = []) {
+        $icons = [
+            '16x16' => '/images/AppImages/chrome/chrome-favicon-16-16.png',
+            '32x32' => '/images/AppImages/firefox/firefox-generate-32-32.png',
+            '96x96' => '/images/AppImages/android/android-launchericon-96-96.png'
+        ];
+        foreach ($icons as $sizes => $url) {
+            printf('<link rel="icon" type="image/png" href="%s" sizes="%s" />', htmlspecialchars($url), htmlspecialchars($sizes));
+        }
+    }
+----
 
 
 
