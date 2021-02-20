@@ -66,8 +66,10 @@ function getPreferences(){
 |disable_select_rows	|A value of 1 causes the checkboxes in each row of the list view to be hidden.	|0	|0.7
 |result_list_use_geturl	|Use the getURL() method to link to records in the list view rather than the default (which uses the -cursor parameter).	|0	|0.7
 |disable_ajax_record_details	|Whether to disable the ajax record details (the '+' sign beside each record in list view that expands to show the record details.	|1	|0.7
-|use_old_resultlist_controller	As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.	|0	|1.1
-|user_stylesheet	The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app's `css` directory, or the `xataface/css` directory. See <<user-specific-stylesheet>>	|None	|3.0
+|use_old_resultlist_controller	| As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.	|0	|1.1
+|user_stylesheet	| The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app's `css` directory, or the `xataface/css` directory. See <<user-specific-stylesheet>>	|None	|3.0
+|mobile_app_menu_position	|Specifies the position of the "app menu" in the mobile theme.  Supported values are "ne" (for northeast) and "se" for south east.  	|"ne"	|3.0
+|mobile_app_menu_sheet_position	|For the mobile theme, this specifies the value that is supplied to the "sheet" in which the app menu opens.  If the "mobile_app_menu_position" is "ne", then this will default to "right".  Otherwise it defaults to "fill"	| Depends	|3.0
 |====================
 
 [discrete]

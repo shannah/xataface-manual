@@ -288,6 +288,134 @@ If you hover over the "Setup" menu, it will expand:
 
 image::images/Image-150820-073452.855.png[Hovering over the Setup drop-down menu]
 
+[#ajax_actions]
+=== Action to Trigger AJAX Request
+
+[discrete]
+==== Problem
+
+You want your action button to trigger an AJAX (background) request rather than linking to another page.  Additionally you would like to provide some UI feedback to inform the user that the action is in progress.  And finally, when the action completes, you would like some UI feedback to the user to indicate the result of the action, and handle errors and failures gracefully.
+
+[discrete]
+==== Solution
+
+There are two parts to this problem:
+
+The server-side::
+We need to write a PHP handler that your action should trigger.  Since we are using AJAX, this action will output JSON instead of HTML.
+
+The client-side::
+We need to provide a button or menu that the user clicks to trigger the action, as well as the user interface elements to keep the user informed on the progress of the action.
+
+[discrete]
+===== The Server-Side
+
+For the Server-side, let's create a simple action that outputs JSON.  In your app's "actions" directory, create a file named "hello.php" with the following contents:
+
+.actions/hello.php
+[source,php]
+----
+<?php
+class actions_hello {
+    function handle($params = []) {
+        df_write_json([ <1>
+            'code' => 200, <2>
+            'message' => 'Action succeeded' <3>
+        ]);
+    }
+}
+----
+<1> We use the `df_write_json()` function to encode our output as JSON.
+<2> The `code` is a status code that you create.  Generally follow the HTTP convension where codes from 200-299 indicate success.  400-499 indicate some sort of "not allowed" error.  500-599 indicate some sort of server error. Etc..
+<3> The `message` Property will contain a human-readable message about the result of the action.
+
+[discrete]
+===== The Client-Side
+
+I'll discuss two different solutions for the client side:
+
+. <<ajax-action-solution-1, Writing a Custom Javascript Function>>
+. <<ajax-action-solution-2, Using the `ajax` directive of the actions.ini>> file.
+
+[discrete]
+[#ajax-action-solution-1]
+====== Solution 1: Writing a Custom Javascript Function
+
+See <<javascript-action>> for details on triggering a Javascript function using an action.  After setting up your action, you'll have a definition in your actions.ini file like:
+
+[source,ini]
+----
+[hello]
+    onclick="window.helloWorld();"
+    category=record_actions
+----
+
+Once you have your action linked up to your Javascript function you can use the `jQuery.post()` function to trigger your action handler as follows:
+
+.hello.js, containing our helloWorld() function that we wish to call.
+[source,javascript]
+----
+window.helloWorld = function() {
+    jQuery.post(DATAFACE_SITE_HREF, { <1>
+        '-action' : 'hello' <2>
+    }, function(result) { <3>
+        var message = (res && res.message) ? res.message : 'Server error';
+        if (result && result.code == 200) {
+            alert('Success: ' + message);
+            return;
+        }
+
+        alert("Failed: " + message);
+
+    });
+}
+----
+<1> The `DATAFACE_SITE_HREF` constant is always available, and refers to the entry point of your Xataface application.  Uaually `index.php`.
+<2> The 2nd parameter of `jQuery.post()` is a dictionary with the POST request variables.  In our case we want to call our custom handler so we reference it using the `-action` parameter.
+<3> The 3rd parameter of `jQuery.post()` is a callback function that will be run with the action completes.  The JSON result of our action PHP handler is includd in the `result` argument.
+
+The example above will perform an AJAX request to trigger our PHP action handler.  It will then display the result in an `alert()` dialog.
+
+.The hello action displayed in the record actions menu.
+image::images/Image-140620-084043.111.png[]
+
+This example is overly simplistic.  You can improve it in a number of ways, including:
+
+. Adding some sort of progress indicator to provide some feedback to the user while the action is processed.  This is especially important for long-running actions.
+. Add a `fail()` callback to deal with the case where the HTTP request completely fails for some reason.  The callback in this example will only be called if the handler returns a non-error HTTP status code.
+
+[discrete]
+[#ajax-action-solution-2]
+====== Solution 2: Using `ajax=1` Directive
+
+Xataface provides a simpler alternative to providing your own Javascript function for triggering your action handler.  You can simply specify the `ajax=1` directive for our action:
+
+[source,ini]
+----
+[hello]
+    category=record_actions
+    ajax=1
+----
+
+This directive instructs Xataface to treat this as an AJAX action.  When the user clicks on the action button, it will issue a POST AJAX request, and it will display the result in a status message.
+
+image::images/ajax_action_progress.png[]
+
+When the action completes, it will display the contents of the "message" property of the JSON response in a similar status dialog.  If the action fails, it will display an error message.
+
+It expects the following properties in the JSON response:
+
+code::
+The Status code.  It will interpret any code between 200 and 299 as a success.
+
+message::
+The message to display to the user.
+
+silent::
+Optional boolean parameter that will suppress the error or success message so that the action completes silently.
+
+
+
 
 
 

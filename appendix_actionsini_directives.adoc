@@ -1,0 +1,171 @@
+[#actionsini-directives]
+== Actions.ini Directives
+
+The actions.ini file stores information about the various action?s that can be performed by your application. An action may be manifested in two ways:
+
+. As a web page
+. As a menu item
+
+And there is no reason why an action cannot serve in both capacities simultaneously. All menu items and functions that Xataface performs are defined in the Xataface actions.ini file (in the root of the Xataface installation dirctory). You can also create an actions.ini file in your application's root directory to override existing Xataface actions, or to create your own.
+
+[TIP]
+====
+This section refers to "actions.ini" file, Xataface supports adding a .php extension to all .ini files to increase security.  I.e. Instead of actions.ini, you can name your file actions.ini.php.  The benefit of the .php extension is that you can have a line at the beginning of the file:
+
+[source,ini]
+----
+;<?php exit;
+----
+
+which will be ignored by Xataface's INI file parser, but will result in the web server not serving the file - so the malicious snoopers can't access the file directly.
+====
+
+If you want to modify an existing action instead of overriding it, you can use this syntax:
+
+[source,ini]
+----
+[browse > browse]
+label = Browse
+----
+
+The &gt; symbol simply means to inherit from the existing browse action. All the attributes are the same, and we just override the label to Browse (originally was Details)
+
+
+=== Syntax
+
+As with the <<fieldsini-directives, fields.ini file>> and the valuelists.ini file, the actions.ini file uses the simple INI file syntax to define its actions. Each action is defined in its own section, and can have a number of directives to specify the action's behavior.
+
+Here is a snippet from the Xataface actions.ini file to give you an idea:
+
+[source,ini]
+----
+;; Show the details of the current record
+[browse]
+label = Details
+category = table_tabs
+url = "{$this->url('-action=view')}"
+accessKey = "b"
+mode = browse
+permission = view
+order=0
+
+;; Show a list of the records in the current found set
+[list]
+label = List
+category = table_tabs
+url = "{$this->url('-action=list')}"
+accessKey = "l"
+mode = list
+template = Dataface_List_View.html
+permission = list
+order=0.5
+
+;; Show a "Find Record Form"
+[find]
+label = Find
+category = table_tabs
+url = "{$this->url('-action=find')}"
+accessKey = "f"
+mode = find
+permission = find
+template = Dataface_Find_View.html
+order=0.75
+----
+
+This snippet shows the definition of the browse, list, and find actions - three of the most central actions in a Xataface application. Notice how each action has its own section (according to INI file syntax?) with a number of directives which specify how the action behaves. For instance, each action has a "category" value of "table_tabs", which tells Xataface to display the actions as part of the table tabs in the user interface.
+
+=== Directives
+
+ajax::
+Indicates this this is an ajax action.  See <<ajax_actions>>.
+
+allow_override::
+An optional directive to indicate that this action can be overridden by more specific directives in another ini file. Currently there is only support for a value of "relationships.ini" indicating that the settings can be overridden in the relationships.ini file. In order for this to work, related=1 must also be set.
++
+Since 1.3rc4
+
+label::
+The label to display if the action is used as a menu item.
+
+category::
+The name of the action's category which can be used to group this action together with other similar actions to be used in a menu in the user interface.
+
+url::	If the action appears as a menu item, this is the URL that the menu item points to. This may contain PHP expressions inside curly braces.
+
+onclick::
+A javascript snippet to call when the user clicks on the action.  This can be used as an alternative to the `url` directive.  See <<javascript-action>>.
++
+Since 2.0
+
+accessKey::
+The key code to automatically select this action if it is included as a menu item. I.e. ALT+accessKey calls the action.
+
+materialIcon::
+The name of a material Icon to use for the action menu item.  See <<material-icons>>
++
+Since 3.0
+
+mode::
+This indicates which tab of the table tabs (find, details, list, etc...) that this action should appear to be part of when the action is viewed as a web page. If this is left undefined, or it does not match any existing visible action in the table tabs, then no tab will appear to be selected.
+
+permission::
+The name of a permission required to both see the action as part of a menu and to access the action as a web page.
+
+visible::
+A boolean value indicating whether the action should be visible as a menu item.
+
+condition::
+A boolean value or a PHP expression evaluating to a boolean value to indicate whether the action should be visible as a menu item.
+
+url_condition::
+A PHP expression evaluating to a boolean value to indicate whether the URL directive should be evaluated. This basically checks to make sure that its OK to evaluate the "url" expression, just in case the current state of affairs would cause it to throw a fatal error.
+
+order::
+A numeric value indicating the order in which the action should be displayed as part of a menu. Low numbers result in higher placement in the menu.
+
+icon::
+The path to an icon that should be used when the action appears as a menu item.  If possible, prefer the `materialIcon` directive to this one as they are far mor flexible with respect to styling.
+
+template::
+The path to the template that should be used when the action is displayed as a web page.
+
+description::
+Mouseover text for the action (when displayed as a menu item).
+
+=== PHP Expression Context
+
+Notice that the `url`, `condition`, and `url_condition` directives allow you to use a PHP expression for their values. In order for this to be helpful, you should know a little bit about the context and environment in which these expressions will be executed. All expressions are evaluated immediately prior to being rendered, so the same action can be displayed multiple times in the same page, but have very different resulting values for their urls and conditions.
+
+These expressions are all executed within the context of the `Dataface_Application::parseString()` method, with the following variables loaded in the local symbol table (i.e. you can use the following variables in your expressions).
+
+
+$site_url::
+The URL to the current application's directory (not including "index.php")
+$site_href::
+The URL to the current application including "index.php"
+$dataface_url::
+The URL to the xataface installation directory.
+$table::
+The name of the current table (i.e. the value of the "-table" request parameter"
+$tableObj::
+The `Dataface_Table` object for the current table.
+$query::
+An associative array of the current query variables.
+$app::	A reference to the current `Dataface_Application` object. Alias of `$this`
+$authTool:: A reference to the `Dataface_AuthenticationTool` instance.
+$relationship:: If the action is being rendered in the context of a related record or a relationship request, this will be the corresponding `Dataface_Relationship` object.
+$resultSet::
+A reference to the `Dataface_QueryTool` object for the current query.
+
+$record::	A reference to the current `Dataface_Record` object.
+
+$context::	An associative array of context variables that are passed to the action from the context in which the action is called.
+
+
+[TIP]
+====
+If your action expression contains any fatal errors, you may find yourself in a position where your app won't load at all (e.g. the white screen of death).  The error log may provide no clues because Xataface suppresses warnings and errors when evaluating the PHP expressions.
+
+You can debug these issues by adding the `debug=1` directive to the beginning of your conf.ini file.  That will cause the action expressions to be evaluated "noisily", and you should see the the error either in your PHP error log or in the browser window when you reload the app.
+
+====

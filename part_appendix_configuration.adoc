@@ -7,6 +7,8 @@ include::appendix_confini_directives.adoc[]
 
 include::appendix_fieldsini_directives.adoc[]
 
+include::appendix_actionsini_directives.adoc[]
+
 include::appendix_preferences_directives.adoc[]
 
 include::appendix_rss_directives.adoc[]

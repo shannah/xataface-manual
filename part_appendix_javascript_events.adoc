@@ -260,7 +260,7 @@ installed::
 A read-only property indicating whether the sheet is currently installed in the document.
 
 position::
-The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', or 'right'.
+The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', 'right', or 'fill'.
 
 [discrete]
 ==== Methods
@@ -297,7 +297,18 @@ function openSortDialog() {
     sheet.show();
 }
 ----
-    
+
+[TIP]
+====
+A simple way to open a link inside a sheet is to add the `data-xf-sheet-position` attribute to an `<a>` tag in your HTML.  E.g.
+
+[source,html]
+----
+<a href="https://xataface.com" data-xf-sheet-position="fill">Open Xataface Site in Sheet</a>
+----
+
+All positions supported by the `Sheet.position` property are supported by the `data-xf-sheet-position` attribute.
+====
 
 [#javascript-events]
 [discrete]

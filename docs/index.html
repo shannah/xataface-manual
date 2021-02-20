@@ -511,6 +511,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#javascript-action">Triggering Javascript Function with Action</a></li>
 <li><a href="#customize-action-label">Customizing Action Labels</a></li>
 <li><a href="#tables-navigation-menu">Customising Navigation Menu</a></li>
+<li><a href="#ajax_actions">Action to Trigger AJAX Request</a></li>
 </ul>
 </li>
 <li><a href="#relationships">Relationships</a>
@@ -622,6 +623,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#fieldsini-directives">Fields.ini Directives</a></li>
+<li><a href="#actionsini-directives">Actions.ini Directives</a>
+<ul class="sectlevel2">
+<li><a href="#_syntax_2">Syntax</a></li>
+<li><a href="#_directives">Directives</a></li>
+<li><a href="#_php_expression_context">PHP Expression Context</a></li>
+</ul>
+</li>
 <li><a href="#preference-directives">Preferences Directives</a></li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
 <ul class="sectlevel2">
@@ -2632,6 +2640,183 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="ajax_actions">Action to Trigger AJAX Request</h3>
+<h4 id="_problem_5" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want your action button to trigger an AJAX (background) request rather than linking to another page.  Additionally you would like to provide some UI feedback to inform the user that the action is in progress.  And finally, when the action completes, you would like some UI feedback to the user to indicate the result of the action, and handle errors and failures gracefully.</p>
+</div>
+<h4 id="_solution_5" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>There are two parts to this problem:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">The server-side</dt>
+<dd>
+<p>We need to write a PHP handler that your action should trigger.  Since we are using AJAX, this action will output JSON instead of HTML.</p>
+</dd>
+<dt class="hdlist1">The client-side</dt>
+<dd>
+<p>We need to provide a button or menu that the user clicks to trigger the action, as well as the user interface elements to keep the user informed on the progress of the action.</p>
+</dd>
+</dl>
+</div>
+<h5 id="_the_server_side" class="discrete">The Server-Side</h5>
+<div class="paragraph">
+<p>For the Server-side, let&#8217;s create a simple action that outputs JSON.  In your app&#8217;s "actions" directory, create a file named "hello.php" with the following contents:</p>
+</div>
+<div class="listingblock">
+<div class="title">actions/hello.php</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class actions_hello {
+    function handle($params = []) {
+        df_write_json([ <b class="conum">(1)</b>
+            'code' =&gt; 200, <b class="conum">(2)</b>
+            'message' =&gt; 'Action succeeded' <b class="conum">(3)</b>
+        ]);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>We use the <code>df_write_json()</code> function to encode our output as JSON.</p>
+</li>
+<li>
+<p>The <code>code</code> is a status code that you create.  Generally follow the HTTP convension where codes from 200-299 indicate success.  400-499 indicate some sort of "not allowed" error.  500-599 indicate some sort of server error. Etc..</p>
+</li>
+<li>
+<p>The <code>message</code> Property will contain a human-readable message about the result of the action.</p>
+</li>
+</ol>
+</div>
+<h5 id="_the_client_side" class="discrete">The Client-Side</h5>
+<div class="paragraph">
+<p>I&#8217;ll discuss two different solutions for the client side:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#ajax-action-solution-1">Writing a Custom Javascript Function</a></p>
+</li>
+<li>
+<p><a href="#ajax-action-solution-2">Using the <code>ajax</code> directive of the actions.ini</a> file.</p>
+</li>
+</ol>
+</div>
+<h6 id="ajax-action-solution-1" class="discrete">Solution 1: Writing a Custom Javascript Function</h6>
+<div class="paragraph">
+<p>See <a href="#javascript-action">Triggering Javascript Function with Action</a> for details on triggering a Javascript function using an action.  After setting up your action, you&#8217;ll have a definition in your actions.ini file like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[hello]
+    onclick="window.helloWorld();"
+    category=record_actions</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have your action linked up to your Javascript function you can use the <code>jQuery.post()</code> function to trigger your action handler as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">hello.js, containing our helloWorld() function that we wish to call.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">window.helloWorld = function() {
+    jQuery.post(DATAFACE_SITE_HREF, { <b class="conum">(1)</b>
+        '-action' : 'hello' <b class="conum">(2)</b>
+    }, function(result) { <b class="conum">(3)</b>
+        var message = (res &amp;&amp; res.message) ? res.message : 'Server error';
+        if (result &amp;&amp; result.code == 200) {
+            alert('Success: ' + message);
+            return;
+        }
+
+        alert("Failed: " + message);
+
+    });
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>DATAFACE_SITE_HREF</code> constant is always available, and refers to the entry point of your Xataface application.  Uaually <code>index.php</code>.</p>
+</li>
+<li>
+<p>The 2nd parameter of <code>jQuery.post()</code> is a dictionary with the POST request variables.  In our case we want to call our custom handler so we reference it using the <code>-action</code> parameter.</p>
+</li>
+<li>
+<p>The 3rd parameter of <code>jQuery.post()</code> is a callback function that will be run with the action completes.  The JSON result of our action PHP handler is includd in the <code>result</code> argument.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The example above will perform an AJAX request to trigger our PHP action handler.  It will then display the result in an <code>alert()</code> dialog.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-140620-084043.111.png" alt="Image 140620 084043.111">
+</div>
+<div class="title">Figure 32. The hello action displayed in the record actions menu.</div>
+</div>
+<div class="paragraph">
+<p>This example is overly simplistic.  You can improve it in a number of ways, including:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Adding some sort of progress indicator to provide some feedback to the user while the action is processed.  This is especially important for long-running actions.</p>
+</li>
+<li>
+<p>Add a <code>fail()</code> callback to deal with the case where the HTTP request completely fails for some reason.  The callback in this example will only be called if the handler returns a non-error HTTP status code.</p>
+</li>
+</ol>
+</div>
+<h6 id="ajax-action-solution-2" class="discrete">Solution 2: Using <code>ajax=1</code> Directive</h6>
+<div class="paragraph">
+<p>Xataface provides a simpler alternative to providing your own Javascript function for triggering your action handler.  You can simply specify the <code>ajax=1</code> directive for our action:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[hello]
+    category=record_actions
+    ajax=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This directive instructs Xataface to treat this as an AJAX action.  When the user clicks on the action button, it will issue a POST AJAX request, and it will display the result in a status message.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ajax_action_progress.png" alt="ajax action progress">
+</div>
+</div>
+<div class="paragraph">
+<p>When the action completes, it will display the contents of the "message" property of the JSON response in a similar status dialog.  If the action fails, it will display an error message.</p>
+</div>
+<div class="paragraph">
+<p>It expects the following properties in the JSON response:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">code</dt>
+<dd>
+<p>The Status code.  It will interpret any code between 200 and 299 as a success.</p>
+</dd>
+<dt class="hdlist1">message</dt>
+<dd>
+<p>The message to display to the user.</p>
+</dd>
+<dt class="hdlist1">silent</dt>
+<dd>
+<p>Optional boolean parameter that will suppress the error or success message so that the action completes silently.</p>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2639,11 +2824,11 @@ You can also override the the tooltip text using <code>tables.[TABLENAME].action
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="default-related-sort">Setting Default Sort for Related Lists</h3>
-<h4 id="_problem_5" class="discrete">Problem</h4>
+<h4 id="_problem_6" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want sort the related record tab on a particular column by default.</p>
 </div>
-<h4 id="_solution_5" class="discrete">Solution</h4>
+<h4 id="_solution_6" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>table.default_sort.RELATIONSHIP_NAME</code> fields.ini directive.</p>
 </div>
@@ -2947,7 +3132,7 @@ Hello {$ENV.username}
 <div class="content">
 <img src="images/Image-030121-074655.819.png" alt="Image 030121 074655.819">
 </div>
-<div class="title">Figure 32. A plain-Jane registration form which contains fields from the users table.</div>
+<div class="title">Figure 33. A plain-Jane registration form which contains fields from the users table.</div>
 </div>
 <div class="paragraph">
 <p>The difference between the registration form and the New record form is that the registration form doesn&#8217;t immediately add records into the database.  When the user submits the form, it stores the data in a special registrations table, and sends the user an email with a link to confirm their registration.  If the user clicks on this link, it will then copy the registration information into an actual record of the users table and save it.</p>
@@ -3240,7 +3425,7 @@ This snippet makes use of the <code>getUser()</code> and <code>isAdmin()</code> 
 <div class="content">
 <img src="images/Image-030121-082708.897.png" alt="Image 030121 082708.897">
 </div>
-<div class="title">Figure 33. Login form with password login disabled</div>
+<div class="title">Figure 34. Login form with password login disabled</div>
 </div>
 <div class="paragraph">
 <p>Also notice that the "Forgot Password" option is no longer displayed.  With <code>allow_password_login=0</code> you&#8217;ll also notice that there is no "Change Password" option once logged in.</p>
@@ -3496,7 +3681,7 @@ There are also modules built to provide Oauth support for specific services, suc
 <div class="content">
 <img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">
 </div>
-<div class="title">Figure 34. Login sequence using example curl HTTP request.</div>
+<div class="title">Figure 35. Login sequence using example curl HTTP request.</div>
 </div>
 <div class="paragraph">
 <p>Xataface provides a REST API for authentication so that you can access your application using a REST client.  When using this API, you&#8217;ll perform a request to the "login" action to obtain an authentication token.  You can then make authenticated requests to your app by adding this token in the Authorization header as a bearer token.</p>
@@ -3562,11 +3747,11 @@ There are also modules built to provide Oauth support for specific services, suc
 </div>
 <div class="sect2">
 <h3 id="adding-a-custom-stylesheet">Adding a Custom Stylesheet</h3>
-<h4 id="_problem_6" class="discrete">Problem</h4>
+<h4 id="_problem_7" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a custom stylesheet to your application so that you can override the default styles, and provide styles for your custom elements.</p>
 </div>
-<h4 id="_solution_6" class="discrete">Solution</h4>
+<h4 id="_solution_7" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>The <code>xf_stylesheet()</code> function can be used to inject a stylesheet into either the <code>&lt;head&gt;</code> section of the app&#8217;s page, or into the CSS bundle that is compiled by the <code>CSSTool</code>.  Let&#8217;s start with the simplest case, where you want to include the stylesheet in the entire application (i.e. it should be loaded in every page of the app), and the stylesheet is hosted on a CDN (content-delivery network).  In this case, you should place the call to <code>xf_stylesheet()</code> inside the <code>beforeHandleRequest()</code> method of the application delegate class.</p>
 </div>
@@ -3673,11 +3858,11 @@ xf_stylesheet('https://example.com/mystylesheet.css', true); // Style Doesn't
 </div>
 <div class="sect2">
 <h3 id="changing-color-scheme">Changing the Color Scheme</h3>
-<h4 id="_problem_7" class="discrete">Problem</h4>
+<h4 id="_problem_8" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to override the default color scheme with your own color scheme.</p>
 </div>
-<h4 id="_solution_7" class="discrete">Solution</h4>
+<h4 id="_solution_8" class="discrete">Solution</h4>
 <div class="paragraph">
 <p><strong>Add a custom stylesheet that redefines Xataface&#8217;s theme color variables</strong></p>
 </div>
@@ -3842,11 +4027,11 @@ The list of CSS variables may grow or change over time.  Refer to the plone.css 
 </div>
 <div class="sect2">
 <h3 id="user-specific-stylesheet">Using Preferences to Override Color Scheme</h3>
-<h4 id="_problem_8" class="discrete">Problem</h4>
+<h4 id="_problem_9" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to use a different color scheme depending on which user is logged in, or other run-time environment factors.</p>
 </div>
-<h4 id="_solution_8" class="discrete">Solution</h4>
+<h4 id="_solution_9" class="discrete">Solution</h4>
 <div class="paragraph">
 <p><strong>Use the <code>user_stylesheet</code> preference to specify the name of a stylesheet to use.</strong></p>
 </div>
@@ -3903,11 +4088,11 @@ function getPreferences() {
 </div>
 <div class="sect2">
 <h3 id="user-selected-color-scheme">Allowing Users to Choose Their Own Color Scheme</h3>
-<h4 id="_problem_9" class="discrete">Problem</h4>
+<h4 id="_problem_10" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want users to be able to select their own preferred color scheme.</p>
 </div>
-<h4 id="_solution_9" class="discrete">Solution</h4>
+<h4 id="_solution_10" class="discrete">Solution</h4>
 <div class="paragraph">
 <p><strong>Add a field to the "users" table with the <code>prefs.key=user_stylesheet</code> fields.ini property.</strong></p>
 </div>
@@ -3984,11 +4169,11 @@ ocean.css="Ocean Theme"
 </div>
 <div class="sect2">
 <h3 id="customize-favicon">Using a Custom favicon</h3>
-<h4 id="_problem_10" class="discrete">Problem</h4>
+<h4 id="_problem_11" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to install a custom favicon for your app.</p>
 </div>
-<h4 id="_solution_10" class="discrete">Solution</h4>
+<h4 id="_solution_11" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>favicon</code> block/slot.</p>
 </div>
@@ -4018,11 +4203,11 @@ ocean.css="Ocean Theme"
 </div>
 <div class="sect2">
 <h3 id="block-parameters">Passing Parameters to Blocks</h3>
-<h4 id="_problem_11" class="discrete">Problem</h4>
+<h4 id="_problem_12" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to pass a parameter from the template to a block so that the block can output different content depending on the parameters.</p>
 </div>
-<h4 id="_solution_11" class="discrete">Solution</h4>
+<h4 id="_solution_12" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Add parameters as as smarty parameters on the <code>{block}</code> tag.</p>
 </div>
@@ -4094,11 +4279,11 @@ e
 </div>
 <div class="sect2">
 <h3 id="_multiple_tabs_in_forms">Multiple Tabs in Forms</h3>
-<h4 id="_problem_12" class="discrete">Problem</h4>
+<h4 id="_problem_13" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to split your edit/new record forms into multiple tabs</p>
 </div>
-<h4 id="_solution_12" class="discrete">Solution</h4>
+<h4 id="_solution_13" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the `tab`directive in each field definition of the fields.ini file to specify the "tab" that each field should be placed in.</p>
 </div>
@@ -4372,17 +4557,17 @@ class tables_new_contact_form {
 <div class="content">
 <img src="images/Image-140420-010101.342.png" alt="Image 140420 010101.342">
 </div>
-<div class="title">Figure 35. Sequence diagram for inserting a new record in the Contacts table</div>
+<div class="title">Figure 36. Sequence diagram for inserting a new record in the Contacts table</div>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_using_ownerstamp_to_mark_record_ownership">Using <code>ownerstamp</code> to Mark Record Ownership</h3>
-<h4 id="_problem_13" class="discrete">Problem</h4>
+<h4 id="_problem_14" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to "stamp" a record with the username or user ID of the user who created a record automatically.</p>
 </div>
-<h4 id="_solution_13" class="discrete">Solution</h4>
+<h4 id="_solution_14" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ownerstamp</code> fields.ini directive on the field that you wish to store the userid in.</p>
 </div>
@@ -4418,11 +4603,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="_redirecting_user_to_different_page_after_saving_record">Redirecting User to Different Page After Saving Record</h3>
-<h4 id="_problem_14" class="discrete">Problem</h4>
+<h4 id="_problem_15" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user presses "Save" on the "Edit record form", they will be redirected back to the edit record form again after the save is complete.  You want to redirect them to a different page, such as the "View" page.</p>
 </div>
-<h4 id="_solution_14" class="discrete">Solution</h4>
+<h4 id="_solution_15" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Override the "edit" action in your actions.ini file to specify the "after_action" directive.</p>
 </div>
@@ -4469,11 +4654,11 @@ class tables_new_contact_form {
 </div>
 <div class="sect2">
 <h3 id="recipe-auto-updating-field">Auto-Updating a Field When Other Fields are Changed</h3>
-<h4 id="_problem_15" class="discrete">Problem</h4>
+<h4 id="_problem_16" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the contents of a field to be automatically updated when the value of another field on the same form is changed.  For example, you have a "Program Title" field that should automatically be populated when the user selects the program ID.</p>
 </div>
-<h4 id="_solution_15" class="discrete">Solution</h4>
+<h4 id="_solution_16" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>You can use the <code>ajax_value</code> fields.ini property to make a field dynamically update whenever one or more other fields on the same form is changed.  When a change is detected, the field will load new data from a JSON web service specified by the URL in the property.</p>
 </div>
@@ -4557,11 +4742,11 @@ ajax_value="?-action=export_json&amp;-table=Programs&amp;ProgramID={ProgramID}#0
 </div>
 <div class="sect2">
 <h3 id="display-field-preview-using-ajax">Displaying Field Preview using AJAX</h3>
-<h4 id="_problem_16" class="discrete">Problem</h4>
+<h4 id="_problem_17" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to display some richer feedback to the user based on the value entered into a field.  For example, on a field where the user enters a URL, you may want to display some information about the URL so that the user knows that they have entered the correct URL.</p>
 </div>
-<h4 id="_solution_16" class="discrete">Solution</h4>
+<h4 id="_solution_17" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>ajax_preview</code> directive, which works just like the <code>ajax_value</code> directive, except that it displays the result of the AJAX request just below the field as a "preview", rather than in the field itself.</p>
 </div>
@@ -4708,7 +4893,7 @@ class actions_ajax_post_preview {
 <div class="content">
 <img src="images/Image-070620-011602.097.png" alt="Image 070620 011602.097">
 </div>
-<div class="title">Figure 36. Ajax preview displayed below the post_url field.</div>
+<div class="title">Figure 37. Ajax preview displayed below the post_url field.</div>
 </div>
 <div class="paragraph">
 <p><strong>Bonus Points</strong></p>
@@ -4733,11 +4918,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_disabling_client_side_validation">Disabling Client-side Validation</h3>
-<h4 id="_problem_17" class="discrete">Problem</h4>
+<h4 id="_problem_18" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to disable client-side validation for a particular field, but keep the server-side validaton.</p>
 </div>
-<h4 id="_solution_17" class="discrete">Solution</h4>
+<h4 id="_solution_18" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:validation=server</code> fields.ini directive.</p>
 </div>
@@ -4753,11 +4938,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="_setting_fixed_number_of_rows_in_the_grid_widget">Setting Fixed Number of Rows in the Grid Widget</h3>
-<h4 id="_problem_18" class="discrete">Problem</h4>
+<h4 id="_problem_19" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have a grid widget for editing related records on a form.  Rather than have it start with only a single row, and have additional rows appear only as the user enters data into the last row, you want it to display a fixed number of rows and have some of the data pre-populated.</p>
 </div>
-<h4 id="_solution_18" class="discrete">Solution</h4>
+<h4 id="_solution_19" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>widget:fixedrows</code> directive to a specific number of rows, and you can implement the <code>fieldname__prepareGridData($record, $cols, $data)</code> delegate method to return the data to prepopulate the grid with.</p>
 </div>
@@ -4788,11 +4973,11 @@ class actions_ajax_post_preview {
 </div>
 <div class="sect2">
 <h3 id="field-actions">Adding Actions to Fields</h3>
-<h4 id="_problem_19" class="discrete">Problem</h4>
+<h4 id="_problem_20" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an an action button next to a field in your form.  For example, suppose you have a text field that stores the URL to a logo for the record, and you want to provide a link for the user to be able to upload an image, and then copy its URL into the field.  Ideally the field would have an "upload" button next to it.</p>
 </div>
-<h4 id="_solution_19" class="discrete">Solution</h4>
+<h4 id="_solution_20" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>actions</code> directive of the fields.ini file to specify an action category on the field, and then define an "upload" action with that category.</p>
 </div>
@@ -4886,11 +5071,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_adding_option_to_filter_result_list">Adding Option to Filter Result LIst</h3>
-<h4 id="_problem_20" class="discrete">Problem</h4>
+<h4 id="_problem_21" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a drop-down list for the user to select filters for the result set.</p>
 </div>
-<h4 id="_solution_20" class="discrete">Solution</h4>
+<h4 id="_solution_21" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter</code> directive in the fields.ini file on any field that you want the filter to be added for.</p>
 </div>
@@ -4908,13 +5093,13 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="content">
 <img src="images/Image-150520-070017.404.png" alt="Image 150520 070017.404">
 </div>
-<div class="title">Figure 37. List View when a filter field defined.</div>
+<div class="title">Figure 38. List View when a filter field defined.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-150520-070032.226.png" alt="Image 150520 070032.226">
 </div>
-<div class="title">Figure 38. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
+<div class="title">Figure 39. Expanding the filter list, you can see all of the distinct values for the test_field column.</div>
 </div>
 <div class="paragraph">
 <p>If you select one of the options, it will filter the results to only show those results that match the filter.</p>
@@ -4922,7 +5107,7 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_hiding_filter_counts">Hiding Filter Counts</h3>
-<h4 id="_problem_21" class="discrete">Problem</h4>
+<h4 id="_problem_22" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to hide the counts for each entry in the "filters" drop-down list on the list view.  By default when you add a filter list via the <code>filter</code> directive, each row has the "count" displayed beside it:</p>
 </div>
@@ -4930,12 +5115,12 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 <div class="content">
 <img src="images/Image-150520-065039.669.png" alt="Image 150520 065039.669">
 </div>
-<div class="title">Figure 39. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
+<div class="title">Figure 40. A result filter list.  Notice each row has a (1) beside it indicating that there is 1 row matching that filter.</div>
 </div>
 <div class="paragraph">
 <p>We want to hide this.</p>
 </div>
-<h4 id="_solution_21" class="discrete">Solution</h4>
+<h4 id="_solution_22" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>show_filter_counts</code> preferences directive to hide these counts as follows.  In the <code>_prefs</code> section of the <code>conf.ini</code> file, add:</p>
 </div>
@@ -4955,11 +5140,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="_sorting_filter_results">Sorting Filter Results</h3>
-<h4 id="_problem_22" class="discrete">Problem</h4>
+<h4 id="_problem_23" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Filter lists are sorted by the "filtered" field in alphabetical order.  You want to sort the filter lists on some other column.</p>
 </div>
-<h4 id="_solution_22" class="discrete">Solution</h4>
+<h4 id="_solution_23" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>filter.sort.</code> fields.ini directive to specify the field that the filter should sort on.</p>
 </div>
@@ -4977,11 +5162,11 @@ See <a href="#recordbrowser-example">the RecordBrowser usage example</a> for an 
 </div>
 <div class="sect2">
 <h3 id="row-css-classes">Adding CSS Classes to Rows</h3>
-<h4 id="_problem_23" class="discrete">Problem</h4>
+<h4 id="_problem_24" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add custom CSS classes to the rows of the table in list view.</p>
 </div>
-<h4 id="_solution_23" class="discrete">Solution</h4>
+<h4 id="_solution_24" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Implement the <code>css__tableRowClass()</code> method in the table delegate class.  Have it return a string with the CSS classes you wish to add.</p>
 </div>
@@ -5020,11 +5205,11 @@ class tables_MyTable {
 </div>
 <div class="sect2">
 <h3 id="_adding_row_actions">Adding Row Actions</h3>
-<h4 id="_problem_24" class="discrete">Problem</h4>
+<h4 id="_problem_25" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add a button to each row of the list view to perform some action on that row.</p>
 </div>
-<h4 id="_solution_24" class="discrete">Solution</h4>
+<h4 id="_solution_25" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Define an action with <code>category=list_row_actions</code> and <code>condition="$query['-table'] == 'tablename'</code>.</p>
 </div>
@@ -5077,16 +5262,16 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 <div class="content">
 <img src="images/Image-140620-091333.203.png" alt="Image 140620 091333.203">
 </div>
-<div class="title">Figure 40. The "play_post" action appears in the left-most column of the list view</div>
+<div class="title">Figure 41. The "play_post" action appears in the left-most column of the list view</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="custom-row-action-styles">Customizing Row Action Styles</h3>
-<h4 id="_problem_25" class="discrete">Problem</h4>
+<h4 id="_problem_26" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to customize the style on a particular action</p>
 </div>
-<h4 id="_solution_25" class="discrete">Solution</h4>
+<h4 id="_solution_26" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>class</code> directive on the action to specify a custom CSS class on the <code>&lt;a&gt;</code> tag of the action.  Then use this CSS class to target that button specifically from your stylesheet.</p>
 </div>
@@ -5115,11 +5300,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="_adding_javascript_row_actions">Adding Javascript Row Actions</h3>
-<h4 id="_problem_26" class="discrete">Problem</h4>
+<h4 id="_problem_27" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to trigger a Javascript function when the user clicks on a row action instead of just directing the user to a URL.</p>
 </div>
-<h4 id="_solution_26" class="discrete">Solution</h4>
+<h4 id="_solution_27" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>onclick</code> directive instead of the <code>url</code> directive.</p>
 </div>
@@ -5208,11 +5393,11 @@ When the user clicks on this action, they will be directed to the URL <code>inde
 </div>
 <div class="sect2">
 <h3 id="toggle-row-actions">Making Row Actions Toggleable</h3>
-<h4 id="_problem_27" class="discrete">Problem</h4>
+<h4 id="_problem_28" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to add an action to each row of the list view that can be toggled between two different states.  For example, we have functionality to add and remove rows from a playlist.  If the record is currently "on" the playlist, we want the action to display "Remove from playlist".  If the record is not on the playlist, we want the action to display "Add to playlist".</p>
 </div>
-<h4 id="_solution_27" class="discrete">Solution</h4>
+<h4 id="_solution_28" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use two different actions: "add_to_playlist" and "remove_from_playlist" and conditionally show either action depending on whether the record is currently "on" the playlist.</p>
 </div>
@@ -5505,11 +5690,11 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="ajax-list-row-actions">Using AJAX To Modify Row Records</h3>
-<h4 id="_problem_28" class="discrete">Problem</h4>
+<h4 id="_problem_29" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You need to perform a server-side action when the user clicks on a row action.  E.g. From <a href="#toggle-row-actions">Making Row Actions Toggleable</a>, we needed to add and remove the row record from the playlist.</p>
 </div>
-<h4 id="_solution_28" class="discrete">Solution</h4>
+<h4 id="_solution_29" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Create a custom action handler that performs the the function, and returns JSON, and write a Javascript function that calls this AJAX action.</p>
 </div>
@@ -5519,12 +5704,12 @@ function removeFromPlaylist(el) {
 </div>
 <div class="sect2">
 <h3 id="default-sort">Specifying Default Sorting</h3>
-<h4 id="_problem_29" class="discrete">Problem</h4>
+<h4 id="_problem_30" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want the records in a particular table to be sorted on a particular column by default.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_29">Solution</h4>
+<h4 id="_solution_30">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>table.default_sort</code> property of the fields.ini file.</p>
 </div>
@@ -5558,11 +5743,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_30" class="discrete">Problem</h4>
+<h4 id="_problem_31" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_30" class="discrete">Solution</h4>
+<h4 id="_solution_31" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -5586,11 +5771,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -5616,12 +5801,12 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_32">Solution</h4>
+<h4 id="_solution_33">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -5683,11 +5868,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_33" class="discrete">Solution</h4>
+<h4 id="_solution_34" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -5715,11 +5900,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_34" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_34" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -5774,11 +5959,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_35" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -5870,11 +6055,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_36" class="discrete">Problem</h4>
+<h4 id="_problem_37" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -5905,11 +6090,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_37" class="discrete">Problem</h4>
+<h4 id="_problem_38" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_37" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -5921,11 +6106,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_38" class="discrete">Problem</h4>
+<h4 id="_problem_39" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_39" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -5998,11 +6183,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_39" class="discrete">Solution</h4>
+<h4 id="_solution_40" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -6037,11 +6222,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_40" class="discrete">Problem</h4>
+<h4 id="_problem_41" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_40" class="discrete">Solution</h4>
+<h4 id="_solution_41" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -6086,11 +6271,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_41" class="discrete">Problem</h4>
+<h4 id="_problem_42" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_41" class="discrete">Solution</h4>
+<h4 id="_solution_42" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -6114,11 +6299,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_42" class="discrete">Problem</h4>
+<h4 id="_problem_43" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_42" class="discrete">Solution</h4>
+<h4 id="_solution_43" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -6211,11 +6396,11 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 <div class="sect2">
 <h3 id="whereis-phpini">Where is my php.ini file?</h3>
-<h3 id="_problem_43" class="discrete">Problem</h3>
+<h3 id="_problem_44" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You need to change a setting in your php.ini file but you don&#8217;t know where it is, or your server has multiple php.ini files and you don&#8217;t know which one is the correct one.</p>
 </div>
-<h3 id="_solution_43" class="discrete">Solution</h3>
+<h3 id="_solution_44" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Create a file inside your application directory named "phpinfo.php" with the following contents:</p>
 </div>
@@ -6239,12 +6424,12 @@ phpinfo();</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</h3>
-<h4 id="_problem_44" class="discrete">Problem</h4>
+<h4 id="_problem_45" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_44">Solution</h4>
+<h4 id="_solution_45">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="#confini-include-directive"><code>__include__</code></a> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the <code>{host}</code> placeholder to specify a different config file depending on the host name of the current request.</p>
 </div>
@@ -6317,31 +6502,31 @@ __include__=hosts/{host}/{host}.conf.ini.php
 <div class="content">
 <img src="images/Image-060820-013308.455.png" alt="Image 060820 013308.455">
 </div>
-<div class="title">Figure 41. List view</div>
+<div class="title">Figure 42. List view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013349.259.png" alt="Image 060820 013349.259">
 </div>
-<div class="title">Figure 42. Details view</div>
+<div class="title">Figure 43. Details view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013500.872.png" alt="Image 060820 013500.872">
 </div>
-<div class="title">Figure 43. New Record Form</div>
+<div class="title">Figure 44. New Record Form</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013559.078.png" alt="Image 060820 013559.078">
 </div>
-<div class="title">Figure 44. Hamburger Menu</div>
+<div class="title">Figure 45. Hamburger Menu</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013629.481.png" alt="Image 060820 013629.481">
 </div>
-<div class="title">Figure 45. Login form</div>
+<div class="title">Figure 46. Login form</div>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll notice quite a few differences from the desktop theme:</p>
@@ -6429,13 +6614,13 @@ window.addEventListener('xf-mobileexit', function() {
 <div class="content">
 <img src="images/Image-060820-022427.761.png" alt="Image 060820 022427.761">
 </div>
-<div class="title">Figure 46. The mobile header</div>
+<div class="title">Figure 47. The mobile header</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-022505.157.png" alt="Image 060820 022505.157">
 </div>
-<div class="title">Figure 47. The mobile footer</div>
+<div class="title">Figure 48. The mobile footer</div>
 </div>
 <div class="paragraph">
 <p>The size of these components may change as it is possible to add and remove contents from these components.  It is also possible to hide them in some contexts.</p>
@@ -6524,7 +6709,7 @@ jQuery(mobileFooter).prepend(myElement);</code></pre>
 <div class="content">
 <img src="images/Image-060820-025517.027.png" alt="Image 060820 025517.027">
 </div>
-<div class="title">Figure 48. The mobile table tabs.</div>
+<div class="title">Figure 49. The mobile table tabs.</div>
 </div>
 <div class="paragraph">
 <p>The table tabs (i.e. "Details", "List", and "Find") are rendered in the mobile footer by default. These are taken from the same actions as the table tabs in the desktop UI.  You can add/remove options to this menu by adding actions to the "table_tabs" category.</p>
@@ -6561,19 +6746,19 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-025738.446.png" alt="Image 060820 025738.446">
 </div>
-<div class="title">Figure 49. FAB with one action</div>
+<div class="title">Figure 50. FAB with one action</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-025922.987.png" alt="Image 060820 025922.987">
 </div>
-<div class="title">Figure 50. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
+<div class="title">Figure 51. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-030005.881.png" alt="Image 060820 030005.881">
 </div>
-<div class="title">Figure 51. FAB expanded to show actions.</div>
+<div class="title">Figure 52. FAB expanded to show actions.</div>
 </div>
 <div class="paragraph">
 <p>The <strong>table actions menu</strong> is rendered using a floating action button.  You can hide this by adding the "no-fab" CSS class to the <code>body</code> tag.</p>
@@ -6617,7 +6802,7 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-031126.567.png" alt="Image 060820 031126.567">
 </div>
-<div class="title">Figure 52. A row in the mobile theme.</div>
+<div class="title">Figure 53. A row in the mobile theme.</div>
 </div>
 <div class="dlist">
 <dl>
@@ -7355,7 +7540,7 @@ widget:type=static
 <div class="content">
 <img src="images/Image-210820-090958.753.png" alt="Image 210820 090958.753">
 </div>
-<div class="title">Figure 53. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
+<div class="title">Figure 54. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
@@ -8004,13 +8189,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <div class="content">
 <img src="images/Image-080820-070623.789.png" alt="Image 080820 070623.789">
 </div>
-<div class="title">Figure 54. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
+<div class="title">Figure 55. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-080820-070748.070.png" alt="Image 080820 070748.070">
 </div>
-<div class="title">Figure 55. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
+<div class="title">Figure 56. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
@@ -8063,6 +8248,270 @@ If no columns in the table define the <code>sortable</code> property, then all c
 </div>
 </dd>
 </dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="actionsini-directives">Actions.ini Directives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The actions.ini file stores information about the various action?s that can be performed by your application. An action may be manifested in two ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>As a web page</p>
+</li>
+<li>
+<p>As a menu item</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>And there is no reason why an action cannot serve in both capacities simultaneously. All menu items and functions that Xataface performs are defined in the Xataface actions.ini file (in the root of the Xataface installation dirctory). You can also create an actions.ini file in your application&#8217;s root directory to override existing Xataface actions, or to create your own.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This section refers to "actions.ini" file, Xataface supports adding a .php extension to all .ini files to increase security.  I.e. Instead of actions.ini, you can name your file actions.ini.php.  The benefit of the .php extension is that you can have a line at the beginning of the file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;&lt;?php exit;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which will be ignored by Xataface&#8217;s INI file parser, but will result in the web server not serving the file - so the malicious snoopers can&#8217;t access the file directly.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you want to modify an existing action instead of overriding it, you can use this syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[browse &gt; browse]
+label = Browse</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The &gt; symbol simply means to inherit from the existing browse action. All the attributes are the same, and we just override the label to Browse (originally was Details)</p>
+</div>
+<div class="sect2">
+<h3 id="_syntax_2">Syntax</h3>
+<div class="paragraph">
+<p>As with the <a href="#fieldsini-directives">fields.ini file</a> and the valuelists.ini file, the actions.ini file uses the simple INI file syntax to define its actions. Each action is defined in its own section, and can have a number of directives to specify the action&#8217;s behavior.</p>
+</div>
+<div class="paragraph">
+<p>Here is a snippet from the Xataface actions.ini file to give you an idea:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">;; Show the details of the current record
+[browse]
+label = Details
+category = table_tabs
+url = "{$this-&gt;url('-action=view')}"
+accessKey = "b"
+mode = browse
+permission = view
+order=0
+
+;; Show a list of the records in the current found set
+[list]
+label = List
+category = table_tabs
+url = "{$this-&gt;url('-action=list')}"
+accessKey = "l"
+mode = list
+template = Dataface_List_View.html
+permission = list
+order=0.5
+
+;; Show a "Find Record Form"
+[find]
+label = Find
+category = table_tabs
+url = "{$this-&gt;url('-action=find')}"
+accessKey = "f"
+mode = find
+permission = find
+template = Dataface_Find_View.html
+order=0.75</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This snippet shows the definition of the browse, list, and find actions - three of the most central actions in a Xataface application. Notice how each action has its own section (according to INI file syntax?) with a number of directives which specify how the action behaves. For instance, each action has a "category" value of "table_tabs", which tells Xataface to display the actions as part of the table tabs in the user interface.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directives">Directives</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">ajax</dt>
+<dd>
+<p>Indicates this this is an ajax action.  See <a href="#ajax_actions">Action to Trigger AJAX Request</a>.</p>
+</dd>
+<dt class="hdlist1">allow_override</dt>
+<dd>
+<p>An optional directive to indicate that this action can be overridden by more specific directives in another ini file. Currently there is only support for a value of "relationships.ini" indicating that the settings can be overridden in the relationships.ini file. In order for this to work, related=1 must also be set.</p>
+<div class="paragraph">
+<p>Since 1.3rc4</p>
+</div>
+</dd>
+<dt class="hdlist1">label</dt>
+<dd>
+<p>The label to display if the action is used as a menu item.</p>
+</dd>
+<dt class="hdlist1">category</dt>
+<dd>
+<p>The name of the action&#8217;s category which can be used to group this action together with other similar actions to be used in a menu in the user interface.</p>
+</dd>
+<dt class="hdlist1">url</dt>
+<dd>
+<p>If the action appears as a menu item, this is the URL that the menu item points to. This may contain PHP expressions inside curly braces.</p>
+</dd>
+<dt class="hdlist1">onclick</dt>
+<dd>
+<p>A javascript snippet to call when the user clicks on the action.  This can be used as an alternative to the <code>url</code> directive.  See <a href="#javascript-action">Triggering Javascript Function with Action</a>.</p>
+<div class="paragraph">
+<p>Since 2.0</p>
+</div>
+</dd>
+<dt class="hdlist1">accessKey</dt>
+<dd>
+<p>The key code to automatically select this action if it is included as a menu item. I.e. ALT+accessKey calls the action.</p>
+</dd>
+<dt class="hdlist1">materialIcon</dt>
+<dd>
+<p>The name of a material Icon to use for the action menu item.  See <a href="#material-icons">Using Material Icons</a></p>
+<div class="paragraph">
+<p>Since 3.0</p>
+</div>
+</dd>
+<dt class="hdlist1">mode</dt>
+<dd>
+<p>This indicates which tab of the table tabs (find, details, list, etc&#8230;&#8203;) that this action should appear to be part of when the action is viewed as a web page. If this is left undefined, or it does not match any existing visible action in the table tabs, then no tab will appear to be selected.</p>
+</dd>
+<dt class="hdlist1">permission</dt>
+<dd>
+<p>The name of a permission required to both see the action as part of a menu and to access the action as a web page.</p>
+</dd>
+<dt class="hdlist1">visible</dt>
+<dd>
+<p>A boolean value indicating whether the action should be visible as a menu item.</p>
+</dd>
+<dt class="hdlist1">condition</dt>
+<dd>
+<p>A boolean value or a PHP expression evaluating to a boolean value to indicate whether the action should be visible as a menu item.</p>
+</dd>
+<dt class="hdlist1">url_condition</dt>
+<dd>
+<p>A PHP expression evaluating to a boolean value to indicate whether the URL directive should be evaluated. This basically checks to make sure that its OK to evaluate the "url" expression, just in case the current state of affairs would cause it to throw a fatal error.</p>
+</dd>
+<dt class="hdlist1">order</dt>
+<dd>
+<p>A numeric value indicating the order in which the action should be displayed as part of a menu. Low numbers result in higher placement in the menu.</p>
+</dd>
+<dt class="hdlist1">icon</dt>
+<dd>
+<p>The path to an icon that should be used when the action appears as a menu item.  If possible, prefer the <code>materialIcon</code> directive to this one as they are far mor flexible with respect to styling.</p>
+</dd>
+<dt class="hdlist1">template</dt>
+<dd>
+<p>The path to the template that should be used when the action is displayed as a web page.</p>
+</dd>
+<dt class="hdlist1">description</dt>
+<dd>
+<p>Mouseover text for the action (when displayed as a menu item).</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_php_expression_context">PHP Expression Context</h3>
+<div class="paragraph">
+<p>Notice that the <code>url</code>, <code>condition</code>, and <code>url_condition</code> directives allow you to use a PHP expression for their values. In order for this to be helpful, you should know a little bit about the context and environment in which these expressions will be executed. All expressions are evaluated immediately prior to being rendered, so the same action can be displayed multiple times in the same page, but have very different resulting values for their urls and conditions.</p>
+</div>
+<div class="paragraph">
+<p>These expressions are all executed within the context of the <code>Dataface_Application::parseString()</code> method, with the following variables loaded in the local symbol table (i.e. you can use the following variables in your expressions).</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">$site_url</dt>
+<dd>
+<p>The URL to the current application&#8217;s directory (not including "index.php")</p>
+</dd>
+<dt class="hdlist1">$site_href</dt>
+<dd>
+<p>The URL to the current application including "index.php"</p>
+</dd>
+<dt class="hdlist1">$dataface_url</dt>
+<dd>
+<p>The URL to the xataface installation directory.</p>
+</dd>
+<dt class="hdlist1">$table</dt>
+<dd>
+<p>The name of the current table (i.e. the value of the "-table" request parameter"</p>
+</dd>
+<dt class="hdlist1">$tableObj</dt>
+<dd>
+<p>The <code>Dataface_Table</code> object for the current table.</p>
+</dd>
+<dt class="hdlist1">$query</dt>
+<dd>
+<p>An associative array of the current query variables.</p>
+</dd>
+<dt class="hdlist1">$app</dt>
+<dd>
+<p>A reference to the current <code>Dataface_Application</code> object. Alias of <code>$this</code></p>
+</dd>
+<dt class="hdlist1">$authTool</dt>
+<dd>
+<p>A reference to the <code>Dataface_AuthenticationTool</code> instance.</p>
+</dd>
+<dt class="hdlist1">$relationship</dt>
+<dd>
+<p>If the action is being rendered in the context of a related record or a relationship request, this will be the corresponding <code>Dataface_Relationship</code> object.</p>
+</dd>
+<dt class="hdlist1">$resultSet</dt>
+<dd>
+<p>A reference to the <code>Dataface_QueryTool</code> object for the current query.</p>
+</dd>
+<dt class="hdlist1">$record</dt>
+<dd>
+<p>A reference to the current <code>Dataface_Record</code> object.</p>
+</dd>
+<dt class="hdlist1">$context</dt>
+<dd>
+<p>An associative array of context variables that are passed to the action from the context in which the action is called.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If your action expression contains any fatal errors, you may find yourself in a position where your app won&#8217;t load at all (e.g. the white screen of death).  The error log may provide no clues because Xataface suppresses warnings and errors when evaluating the PHP expressions.</p>
+</div>
+<div class="paragraph">
+<p>You can debug these issues by adding the <code>debug=1</code> directive to the beginning of your conf.ini file.  That will cause the action expressions to be evaluated "noisily", and you should see the the error either in your PHP error log or in the browser window when you reload the app.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -8311,10 +8760,28 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <td class="tableblock halign-left valign-top"><p class="tableblock">0.7</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">use_old_resultlist_controller	As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use_old_resultlist_controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">As of Xataface 1.1, a new style result list controller is used that resembles facebook. It is more slimmed down and is easier to manage. If you prefer the old controller, set this preference to 1.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">user_stylesheet	The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app&#8217;s <code>css</code> directory, or the <code>xataface/css</code> directory. See <a href="#user-specific-stylesheet">Using Preferences to Override Color Scheme</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user_stylesheet</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of a CSS file that should be used to define custom styles for the current user request.  Xataface will look for a stylesheet by this name inside the app&#8217;s <code>css</code> directory, or the <code>xataface/css</code> directory. See <a href="#user-specific-stylesheet">Using Preferences to Override Color Scheme</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mobile_app_menu_position</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the position of the "app menu" in the mobile theme.  Supported values are "ne" (for northeast) and "se" for south east.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">"ne"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mobile_app_menu_sheet_position</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For the mobile theme, this specifies the value that is supplied to the "sheet" in which the app menu opens.  If the "mobile_app_menu_position" is "ne", then this will default to "right".  Otherwise it defaults to "fill"</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Depends</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0</p></td>
 </tr>
 </tbody>
 </table>
@@ -9200,7 +9667,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 </dd>
 <dt class="hdlist1">position</dt>
 <dd>
-<p>The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', or 'right'.</p>
+<p>The position where the sheet should be displayed in the window. One of 'top', 'bottom', 'left', 'right', or 'fill'.</p>
 </dd>
 </dl>
 </div>
@@ -9242,6 +9709,28 @@ function openSortDialog() {
     sheet.show();
 }</code></pre>
 </div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A simple way to open a link inside a sheet is to add the <code>data-xf-sheet-position</code> attribute to an <code>&lt;a&gt;</code> tag in your HTML.  E.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;a href="https://xataface.com" data-xf-sheet-position="fill"&gt;Open Xataface Site in Sheet&lt;/a&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All positions supported by the <code>Sheet.position</code> property are supported by the <code>data-xf-sheet-position</code> attribute.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <h2 id="javascript-events" class="discrete">Javascript Events</h2>
 <div class="dlist">
