@@ -569,6 +569,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#toggle-row-actions">Making Row Actions Toggleable</a></li>
 <li><a href="#ajax-list-row-actions">Using AJAX To Modify Row Records</a></li>
 <li><a href="#default-sort">Specifying Default Sorting</a></li>
+<li><a href="#grid-view">Rendering List View as a Grid</a></li>
 </ul>
 </li>
 <li><a href="#searching">Searching</a>
@@ -5733,6 +5734,29 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="grid-view">Rendering List View as a Grid</h3>
+<h4 id="_problem_31" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to display the "list" view as a grid for one or more tables in your app.</p>
+</div>
+<h4 id="_solution_31" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Add <code>list_template=@grid</code> to the beginning of your table&#8217;s <code>fields.ini</code> file.</p>
+</div>
+<div class="paragraph">
+<p>This will cause the list to use the <code>actions/list/grid.html</code> template for rendering the list view.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/grid-list-view.png" alt="grid list view">
+</div>
+<div class="title">Figure 42. Example rendering list as a grid.</div>
+</div>
+<div class="paragraph">
+<p>Note: For the "grid" layout to make sense, you should have at least one image column column in the table.  You can specify a column as an "image" column by adding the <code>image=1</code> fields.ini directive.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -5743,11 +5767,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_31" class="discrete">Problem</h4>
+<h4 id="_problem_32" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_31" class="discrete">Solution</h4>
+<h4 id="_solution_32" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -5771,11 +5795,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_32" class="discrete">Problem</h4>
+<h4 id="_problem_33" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_32" class="discrete">Solution</h4>
+<h4 id="_solution_33" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -5801,12 +5825,12 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_33" class="discrete">Problem</h4>
+<h4 id="_problem_34" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_33">Solution</h4>
+<h4 id="_solution_34">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -5868,11 +5892,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_34" class="discrete">Problem</h4>
+<h4 id="_problem_35" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_34" class="discrete">Solution</h4>
+<h4 id="_solution_35" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -5900,11 +5924,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_35" class="discrete">Problem</h4>
+<h4 id="_problem_36" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_36" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -5959,11 +5983,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_36" class="discrete">Problem</h4>
+<h4 id="_problem_37" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -6055,11 +6079,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_37" class="discrete">Problem</h4>
+<h4 id="_problem_38" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_37" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -6090,11 +6114,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_38" class="discrete">Problem</h4>
+<h4 id="_problem_39" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_39" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -6106,11 +6130,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_39" class="discrete">Solution</h4>
+<h4 id="_solution_40" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -6183,11 +6207,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_40" class="discrete">Problem</h4>
+<h4 id="_problem_41" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_40" class="discrete">Solution</h4>
+<h4 id="_solution_41" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -6222,11 +6246,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_41" class="discrete">Problem</h4>
+<h4 id="_problem_42" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_41" class="discrete">Solution</h4>
+<h4 id="_solution_42" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -6271,11 +6295,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_42" class="discrete">Problem</h4>
+<h4 id="_problem_43" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_42" class="discrete">Solution</h4>
+<h4 id="_solution_43" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -6299,11 +6323,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_43" class="discrete">Problem</h4>
+<h4 id="_problem_44" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_43" class="discrete">Solution</h4>
+<h4 id="_solution_44" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -6396,11 +6420,11 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 <div class="sect2">
 <h3 id="whereis-phpini">Where is my php.ini file?</h3>
-<h3 id="_problem_44" class="discrete">Problem</h3>
+<h3 id="_problem_45" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You need to change a setting in your php.ini file but you don&#8217;t know where it is, or your server has multiple php.ini files and you don&#8217;t know which one is the correct one.</p>
 </div>
-<h3 id="_solution_44" class="discrete">Solution</h3>
+<h3 id="_solution_45" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Create a file inside your application directory named "phpinfo.php" with the following contents:</p>
 </div>
@@ -6424,12 +6448,12 @@ phpinfo();</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</h3>
-<h4 id="_problem_45" class="discrete">Problem</h4>
+<h4 id="_problem_46" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_45">Solution</h4>
+<h4 id="_solution_46">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="#confini-include-directive"><code>__include__</code></a> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the <code>{host}</code> placeholder to specify a different config file depending on the host name of the current request.</p>
 </div>
@@ -6502,31 +6526,31 @@ __include__=hosts/{host}/{host}.conf.ini.php
 <div class="content">
 <img src="images/Image-060820-013308.455.png" alt="Image 060820 013308.455">
 </div>
-<div class="title">Figure 42. List view</div>
+<div class="title">Figure 43. List view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013349.259.png" alt="Image 060820 013349.259">
 </div>
-<div class="title">Figure 43. Details view</div>
+<div class="title">Figure 44. Details view</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013500.872.png" alt="Image 060820 013500.872">
 </div>
-<div class="title">Figure 44. New Record Form</div>
+<div class="title">Figure 45. New Record Form</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013559.078.png" alt="Image 060820 013559.078">
 </div>
-<div class="title">Figure 45. Hamburger Menu</div>
+<div class="title">Figure 46. Hamburger Menu</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-013629.481.png" alt="Image 060820 013629.481">
 </div>
-<div class="title">Figure 46. Login form</div>
+<div class="title">Figure 47. Login form</div>
 </div>
 <div class="paragraph">
 <p>You&#8217;ll notice quite a few differences from the desktop theme:</p>
@@ -6614,13 +6638,13 @@ window.addEventListener('xf-mobileexit', function() {
 <div class="content">
 <img src="images/Image-060820-022427.761.png" alt="Image 060820 022427.761">
 </div>
-<div class="title">Figure 47. The mobile header</div>
+<div class="title">Figure 48. The mobile header</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-022505.157.png" alt="Image 060820 022505.157">
 </div>
-<div class="title">Figure 48. The mobile footer</div>
+<div class="title">Figure 49. The mobile footer</div>
 </div>
 <div class="paragraph">
 <p>The size of these components may change as it is possible to add and remove contents from these components.  It is also possible to hide them in some contexts.</p>
@@ -6709,7 +6733,7 @@ jQuery(mobileFooter).prepend(myElement);</code></pre>
 <div class="content">
 <img src="images/Image-060820-025517.027.png" alt="Image 060820 025517.027">
 </div>
-<div class="title">Figure 49. The mobile table tabs.</div>
+<div class="title">Figure 50. The mobile table tabs.</div>
 </div>
 <div class="paragraph">
 <p>The table tabs (i.e. "Details", "List", and "Find") are rendered in the mobile footer by default. These are taken from the same actions as the table tabs in the desktop UI.  You can add/remove options to this menu by adding actions to the "table_tabs" category.</p>
@@ -6746,19 +6770,19 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-025738.446.png" alt="Image 060820 025738.446">
 </div>
-<div class="title">Figure 50. FAB with one action</div>
+<div class="title">Figure 51. FAB with one action</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-025922.987.png" alt="Image 060820 025922.987">
 </div>
-<div class="title">Figure 51. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
+<div class="title">Figure 52. FAB with more than one action is rendered with a menu icon.  Clicking on it expands it to show the individual actions.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-060820-030005.881.png" alt="Image 060820 030005.881">
 </div>
-<div class="title">Figure 52. FAB expanded to show actions.</div>
+<div class="title">Figure 53. FAB expanded to show actions.</div>
 </div>
 <div class="paragraph">
 <p>The <strong>table actions menu</strong> is rendered using a floating action button.  You can hide this by adding the "no-fab" CSS class to the <code>body</code> tag.</p>
@@ -6802,7 +6826,7 @@ $app-&gt;addBodyCSSClass('no-fab');</code></pre>
 <div class="content">
 <img src="images/Image-060820-031126.567.png" alt="Image 060820 031126.567">
 </div>
-<div class="title">Figure 53. A row in the mobile theme.</div>
+<div class="title">Figure 54. A row in the mobile theme.</div>
 </div>
 <div class="dlist">
 <dl>
@@ -7540,7 +7564,7 @@ widget:type=static
 <div class="content">
 <img src="images/Image-210820-090958.753.png" alt="Image 210820 090958.753">
 </div>
-<div class="title">Figure 54. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
+<div class="title">Figure 55. <strong>Example</strong> <code>filter.max.icon=euro_symbol</code></div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
@@ -8100,6 +8124,10 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <dd>
 <p>A string SQL select expression that is used to describe the title of records. This is the equivalent of the <code>titleColumn()</code> function used in Delegate_class_methods.</p>
 </dd>
+<dt class="hdlist1">table.list_template</dt>
+<dd>
+<p>An alternative template to use for rendering the list view of this table. This can either be the path to a template (relative to the template path roots), or some special values including <code>@grid</code>, which will be expanded to <code>xataface/actions/list/grid.html</code>  See <a href="#grid-view">Rendering List View as a Grid</a>.</p>
+</dd>
 </dl>
 </div>
 <h3 id="_field_groups" class="discrete">Field Groups</h3>
@@ -8189,13 +8217,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <div class="content">
 <img src="images/Image-080820-070623.789.png" alt="Image 080820 070623.789">
 </div>
-<div class="title">Figure 55. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
+<div class="title">Figure 56. Form with 3 hidden field groups.  Users can click on the corresponding buttons at the bottom of the form to reveal a field group.</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-080820-070748.070.png" alt="Image 080820 070748.070">
 </div>
-<div class="title">Figure 56. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
+<div class="title">Figure 57. After user clicks on a field group&#8217;s button, it will be shown on the form, and the button will become grayed out.</div>
 </div>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>

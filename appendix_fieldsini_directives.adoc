@@ -606,6 +606,9 @@ Sets the friendly name for this table. This is the equivalent of using the [_tab
 table.title::	
 A string SQL select expression that is used to describe the title of records. This is the equivalent of the `titleColumn()` function used in Delegate_class_methods.
 
+table.list_template::
+An alternative template to use for rendering the list view of this table. This can either be the path to a template (relative to the template path roots), or some special values including `@grid`, which will be expanded to `xataface/actions/list/grid.html`  See <<grid-view>>.
+
 [discrete]
 === Field Groups
 

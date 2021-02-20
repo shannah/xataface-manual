@@ -529,7 +529,25 @@ table.default_sort=date_posted desc
 
 TIP: See <<default-related-sort>> to learn how to set the default sort order on a related tab.
 
+[#grid-view]
+=== Rendering List View as a Grid
 
+[discrete]
+==== Problem
+
+You want to display the "list" view as a grid for one or more tables in your app.
+
+[discrete]
+==== Solution
+
+Add `list_template=@grid` to the beginning of your table's `fields.ini` file.
+
+This will cause the list to use the `actions/list/grid.html` template for rendering the list view.
+
+.Example rendering list as a grid.
+image::images/grid-list-view.png[]
+
+Note: For the "grid" layout to make sense, you should have at least one image column column in the table.  You can specify a column as an "image" column by adding the `image=1` fields.ini directive.
 
 
 
