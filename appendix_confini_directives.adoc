@@ -51,6 +51,14 @@ Contains a list of tables that are to be included in the navigation menu of the 
 
 The following optional sections may also be included:
 
+[#conf-ini-alt_logos]
+alt_logos::
+Specifies alternative images that can be used for the site logo depending on media queries (i.e. to show different images for different devices) and browser support (e.g. to provide fall-back images for browsers that don't support an image format).  See <<alternative-logos>>
++
+Used in conjuction with <<confini-site_logo>>
++
+Since 3.0
+
 _allowed_tables::
 Specifies tables that should be explicitly allowed to override disallowed tables listed or matched in the _disallowed_tables section.	Since 0.7
 
@@ -147,6 +155,14 @@ Default behaviour automatically tracks the IP address of the user when they log 
 **Accepted Values** boolean	(0 or 1)
 +
 **Since** 1.3rc4
+
+[#confini-site_logo]
+site_logo::
+Overrides the image file that is used for the site logo. See <<changing-logo>>.
++
+See also <<conf-ini-alt_logos>>
++
+Since 3.0
 
 title::
 A title for the application (appears in the browser title bar).

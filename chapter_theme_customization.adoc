@@ -3,6 +3,98 @@
 
 The following sections form a sort of cook book with recipes for customizing themes in Xataface.
 
+[#changing-logo]
+=== Changing the Site Logo Image
+
+[discrete]
+==== Problem
+
+You want to use a custom logo for your application instead of the default "Xataface" logo.
+
+[discrete]
+==== Solution
+
+Use the `site_logo` directive in your conf.ini file to point to your custom logo image.
+
+E.g.
+
+.conf.ini file
+[source,ini]
+----
+site_logo=images/my-custom-logo.png
+----
+
+[#alternative-logos]
+=== Responsive Logo Image
+
+[discrete]
+==== Problem
+
+You want mobile browsers to display a different logo image than desktop browsers.
+
+[discrete]
+==== Solution
+
+Define the `[alt_logos]` section of your conf.ini file to specify the different images you want to use, along with the rules that define when they are used.  The values in this section are used to construct a `<picture>` element with corresponding `<source>` elements for each image.
+
+**Example**
+
+[source,ini]
+----
+[alt_logos]
+images/mobile-logo.png="media:max-width:768px"
+images/desktop-logo.png="media:min-width:768px"
+----
+
+In the above example, the `mobile-logo.png` will be used on devices with width smaller than 768px, and `desktop-logo.png` will be used on devices with greater tan 768px.
+
+[NOTE]
+====
+The `[alt_logos]` section will be rendered as a `<picture>` tag by Xataface, and each row will correspond to a `<source>` element.  The property name (i.e. left side of the equals sign) will be rendered in the `srcset` property of the `<source>` tag, and the left side will be parsed as the remaining attributes.  In the above `[alt_logos]` section example, it would be rendered as:
+
+[source,html]
+----
+<picture>
+    <source srcset="images/mobile-logo.png" media="max-width:768px"/>
+    <source srcset="images/desktop-logo.png" media="min-width:768px"/>
+    <img src="..."/>   <1>
+</picture>
+----
+<1> The `<img>` tag inside the `<picture>` tag is used as a fallback image for browsers that don't support the picture tag.  It will use the image that you specify in the `site_logo` directive of the conf.ini file.
+
+For more information about the `<picture>` tag see the https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture[MDN documentation for the picture tag].
+====
+
+[#webp-logo]
+=== Using WebP Images for the Logo
+
+[discrete]
+==== Problem
+
+You want to use a .webp image for the app logo, but some browsers (e.g. Safari) don't support the .webp format.
+
+[solution]
+==== Problem
+
+Use the `[alt_logos]` solution described in <<alternative-logos>>, but use the `type` attribute on the logos to specify the mimetype, so that browsers that don't support .webp will automatically choose the format that they support.
+
+E.g.
+
+[source,ini]
+----
+[alt_logos]
+images/site-logo.webp="type:image/webp"
+images/site-logo.png="type:image/png"
+----
+
+[TIP]
+====
+The .webp image format can result in images that are 10x smaller than the same image in .png format, without sacrificing quality.  The only catch right now is that some browsers (notably Safari) don't support .webp.
+
+Use the https://squoosh.app[Squoosh online app] to easily experiment with different image formats to find the best solution for your needs.
+====
+
+
 [#adding-a-custom-stylesheet]
 === Adding a Custom Stylesheet
 
