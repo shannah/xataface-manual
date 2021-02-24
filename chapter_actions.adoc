@@ -414,6 +414,114 @@ The message to display to the user.
 silent::
 Optional boolean parameter that will suppress the error or success message so that the action completes silently.
 
+[#showing-progress-indicator]
+=== Showing a Progress Indicator
+
+[discrete]
+==== Problem
+
+You want to display a progress indicator when the user performs a long-running action so that the user knows that the app is doing something.
+
+[discrete]
+==== Solution
+
+Use the <<showInfiniteProgress>> Javascript function to show an infinite progress indicator, and <<hideInfiniteProgress>> to hide the indicator when you are done.
+
+**Example**
+
+.Modified real-world example using `showInfiniteProgress()`
+[source,javascript]
+----
+
+$('button.download-btn').click(function(e) {
+    // A click handler that initiates a project download
+    downloadProject();
+    e.preventDefault();
+    return false;
+});
+
+// Boolean flag to prevent the user from double-clicking the
+// download button and initiating two downloads.
+var downloadInProgress = false;
+
+// Function to download a project.  This may take a few seconds
+function downloadProject() {
+    if (downloadInProgress) {
+        // download is already in progress
+        // do nothing
+        return;
+    }
+
+    downloadInProgress = true;
+
+    // Display an infinite progress dialog to the user
+    // so they know that something is happening.
+    xataface.showInfiniteProgress(); <1>
+
+    if (!validateFormInputs()) {
+        // Some validation failed... abort
+
+        // Hide the infinite progress
+        xataface.hideInfiniteProgress(); <2>
+
+        // Release the "in progress" flag so that
+        //  the download button will work again.
+        downloadInProgress = false;
+        alert('Download failed... check form inputs');
+
+        return;
+    }
+
+
+
+
+    var formData = new FormData();
+    formData.append("-table", "app_templates");
+    formData.append('-action', 'download_project');
+    formData.append('arg1', 'foo');
+    formData.append('arg2', 'bar');
+
+    fetch(DATAFACE_SITE_HREF, {
+        method : 'POST',
+        body : formData
+    }).then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+    }).then(function(blob) {
+        // The download completed.
+        // Now we can hide the infinite progress and
+        // re-enable the download button.
+        xataface.hideInfiniteProgress(); <3>
+        downloadInProgress = false;
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = mainName + ".zip";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    }).catch(function(error) {
+        // The download failed
+        // Hide the infinite progress
+        xataface.hideInfiniteProgress(); <4>
+        downloadInProgress = false;
+        console.log(error);
+        alert("Download failed "+error);
+    });
+    return;
+
+}
+----
+<1> We show the infinite progress before performing the network request
+<2> We call `hideInfiniteProgress()` if the network request was canceled.
+<3> Call `hideInfiniteProgress()` when the network request completes successfully.
+<4> Call `hideInfiniteProgress()` if the network request fails.
+
+The above example shows the use of `showInfiniteProgress()` to show a progress indicator when the user initiates a network request.  It calls `hideInfiniteProgress()` when the request completes or fails.
 
 
 
