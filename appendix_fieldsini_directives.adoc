@@ -682,6 +682,16 @@ Specifies a URL that the field group label should link to.
 +
 *Since 1.1.3*
 
+label_prefix::
+Specifies a prefix for the label.  This can be useful if the label of the action has been localized using the language files, but you want a prefix (which may include a PHP expression).
++
+*Since 3.0*
+
+label_suffix::
+Specifies a suffix for the label.  This can be useful if the label of the action has been localized using the language files, but you want a suffix (which may include a PHP expression).
++
+*Since 3.0*
+
 materialIcon::
 A material icon to use for the field group's button when the group is hidden via the `hidden` directive.  See <<material-icons>> for more information about material icons.  See `hidden` directive docs for information about the hidden directive.
 +
