@@ -1,7 +1,7 @@
 [#action-sheet]
 === xataface.ActionSheet
 
-
+image::images/ActionSheet.png[]
 
 A component for displaying menu in a Sheet.  ActionSheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.
 
