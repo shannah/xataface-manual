@@ -1,0 +1,37 @@
+[#showInfiniteProgress]
+=== xataface.showInfiniteProgress()
+
+Shows an infinite progress indicator.  This is helpful if you are performing an action that takes a few seconds and you want to convey to the user that the app is doing something.
+
+Use <<hideInfiniteProgress>> to hide the progress indicator when you are done with it.
+
+**Example**
+
+[source,javascript]
+----
+xataface.showInfiniteProgress();
+var onTaskComplete = function() {
+    xataface.hideInfiniteProgress();
+}
+// Call a long-running task which takes a callback function which
+// will be called when it completes
+doSomeLongRunningTask(onComplete);
+----
+
+**Parameters**
+
+Both `showInfiniteProgress` and <<hideInfiniteProgress>> take an optional argument that is a DOM element inside which the progress indicator should be placed.  If this is omitted, the progress indicator is added to the document body and is displayed in the center of the screen.
+
+**Returns**
+
+The progress indicator's DOM element.
+
+**Since 3.0**
+
+
+[#hideInfiniteProgress]
+=== xataface.hideInfiniteProgress()
+
+Hides an infinite progress indicator that has been previously shown using <<showInfiniteProgress>>.
+
+**Since 3.0**

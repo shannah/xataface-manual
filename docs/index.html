@@ -654,11 +654,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_javascript_components">Javascript Components</a>
 <ul class="sectlevel2">
 <li><a href="#_window_xataface">window.xataface</a></li>
+<li><a href="#action-sheet">xataface.ActionSheet</a></li>
 <li><a href="#showInfiniteProgress">xataface.showInfiniteProgress()</a></li>
 <li><a href="#hideInfiniteProgress">xataface.hideInfiniteProgress()</a></li>
 <li><a href="#_xataface_infinitescroll">xataface.InfiniteScroll</a></li>
 <li><a href="#recordbrowser">xataface.RecordBrowser</a></li>
-<li><a href="#_xataface_sheet">xataface.Sheet</a></li>
+<li><a href="#sheet">xataface.Sheet</a></li>
 </ul>
 </li>
 <li><a href="#_appendix_4_url_conventions">Appendix 4: URL Conventions</a></li>
@@ -9787,6 +9788,246 @@ if (viewport) {
 </div>
 </div>
 <div class="sect2">
+<h3 id="action-sheet">xataface.ActionSheet</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/Image-160820-125111.003.png" alt="Image 160820 125111.003">
+</div>
+</div>
+<div class="paragraph">
+<p>A component for displaying menu in a Sheet.  ActionSheets can be displayed from the bottom, left, top, or right positions, and they transition in over top of the existing page content.</p>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+<h4 id="_bootstrapping" class="discrete">Bootstrapping</h4>
+<div class="listingblock">
+<div class="title">Loading Script in PHP</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">xf_script('xataface/components/ActionSheet.js');</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Loading Script in Javascript using <code>require</code></div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/ActionSheet.js&gt;</code></pre>
+</div>
+</div>
+<h4 id="_initialization_options" class="discrete">Initialization Options</h4>
+<div class="paragraph">
+<p>Use <code>new ActionSheet(options)</code> to create a new sheet.  The following options are allowed:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">modelEl</dt>
+<dd>
+<p><code>HTMLElement</code> of a <code>&lt;ul&gt;</code> tag that defines the menu options to appear in this sheet.  See <a href="#modelEl-structure">Structure of the <code>modelEl</code> <code>&lt;ul&gt;</code> tag.</a>.</p>
+</dd>
+<dt class="hdlist1">position</dt>
+<dd>
+<p>The position where the sheet should be displayed. <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>.</p>
+</dd>
+<dt class="hdlist1">parent</dt>
+<dd>
+<p>Optional <code>ActionSheet</code> that is the parent of this <code>ActionSheet</code>.  If this property is provided then the sheet will have a "back" button to navigate back to the parent instead of a "close" button.</p>
+</dd>
+</dl>
+</div>
+<h5 id="_alternative_intialization_options" class="discrete">Alternative Intialization Options</h5>
+<div class="paragraph">
+<p>The <code>ActionSheet</code> constructor can also be called simply with single <code>String</code> or <code>HTMLElement</code> argument.  In the <code>String</code> case, the string will be interpreted as the query selector to the <code>&lt;ul&gt;</code> tag to use for the <code>modelEl</code> property.  In the <code>HTMLElement</code> case, it will be used as the <code>modelEl</code> property itself.</p>
+</div>
+<div id="modelEl-structure" class="sidebarblock">
+<div class="content">
+<div class="title">Structure of the <code>modelEl</code> <code>&lt;ul&gt;</code> tag.</div>
+<div class="paragraph">
+<p>The <code>modelEl</code> property should be an <code>HTMLElement</code> <code>&lt;ul&gt;</code> tag.  The menu options are constructed based on the <code>&lt;li&gt;</code> items inside the <code>&lt;ul&gt;</code> tag.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Each <code>&lt;li&gt;</code> tag may include an <code>&lt;a&gt;</code> tag, which defines where the menu links to.</p>
+</li>
+<li>
+<p>The nested <code>&lt;a&gt;</code> tag may contain a <code>&lt;span&gt;</code> tag which will be used as the menu item label.</p>
+</li>
+<li>
+<p>The nested <code>&lt;a&gt;</code> tag may also include an <code>&lt;i&gt;</code> with class "material-icons" which specifies a material icon to use in the menu item.</p>
+</li>
+<li>
+<p>The <code>&lt;li&gt;</code> tag may also include a <code>&lt;ul&gt;</code> tag which will be treated as a sub-menu.  This <code>&lt;ul&gt;</code> tag should not be nested inside the <code>&lt;a&gt;</code> tag.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;ul&gt;
+    &lt;li&gt;
+        &lt;a href="index.html"&gt;
+            &lt;i class="material-icons"&gt;home&lt;/i&gt;
+            &lt;span&gt;Home&lt;/span&gt;
+        &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href="about.html"&gt;
+            &lt;i class="material-icons"&gt;info&lt;/i&gt;
+            &lt;span&gt;About&lt;/span&gt;
+        &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href="javascript:void(0)" onclick="sayHello()"&gt;
+            &lt;i class="material-icons"&gt;help&lt;/i&gt;
+            &lt;span&gt;Say Hello&lt;/span&gt;
+        &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;span&gt;More Options&lt;/span&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;a href="subpage1.html"&gt;Subpage 1&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="subpage2.html"&gt;Subpage 2&lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+&lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example demonstrates a fairly simple menu that includes one sub-menu.  Notice that the "sayHello" option uses an <code>onclick</code> handler instead of an "href" attribute.  This is fine.  When the <code>ActionSheet</code> constructs its menu based on this model, it will call <code>click()</code> on the actual modelEl&#8217;s <code>&lt;a&gt;</code> tag, so that clicking on the option in the <code>ActionSheet</code> is pretty much the same as having clicked on the <code>modelEl</code> element link itself.</p>
+</div>
+</div>
+</div>
+<h4 id="_properties_2" class="discrete">Properties</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">parent</dt>
+<dd>
+<p>Reference to the parent <code>ActionSheet</code> instance, if one was provided in the constructor.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_methods" class="discrete">Methods</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">show(initialHeight)</dt>
+<dd>
+<p>Show the sheet.  Takes optional <code>int</code> parameter <strong>initialHeight</strong> specifying the starting height of the ActionSheet.  This is used internally when showing a submenu so that the transition to and from the child menu is smooth.</p>
+</dd>
+<dt class="hdlist1">close(all)</dt>
+<dd>
+<p>Close the sheeet.  Takes optional <code>boolean</code> argument <strong>all</strong> which, if true, will close all parent sheets as well.  Default behaviour is to navigate back to the parent if the sheet has a parent.</p>
+</dd>
+</dl>
+</div>
+<h4 id="_usage_example" class="discrete">Usage Example</h4>
+<div class="listingblock">
+<div class="title">Example implementation for the FAB button which opens the page actions menu.</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/ActionSheet.js&gt;
+(function() {
+    var ActionSheet = window.xataface.ActionSheet;
+
+    /**
+     * Function to install the FAB button.
+     * This will be called after the page is finished loading.
+     * See DOMContentLoaded event listener registration below.
+     */
+    function installFab() {
+        // Convenience reference to jQuery
+        var $ = jQuery;
+
+        // Add a click handler to the zoom button.
+        $('#zoomBtn').click(function() {
+
+            // Get the page actions &lt;ul&gt; tag that
+            // was rendered elsewhere on the page.  This is a standard
+            // menu that is used in the Desktop theme that includes
+            // all of the actions that are relevant to the current page.
+            // The menu is hidden in the mobile theme, but we'll use
+            // it as the model for the FAB button here so that its
+            // actions can still be used in mobile.
+            var pageActionsUl = $('div.page-actions &gt; nav &gt; ul').first();
+            if (pageActionsUl.length &gt; 0) {
+                var menu = new ActionSheet(pageActionsUl.get(0));
+                menu.show();
+            }
+
+        });
+
+        // The "zoom" section has a `display:none` style directive
+        // in the HTML template so that it isn't displayed before
+        // we've had a chance to set it up.
+        // Remove that style directive now that it should be all set up.
+        $('.zoom').css('display', '');
+    }
+
+    // Some code omitted here for clarity
+
+    window.addEventListener('DOMContentLoaded', installFab);
+})();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That example references some HTML tags that are defined in the <code>Dataface_Main_Template.html</code> template.  Let&#8217;s look at those here.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>div.page-actions &gt; nav &gt; ul</code></dt>
+<dd>
+<p>This is a reference to the page actions.  They are rendered in the HTML template as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;div class='page-actions'&gt;
+    {block name="before_menus"}
+    {define_slot name="menus"}
+        {include file="Dataface_TableView_menus.html"}
+    {/define_slot}
+    {block name="after_menus"}
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the <code>Dataface_TableView_menus.html</code> renders a <code>&lt;ul&gt;</code> tag with the menus.</p>
+</div>
+</dd>
+<dt class="hdlist1"><code>#zoomBtn</code> and <code>.zoom</code></dt>
+<dd>
+<p>These are references to the zoom section and button defined in the template as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">{define_slot name="fab"}
+    {*
+        The FAB (floating action button), which uses the table_actions_menu
+        category.
+
+        Exclude actions from the FAB using the #large# tag in the action.
+        Include actions in the FAB by adding materialIcon. If action doesn't
+        have materialIcon, it won't be included in the FAB.
+
+    *}
+
+     {script src="xataface/fab.js"}
+     &lt;div class="zoom mobile" style="display:none"&gt;
+         &lt;a class="zoom-fab zoom-btn-large" id="zoomBtn"&gt;
+            &lt;i class="material-icons"&gt;menu&lt;/i&gt;
+         &lt;/a&gt;
+
+     &lt;/div&gt;
+
+{/define_slot}</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
 <h3 id="showInfiniteProgress">xataface.showInfiniteProgress()</h3>
 <div class="paragraph">
 <p>Shows an infinite progress indicator.  This is helpful if you are performing an action that takes a few seconds and you want to convey to the user that the app is doing something.</p>
@@ -9841,7 +10082,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
 </div>
-<h4 id="_bootstrapping" class="discrete">Bootstrapping</h4>
+<h4 id="_bootstrapping_2" class="discrete">Bootstrapping</h4>
 <div class="listingblock">
 <div class="title">Loading Script in PHP</div>
 <div class="content">
@@ -9854,7 +10095,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/InfiniteScroll.js&gt;</code></pre>
 </div>
 </div>
-<h4 id="_properties_2" class="discrete">Properties</h4>
+<h4 id="_properties_3" class="discrete">Properties</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">scrollEl</dt>
@@ -9875,7 +10116,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 </dd>
 </dl>
 </div>
-<h4 id="_methods" class="discrete">Methods</h4>
+<h4 id="_methods_2" class="discrete">Methods</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">loadMore()</dt>
@@ -9884,7 +10125,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 </dd>
 </dl>
 </div>
-<h4 id="_usage_example" class="discrete">Usage Example</h4>
+<h4 id="_usage_example_2" class="discrete">Usage Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">new xataface.InfiniteScroll({
@@ -9907,7 +10148,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 <div class="paragraph">
 <p><strong>Since 1.0</strong></p>
 </div>
-<h4 id="_bootstrapping_2" class="discrete">Bootstrapping</h4>
+<h4 id="_bootstrapping_3" class="discrete">Bootstrapping</h4>
 <div class="listingblock">
 <div class="title">Loading Script in PHP</div>
 <div class="content">
@@ -9920,7 +10161,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;RecordBrowser/RecordBrowser.js&gt;</code></pre>
 </div>
 </div>
-<h4 id="_initialization_options" class="discrete">Initialization Options</h4>
+<h4 id="_initialization_options_2" class="discrete">Initialization Options</h4>
 <div class="paragraph">
 <p>Use <code>new RecordBrowser(options)</code> to create a new dialog, and display it with the <code>display()</code> method.  The options are:</p>
 </div>
@@ -9983,7 +10224,7 @@ doSomeLongRunningTask(onComplete);</code></pre>
 </dd>
 </dl>
 </div>
-<h4 id="_methods_2" class="discrete">Methods</h4>
+<h4 id="_methods_3" class="discrete">Methods</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">display()</dt>
@@ -10060,7 +10301,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="_xataface_sheet">xataface.Sheet</h3>
+<h3 id="sheet">xataface.Sheet</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-160820-125111.003.png" alt="Image 160820 125111.003">
@@ -10072,7 +10313,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 <div class="paragraph">
 <p><strong>Since 3.0</strong></p>
 </div>
-<h4 id="_bootstrapping_3" class="discrete">Bootstrapping</h4>
+<h4 id="_bootstrapping_4" class="discrete">Bootstrapping</h4>
 <div class="listingblock">
 <div class="title">Loading Script in PHP</div>
 <div class="content">
@@ -10085,7 +10326,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">//require &lt;xataface/components/Sheet.js&gt;</code></pre>
 </div>
 </div>
-<h4 id="_initialization_options_2" class="discrete">Initialization Options</h4>
+<h4 id="_initialization_options_3" class="discrete">Initialization Options</h4>
 <div class="paragraph">
 <p>Use <code>new Sheet(options)</code> to create a new sheet.  The following options are allowed:</p>
 </div>
@@ -10101,7 +10342,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 </dd>
 </dl>
 </div>
-<h4 id="_properties_3" class="discrete">Properties</h4>
+<h4 id="_properties_4" class="discrete">Properties</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">installed</dt>
@@ -10114,7 +10355,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 </dd>
 </dl>
 </div>
-<h4 id="_methods_3" class="discrete">Methods</h4>
+<h4 id="_methods_4" class="discrete">Methods</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">load(url:string)</dt>
@@ -10131,7 +10372,7 @@ In the above example, we called this <code>uploadCoverArt()</code> by adding <co
 </dd>
 </dl>
 </div>
-<h4 id="_usage_example_2" class="discrete">Usage Example</h4>
+<h4 id="_usage_example_3" class="discrete">Usage Example</h4>
 <div class="listingblock">
 <div class="title">Function that opens the sort options dialog inside a sheet.</div>
 <div class="content">

@@ -1,0 +1,43 @@
+[#javascript-events]
+[discrete]
+== Javascript Events
+
+xf-mobileenter::
+Triggered on the `window` object when transitioning from "desktop" mode to "mobile" mode.  See <<responsive-ui>> for more information about mobile mode.
++
+[source,javascript]
+----
+window.addEventListener('xf-mobileenter', function() {
+    // Entering mobile mode
+});
+----
+
+xf-mobileexit::
+Triggered on the `window` object when transitioning from "mobile" mode to "desktop" mode. See <<responsive-ui>> for more information about mobile mode.
++
+[source,javascript]
+----
+window.addEventListener('xf-mobileexit', function() {
+    // Exiting mobile mode
+});
+----
+
+xf-viewport-changed::
+Triggered in mobile mode when the viewport area is changed.  The viewport is considered the area below the *mobile-header* and *mobile-footer* blocks, which are positioned "fixed" at the top and bottom of the screen respectively.  This event will allow you to reposition components whose position should depend on the size of the view port.
++
+One example use of this event is the FAB button that needs to be positioned in the bottom-right corner of the viewport.  The following Javascript code will reposition the FAB whenever the viewport size is changed.
++
+[source,javascript]
+----
+function updatePosition() {
+    var zoom = document.querySelector('.zoom');
+
+    if (zoom) {
+        var footer = document.querySelector('.mobile-footer');
+        if (footer) {
+            zoom.style.bottom = (footer.offsetHeight + 10) + "px";
+        }
+    }
+}
+window.addEventListener('xf-viewport-changed', updatePosition);
+----

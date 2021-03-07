@@ -1,0 +1,36 @@
+== Javascript Components
+
+Xataface includes a set of Javascript components that can be reused in many different contexts.  This section lists some of theme.
+
+TODO: Add documentation on javascript components
+
+=== window.xataface
+
+The `window.xataface` object includes a number of utility classes and functions.  Some functions are always available.  Others require you to explicitly to load a script in order for them to be available.
+
+[discrete]
+==== Properties
+
+viewport::
+The current display viewport dimensions.  If the mobile footer and header are visible, then this viewport will be the bounds not covered by the header or footer.  Properties include `top`, `left`, `right`, `bottom`, `width`, and `height`.
++
+
+.Example Using viewport to position an element
+[source,javascript]
+----
+var viewport = xataface.viewport;
+if (viewport) {
+    // Position the settings wrapper 10 pixels above the footer
+    settingsWrapper.style.bottom = (viewport.bottom + 10) + 'px';
+}
+----
+
+include::javascript_ActionSheet.adoc[]
+
+include::javascript_InfiniteProgress.adoc[]
+
+include::javascript_InfiniteScroll.adoc[]
+
+include::javascript_RecordBrowser.adoc[]
+
+include::javascript_Sheet.adoc[]
