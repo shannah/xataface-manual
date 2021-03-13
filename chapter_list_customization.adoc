@@ -549,6 +549,76 @@ image::images/grid-list-view.png[]
 
 Note: For the "grid" layout to make sense, you should have at least one image column column in the table.  You can specify a column as an "image" column by adding the `image=1` fields.ini directive.
 
+[#list-style-mobile]
+=== Using Mobile List Template on Desktop
 
+[discrete]
+==== Problem
 
+The Xataface list view is responsive, and renders lists differently on mobile devices than on desktop.  In some cases you may prefer to use the mobile list style on desktop also to achieve a unified look.
+
+[discrete]
+==== Solution
+
+Set the `table.listStyle=mobile` directive in the table's fields.ini file.  This is a table-level directive, so it should be at the top of your fields.ini file, before any of the field definitions.
+
+Let's look at a quick example.  Here is a list using the mobile theme.
+
+image::images/related-list-mobile.png[]
+
+Here is the same list when viewed on a desktop:
+
+image::images/related-list-desktop.png[]
+
+Now, I'll add the `table.listStyle=mobile` directive to the beginning of the table's fields.ini file.
+
+The result is:
+
+image::images/related-list-desktop-list-style-mobile.png[]
+
+NOTE: This directive will also affect how related lists *to* this table are rendered, but only in one-to-many relationships to this table (i.e. where the rows are essentially records of this table).
+
+[#row-style-external-link]
+=== Rendering Row as Link to External URL
+
+[discrete]
+==== Problem
+
+You want to render the rows of your table such that they summarize some external web page, and provide a link to it, similar to the way that Twitter renders tweets that contains a link to a webpage.
+
+[discrete]
+==== Solution
+
+Use the `table.listStyle=mobile` fields.ini directive in conjunction with the `table.row_style=external-link` directive, and implement a calculated field on the table named `external_link` as I will describe below.  The result will be something that looks like:
+
+image::images/table-row-style-external-link.png[]
+
+[discrete]
+===== Steps
+
+. Add the following to the beginning of your fields.ini file (before any field definitions):
++
+[source,ini]
+----
+table.listStyle=mobile <1>
+table.row_style=external-link <2>
+----
+<1> The `table.listStyle` directive will make sure that the desktop version uses the mobile list theme, since the `external-link` style is only rendered in the mobile theme.
+<2> The `table.row_style` directive tells the list view and related list views to render rows in the external-link theme.
+. Define a method named `field__external_link()` in your table delegate class as follows:
++
+[source,php]
+----
+function field__external_link(Dataface_Record $rec) {
+    // return an array with url, title, and cover_image keys
+    return [
+        'url' => $rec->display('page_url'), <1>
+        'title' => $rec->display('article_title'), <2>
+        'cover_image' => $rec->display('article_image') <3>
+    ];
+}
+----
+<1> The `url` key should refer to the URL for the given record.  In this example we assume that the table has a column named `page_url` containing the URL to the link.
+<2> The `title` key should refer to an article title to display.  In this example we assume that the table has a column named `article_title`.
+<3> The `cover_image` key should refer to the URL for an image for the article. In this example, we assume that the table includes a field called `article_image` containing a URL - though this could also be a container or blob field in this example, as the `display()` method would get the URL to the container's image.
 

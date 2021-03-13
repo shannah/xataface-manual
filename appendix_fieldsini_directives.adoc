@@ -609,6 +609,12 @@ A string SQL select expression that is used to describe the title of records. Th
 table.list_template::
 An alternative template to use for rendering the list view of this table. This can either be the path to a template (relative to the template path roots), or some special values including `@grid`, which will be expanded to `xataface/actions/list/grid.html`  See <<grid-view>>.
 
+table.listStyle::
+Setting this to "mobile" will cause the list view to use the "mobile" list style in desktop mode also.  This will also affect one-to-many relationships to this table - i.e. related lists where this table is the domain table will be rendered with the mobile style, if this is set to "mobile". See <<list-style-mobile>>
+
+table.row_style::
+Setting this to "external-link" will cause the mobile list view (and related list view) to render rows as links to an external link, similar to how Twitter renders tweets that contains links.  See <<row-style-external-link>>
+
 [discrete]
 === Field Groups
 

@@ -574,6 +574,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#ajax-list-row-actions">Using AJAX To Modify Row Records</a></li>
 <li><a href="#default-sort">Specifying Default Sorting</a></li>
 <li><a href="#grid-view">Rendering List View as a Grid</a></li>
+<li><a href="#list-style-mobile">Using Mobile List Template on Desktop</a></li>
+<li><a href="#row-style-external-link">Rendering Row as Link to External URL</a></li>
 </ul>
 </li>
 <li><a href="#searching">Searching</a>
@@ -6002,6 +6004,124 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 <p>Note: For the "grid" layout to make sense, you should have at least one image column column in the table.  You can specify a column as an "image" column by adding the <code>image=1</code> fields.ini directive.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="list-style-mobile">Using Mobile List Template on Desktop</h3>
+<h4 id="_problem_37" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>The Xataface list view is responsive, and renders lists differently on mobile devices than on desktop.  In some cases you may prefer to use the mobile list style on desktop also to achieve a unified look.</p>
+</div>
+<h4 id="_solution_35" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Set the <code>table.listStyle=mobile</code> directive in the table&#8217;s fields.ini file.  This is a table-level directive, so it should be at the top of your fields.ini file, before any of the field definitions.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s look at a quick example.  Here is a list using the mobile theme.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/related-list-mobile.png" alt="related list mobile">
+</div>
+</div>
+<div class="paragraph">
+<p>Here is the same list when viewed on a desktop:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/related-list-desktop.png" alt="related list desktop">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, I&#8217;ll add the <code>table.listStyle=mobile</code> directive to the beginning of the table&#8217;s fields.ini file.</p>
+</div>
+<div class="paragraph">
+<p>The result is:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/related-list-desktop-list-style-mobile.png" alt="related list desktop list style mobile">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This directive will also affect how related lists <strong>to</strong> this table are rendered, but only in one-to-many relationships to this table (i.e. where the rows are essentially records of this table).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="row-style-external-link">Rendering Row as Link to External URL</h3>
+<h4 id="_problem_38" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to render the rows of your table such that they summarize some external web page, and provide a link to it, similar to the way that Twitter renders tweets that contains a link to a webpage.</p>
+</div>
+<h4 id="_solution_36" class="discrete">Solution</h4>
+<div class="paragraph">
+<p>Use the <code>table.listStyle=mobile</code> fields.ini directive in conjunction with the <code>table.row_style=external-link</code> directive, and implement a calculated field on the table named <code>external_link</code> as I will describe below.  The result will be something that looks like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table-row-style-external-link.png" alt="table row style external link">
+</div>
+</div>
+<h5 id="_steps" class="discrete">Steps</h5>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add the following to the beginning of your fields.ini file (before any field definitions):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">table.listStyle=mobile <b class="conum">(1)</b>
+table.row_style=external-link <b class="conum">(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>table.listStyle</code> directive will make sure that the desktop version uses the mobile list theme, since the <code>external-link</code> style is only rendered in the mobile theme.</p>
+</li>
+<li>
+<p>The <code>table.row_style</code> directive tells the list view and related list views to render rows in the external-link theme.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Define a method named <code>field__external_link()</code> in your table delegate class as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function field__external_link(Dataface_Record $rec) {
+    // return an array with url, title, and cover_image keys
+    return [
+        'url' =&gt; $rec-&gt;display('page_url'), <b class="conum">(1)</b>
+        'title' =&gt; $rec-&gt;display('article_title'), <b class="conum">(2)</b>
+        'cover_image' =&gt; $rec-&gt;display('article_image') <b class="conum">(3)</b>
+    ];
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>url</code> key should refer to the URL for the given record.  In this example we assume that the table has a column named <code>page_url</code> containing the URL to the link.</p>
+</li>
+<li>
+<p>The <code>title</code> key should refer to an article title to display.  In this example we assume that the table has a column named <code>article_title</code>.</p>
+</li>
+<li>
+<p>The <code>cover_image</code> key should refer to the URL for an image for the article. In this example, we assume that the table includes a field called <code>article_image</code> containing a URL - though this could also be a container or blob field in this example, as the <code>display()</code> method would get the URL to the container&#8217;s image.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -6012,11 +6132,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_37" class="discrete">Problem</h4>
+<h4 id="_problem_39" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_35" class="discrete">Solution</h4>
+<h4 id="_solution_37" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -6040,11 +6160,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_38" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_36" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -6070,12 +6190,12 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_41" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_37">Solution</h4>
+<h4 id="_solution_39">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -6137,11 +6257,11 @@ See <a href="#default-related-sort">Setting Default Sort for Related Lists</a> t
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_40" class="discrete">Problem</h4>
+<h4 id="_problem_42" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_40" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -6169,11 +6289,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_41" class="discrete">Problem</h4>
+<h4 id="_problem_43" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_39" class="discrete">Solution</h4>
+<h4 id="_solution_41" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -6228,11 +6348,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_42" class="discrete">Problem</h4>
+<h4 id="_problem_44" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_40" class="discrete">Solution</h4>
+<h4 id="_solution_42" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -6324,11 +6444,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_43" class="discrete">Problem</h4>
+<h4 id="_problem_45" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_41" class="discrete">Solution</h4>
+<h4 id="_solution_43" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -6359,11 +6479,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_44" class="discrete">Problem</h4>
+<h4 id="_problem_46" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_42" class="discrete">Solution</h4>
+<h4 id="_solution_44" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -6375,11 +6495,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_45" class="discrete">Problem</h4>
+<h4 id="_problem_47" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_43" class="discrete">Solution</h4>
+<h4 id="_solution_45" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -6452,11 +6572,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_46" class="discrete">Problem</h4>
+<h4 id="_problem_48" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_44" class="discrete">Solution</h4>
+<h4 id="_solution_46" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -6491,11 +6611,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_47" class="discrete">Problem</h4>
+<h4 id="_problem_49" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_45" class="discrete">Solution</h4>
+<h4 id="_solution_47" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -6540,11 +6660,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_48" class="discrete">Problem</h4>
+<h4 id="_problem_50" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_46" class="discrete">Solution</h4>
+<h4 id="_solution_48" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -6568,11 +6688,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_49" class="discrete">Problem</h4>
+<h4 id="_problem_51" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_47" class="discrete">Solution</h4>
+<h4 id="_solution_49" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -6665,11 +6785,11 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 <div class="sect2">
 <h3 id="whereis-phpini">Where is my php.ini file?</h3>
-<h3 id="_problem_50" class="discrete">Problem</h3>
+<h3 id="_problem_52" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You need to change a setting in your php.ini file but you don&#8217;t know where it is, or your server has multiple php.ini files and you don&#8217;t know which one is the correct one.</p>
 </div>
-<h3 id="_solution_48" class="discrete">Solution</h3>
+<h3 id="_solution_50" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Create a file inside your application directory named "phpinfo.php" with the following contents:</p>
 </div>
@@ -6693,12 +6813,12 @@ phpinfo();</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</h3>
-<h4 id="_problem_51" class="discrete">Problem</h4>
+<h4 id="_problem_53" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_49">Solution</h4>
+<h4 id="_solution_51">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="#confini-include-directive"><code>__include__</code></a> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the <code>{host}</code> placeholder to specify a different config file depending on the host name of the current request.</p>
 </div>
@@ -6750,11 +6870,11 @@ __include__=hosts/{host}/{host}.conf.ini.php
 </div>
 <div class="sect2">
 <h3 id="_application_versioning_and_synchronization">Application Versioning and Synchronization</h3>
-<h4 id="_problem_52" class="discrete">Problem</h4>
+<h4 id="_problem_54" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to deploy the changes in the development version of your app to the production server, including database changes.</p>
 </div>
-<h4 id="_solution_50" class="discrete">Solution</h4>
+<h4 id="_solution_52" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Increment the build number in your app&#8217;s version.txt file, and implement corresponding <code>update_xxx()</code> methods in your <code>conf/Installer.php</code> file.</p>
 </div>
@@ -8496,6 +8616,14 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <dt class="hdlist1">table.list_template</dt>
 <dd>
 <p>An alternative template to use for rendering the list view of this table. This can either be the path to a template (relative to the template path roots), or some special values including <code>@grid</code>, which will be expanded to <code>xataface/actions/list/grid.html</code>  See <a href="#grid-view">Rendering List View as a Grid</a>.</p>
+</dd>
+<dt class="hdlist1">table.listStyle</dt>
+<dd>
+<p>Setting this to "mobile" will cause the list view to use the "mobile" list style in desktop mode also.  This will also affect one-to-many relationships to this table - i.e. related lists where this table is the domain table will be rendered with the mobile style, if this is set to "mobile". See <a href="#list-style-mobile">Using Mobile List Template on Desktop</a></p>
+</dd>
+<dt class="hdlist1">table.row_style</dt>
+<dd>
+<p>Setting this to "external-link" will cause the mobile list view (and related list view) to render rows as links to an external link, similar to how Twitter renders tweets that contains links.  See <a href="#row-style-external-link">Rendering Row as Link to External URL</a></p>
 </dd>
 </dl>
 </div>
