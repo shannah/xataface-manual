@@ -666,6 +666,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_appendix_4_url_conventions">Appendix 4: URL Conventions</a></li>
 <li><a href="#_appendix_performance">Appendix: Performance</a></li>
+<li><a href="#scaler">Scaler Module</a></li>
 <li><a href="#output-cache">Output Cache</a>
 <ul class="sectlevel2">
 <li><a href="#_features">Features</a></li>
@@ -7515,6 +7516,19 @@ It is recommended to place the <code>[<em>database]</code> section in a separate
 <dd>
 <p>A list of the themes that are to be applied to the application. Since 0.8</p>
 </dd>
+<dt class="hdlist1">default_tables</dt>
+<dd>
+<p>Allows you to set a default table on a per-action basis.  Keys are action names, values are table names.  E.g. If you wanted the <code>my_profile</code> action to use the <em>users</em> table by default, then you would have:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[default_tables]
+  my_profile=users</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">table_labels</dt>
 <dd>
 <p>A list that defines friendly labels for displaying table names. Similar to the <code>[_tables]</code> section, but these tables do not appear in the application&#8217;s navigation menu by default. This is also the only method to display friendly table names in the search index results as of Xataface 2.1 or prior. (See Editing Search Results &gt;&gt; How Do I change table names). Also see the <a href="#fieldsini-table-label">label global directive in the fields.ini_file</a>.	Since always.</p>
@@ -7732,6 +7746,13 @@ __include__=conf.db.ini.php, hosts/{host}/{host}.conf.ini.php</code></pre>
 <p>By default, if an include fails (because the included file doesn&#8217;t exist), then an exception will be thrown when the app is loaded.  In some cases you may want the include to be "optional" so that it just fails to load silently if the file can&#8217;t be found.  You can add <code>?</code> to the end of a file path to make it optional.</p>
 </div>
 </div>
+</div>
+</dd>
+<dt class="hdlist1">use_manifest</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the app should use a manifest to keep track of all of its files.  This may improve performance in some cases as it may prevent file system calls to check if a file exists.   When using this option, if you add or remove any files from the app, you&#8217;ll need to increment the application version in the version.txt file to force the app to regenerate the manifest.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
 </div>
 </dd>
 </dl>
@@ -8384,6 +8405,20 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><strong>Since 0.5</strong></p>
 </div>
 </dd>
+<dt class="hdlist1">userid</dt>
+<dd>
+<p>Marks the field as containing a User ID, which corresponds to the userId of the users table. This is used by caching solutions, such as <a href="#scaler">Scaler Module</a>, to be able to invalidate the cache if only a particular user&#8217;s records are modified in a table.  See <a href="https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#table-subset-dependencies">Table Subset Dependencies</a> in the Scaler module readme file for more information.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
+<dt class="hdlist1">username</dt>
+<dd>
+<p>Marks the field as containing a username, which corresponds to the username of the users table. This is used by caching solutions, such as <a href="#scaler">Scaler Module</a>, to be able to invalidate the cache if only a particular user&#8217;s records are modified in a table.  See <a href="https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#table-subset-dependencies">Table Subset Dependencies</a> in the Scaler module readme file for more information.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">validators:VALIDATOR_NAME</dt>
 <dd>
 <p>A prefix for a validation type on the current field. (Replace "VALIDATOR_NAME" with the name of the validator to be used. e.g. required). There are many validators available to be used.</p>
@@ -8591,6 +8626,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><strong>Since 1.0b4</strong></p>
 </div>
 </dd>
+<dt class="hdlist1">scaler.trackUsedTables</dt>
+<dd>
+<p>Boolean (0 or 1) indicating whether requests on this table should track the tables used in the request.  Used with <a href="#scaler">Scaler Module</a>.  See <a href="https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#tracking-used-tables">Tracking Used Tables</a> in the Scaler module readme.</p>
+<div class="paragraph">
+<p><strong>Since 3.0</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">table.default_sort</dt>
 <dd>
 <p>Sets the default sort column for the table.  See <a href="#default-sort">Specifying Default Sorting</a>.</p>
@@ -8624,6 +8666,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <dt class="hdlist1">table.row_style</dt>
 <dd>
 <p>Setting this to "external-link" will cause the mobile list view (and related list view) to render rows as links to an external link, similar to how Twitter renders tweets that contains links.  See <a href="#row-style-external-link">Rendering Row as Link to External URL</a></p>
+</dd>
+<dt class="hdlist1">table.depends</dt>
+<dd>
+<p>A comma-delimited list of tables on which this table depends.  When using <a href="#scaler">Scaler Module</a>, this helps Xataface determine which tables were used in generating a response for a request, and thereby know when the cache for that page should be invalidated.  This directive is usually used for MySQL views or temporary tables Xataface won&#8217;t automatically increment their version numbers when their underlying tables are modified.</p>
+<div class="paragraph">
+<p>Since 3.0</p>
+</div>
 </dd>
 </dl>
 </div>
@@ -8962,6 +9011,14 @@ order=0.75</code></pre>
 <dt class="hdlist1">icon</dt>
 <dd>
 <p>The path to an icon that should be used when the action appears as a menu item.  If possible, prefer the <code>materialIcon</code> directive to this one as they are far mor flexible with respect to styling.</p>
+</dd>
+<dt class="hdlist1">scaler.depends</dt>
+<dd>
+<p>Used by <a href="#scaler">Scaler Module</a>, this is a comma-separate list of table names that are used by the action.  This will override the <code>-table</code> GET parameter in so far as it is used to invalidate the cache for the request.  This is often used in conjunction with the <em>scaler.trackUsedTables</em> directive.</p>
+</dd>
+<dt class="hdlist1">scaler.trackUsedTables</dt>
+<dd>
+<p>Overrides the <em>trackUsedTables</em> setting of the <a href="#scaler">Scaler Module</a> for this action.</p>
 </dd>
 <dt class="hdlist1">template</dt>
 <dd>
@@ -11106,8 +11163,34 @@ Not to be confused with the <code>-cursor</code> parameter which is used to spec
 </div>
 </div>
 <div class="sect1">
+<h2 id="scaler">Scaler Module</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://github.com/shannah/xataface-module-scaler">Scaler Module</a> provides a flexible and robust caching solution that will allow your application to handle much heavier loads than usual.  It uses the <a href="https://www.php.net/manual/en/book.memcache.php">PHP Memcache</a> extension to cache output in memory.</p>
+</div>
+<div class="paragraph">
+<p>If you expect your application to receive heavy loads, then you should seriously consider using this module to help the application scale.</p>
+</div>
+<div class="paragraph">
+<p>See the see the <a href="https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc">Scaler module README file</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="output-cache">Output Cache</h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+The <a href="https://github.com/shannah/xataface-module-scaler">Scaler Module</a> provides a superior caching solution to this output cache. See <a href="#scaler">Scaler Module</a> for more information.
+</td>
+</tr>
+</table>
+</div>
 <div class="exampleblock">
 <div class="content">
 <div class="paragraph">

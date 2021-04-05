@@ -1,0 +1,8 @@
+[#scaler]
+== Scaler Module
+
+The https://github.com/shannah/xataface-module-scaler[Scaler Module] provides a flexible and robust caching solution that will allow your application to handle much heavier loads than usual.  It uses the https://www.php.net/manual/en/book.memcache.php[PHP Memcache] extension to cache output in memory.
+
+If you expect your application to receive heavy loads, then you should seriously consider using this module to help the application scale.
+
+See the see the https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc[Scaler module README file] for more information.

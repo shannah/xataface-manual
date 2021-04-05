@@ -126,6 +126,12 @@ A numeric value indicating the order in which the action should be displayed as 
 icon::
 The path to an icon that should be used when the action appears as a menu item.  If possible, prefer the `materialIcon` directive to this one as they are far mor flexible with respect to styling.
 
+scaler.depends::
+Used by <<scaler>>, this is a comma-separate list of table names that are used by the action.  This will override the `-table` GET parameter in so far as it is used to invalidate the cache for the request.  This is often used in conjunction with the _scaler.trackUsedTables_ directive.
+
+scaler.trackUsedTables::
+Overrides the _trackUsedTables_ setting of the <<scaler>> for this action.
+
 template::
 The path to the template that should be used when the action is displayed as a web page.
 

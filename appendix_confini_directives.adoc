@@ -86,6 +86,17 @@ Output cache settings. Using output caching can dramatically improve performance
 _themes::
 A list of the themes that are to be applied to the application. Since 0.8
 
+default_tables::
+Allows you to set a default table on a per-action basis.  Keys are action names, values are table names.  E.g. If you wanted the `my_profile` action to use the _users_ table by default, then you would have:
++
+[source,ini]
+----
+[default_tables]
+  my_profile=users
+----
++
+*Since 3.0*
+
 table_labels::
 A list that defines friendly labels for displaying table names. Similar to the `[_tables]` section, but these tables do not appear in the application's navigation menu by default. This is also the only method to display friendly table names in the search index results as of Xataface 2.1 or prior. (See Editing Search Results >> How Do I change table names). Also see the <<fieldsini-table-label,label global directive in the fields.ini_file>>.	Since always.
 
@@ -230,5 +241,10 @@ In the above example, if the app is accessed at example.com, then it would inclu
 By default, if an include fails (because the included file doesn't exist), then an exception will be thrown when the app is loaded.  In some cases you may want the include to be "optional" so that it just fails to load silently if the file can't be found.  You can add `?` to the end of a file path to make it optional.
 
 ====
+
+use_manifest::
+Boolean value (0 or 1) indicating whether the app should use a manifest to keep track of all of its files.  This may improve performance in some cases as it may prevent file system calls to check if a file exists.   When using this option, if you add or remove any files from the app, you'll need to increment the application version in the version.txt file to force the app to regenerate the manifest.
++
+*Since 3.0*
 
 

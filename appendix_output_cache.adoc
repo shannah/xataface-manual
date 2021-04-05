@@ -1,6 +1,8 @@
 [#output-cache]
 == Output Cache
 
+IMPORTANT: The https://github.com/shannah/xataface-module-scaler[Scaler Module] provides a superior caching solution to this output cache. See <<scaler>> for more information.
+
 ====
 **TLDR:** Enable the output cache by adding the following to your conf.ini.php file.
 

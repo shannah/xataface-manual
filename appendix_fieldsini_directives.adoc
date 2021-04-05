@@ -457,6 +457,16 @@ Type::	The data type of the field (note the capital "T" as Xataface is case sens
 +
 *Since 0.5*
 
+userid::
+Marks the field as containing a User ID, which corresponds to the userId of the users table. This is used by caching solutions, such as <<scaler>>, to be able to invalidate the cache if only a particular user's records are modified in a table.  See https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#table-subset-dependencies[Table Subset Dependencies] in the Scaler module readme file for more information.
++
+*Since 3.0*
+
+username::
+Marks the field as containing a username, which corresponds to the username of the users table. This is used by caching solutions, such as <<scaler>>, to be able to invalidate the cache if only a particular user's records are modified in a table.  See https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#table-subset-dependencies[Table Subset Dependencies] in the Scaler module readme file for more information.
++
+*Since 3.0*
+
 validators:VALIDATOR_NAME::	
 A prefix for a validation type on the current field. (Replace "VALIDATOR_NAME" with the name of the validator to be used. e.g. required). There are many validators available to be used.	
 +
@@ -590,6 +600,11 @@ Sets preferences for this table and its records. This directive is an array, so 
 +
 *Since 1.0b4*
 
+scaler.trackUsedTables::
+Boolean (0 or 1) indicating whether requests on this table should track the tables used in the request.  Used with <<scaler>>.  See https://github.com/shannah/xataface-module-scaler/blob/master/README.adoc#tracking-used-tables[Tracking Used Tables] in the Scaler module readme.
++
+*Since 3.0*
+
 table.default_sort::
 Sets the default sort column for the table.  See <<default-sort>>.
 +
@@ -614,6 +629,11 @@ Setting this to "mobile" will cause the list view to use the "mobile" list style
 
 table.row_style::
 Setting this to "external-link" will cause the mobile list view (and related list view) to render rows as links to an external link, similar to how Twitter renders tweets that contains links.  See <<row-style-external-link>>
+
+table.depends::
+A comma-delimited list of tables on which this table depends.  When using <<scaler>>, this helps Xataface determine which tables were used in generating a response for a request, and thereby know when the cache for that page should be invalidated.  This directive is usually used for MySQL views or temporary tables Xataface won't automatically increment their version numbers when their underlying tables are modified.
++
+Since 3.0
 
 [discrete]
 === Field Groups
