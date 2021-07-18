@@ -528,7 +528,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#session-config">Session Configuration</a></li>
 <li><a href="#auto-login">Auto-Login Support</a></li>
 <li><a href="#oauth2">OAuth2 Authentication</a></li>
-<li><a href="#_api_authentication">API Authentication</a></li>
+<li><a href="#api-authentication">API Authentication</a></li>
 </ul>
 </li>
 <li><a href="#theme_customization">Theme Customization</a>
@@ -3564,6 +3564,124 @@ This snippet makes use of the <code>getUser()</code> and <code>isAdmin()</code> 
 </div>
 </div>
 <div class="sect3">
+<h4 id="_requesting_short_login_code">Requesting Short Login Code</h4>
+<div class="paragraph">
+<p>In some cases a login link may not be the ideal format for the second step of email login.  For example, if you are requesting a login link for a mobile app, it may be easier to provide the user with a short login code in their email which they can enter in the app to complete the login.  This is disabled by default because a shorter login code is a little bit less secure than a full login token.</p>
+</div>
+<div class="paragraph">
+<p>Short login codes can be enabled for <a href="#api-authentication">API Authentication</a> only using the following workflow:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add the <code>short_token_length</code> directive to the <code>[_auth]</code> section of the conf.ini file to set the number of characters in the login code. E.g.</p>
+<div class="listingblock">
+<div class="title">Setting login code length to 6 in conf.ini file.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[_auth]
+    ...
+    short_token_length=6</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Send a <em>POST</em> request to the <em>xf_email_login</em> action with the following parameters:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-action</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">xf_email_login</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--redirectUrl</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Any URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--email</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The email address of the account</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--request-login-code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--remember-me</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 or 1.  1 indicates that the login should be sticky.</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>This will trigger an email to the user with the login code.  The email will include the code as shown below.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/request-login-code-email.png" alt="request login code email">
+</div>
+</div>
+<div class="paragraph">
+<p>The user would copy this code into your app</p>
+</div>
+</li>
+<li>
+<p>Your app would then issue a login request with this code as the <code>--token</code> parameter, using a POST request with the following parameters:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-action</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--token</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The login code that the user entered as received in their email.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">--no-prompt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The HTTP request should include the header <code>Content-type: application/x-www-form-urlencoded</code></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#api-authentication">API Authentication</a> for more details about API authentication.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
 <h4 id="email-registration">Email Registration</h4>
 <div class="paragraph">
 <p>The email login examples shown thus far have not included user registration. (See <a href="#user-registration">Allowing User Registration</a>), but it is fully supported.  If the user clicks on the "Email Login Link", and there is a valid email address in the Email field, it will always at least "pretend" to send a login email.  I.e. it will always display the following dialog:</p>
@@ -3808,7 +3926,7 @@ There are also modules built to provide Oauth support for specific services, suc
 </div>
 </div>
 <div class="sect2">
-<h3 id="_api_authentication">API Authentication</h3>
+<h3 id="api-authentication">API Authentication</h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/Image-140420-113308.724.png" alt="Image 140420 113308.724">

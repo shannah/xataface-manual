@@ -389,6 +389,70 @@ image::images/Image-030121-082708.897.png[]
 
 Also notice that the "Forgot Password" option is no longer displayed.  With `allow_password_login=0` you'll also notice that there is no "Change Password" option once logged in.
 
+==== Requesting Short Login Code
+
+In some cases a login link may not be the ideal format for the second step of email login.  For example, if you are requesting a login link for a mobile app, it may be easier to provide the user with a short login code in their email which they can enter in the app to complete the login.  This is disabled by default because a shorter login code is a little bit less secure than a full login token.
+
+Short login codes can be enabled for <<api-authentication>> only using the following workflow:
+
+. Add the `short_token_length` directive to the `[_auth]` section of the conf.ini file to set the number of characters in the login code. E.g.
++
+.Setting login code length to 6 in conf.ini file.
+[source,ini]
+----
+[_auth]
+    ...
+    short_token_length=6
+----
+. Send a _POST_ request to the _xf_email_login_ action with the following parameters:
++
+
+|===
+|Parameter |Value
+
+|-action
+| xf_email_login
+
+|--redirectUrl
+| Any URL
+
+|--email
+| The email address of the account
+
+|--request-login-code
+| 1
+
+|--remember-me
+| 0 or 1.  1 indicates that the login should be sticky.
+
+|===
+. This will trigger an email to the user with the login code.  The email will include the code as shown below.
++
+image::images/request-login-code-email.png[]
++
+The user would copy this code into your app
+. Your app would then issue a login request with this code as the `--token` parameter, using a POST request with the following parameters:
++
+|===
+|Parameter |Value
+
+|-action
+|login
+
+|--token
+| The login code that the user entered as received in their email.
+
+|--no-prompt
+| 1
+|===
++
+[TIP]
+====
+The HTTP request should include the header `Content-type: application/x-www-form-urlencoded`
+====
++
+See <<api-authentication>> for more details about API authentication.
+
 [#email-registration]
 ==== Email Registration
 
@@ -550,6 +614,7 @@ You'll also need to add the `pre_auth_types` entry to the `[_auth]` section oc y
     pre_auth_types=oauth_token
 ----
 
+[#api-authentication]
 === API Authentication
 
 .Login sequence using example curl HTTP request.
