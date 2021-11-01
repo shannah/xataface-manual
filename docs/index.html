@@ -9392,6 +9392,31 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><em>Since: 0.1</em></p>
 </div>
 </dd>
+<dt class="hdlist1">list:link_to_domain_record</dt>
+<dd>
+<p>Specify that rows in the related list view should like directly to the domain record, rather than the intermediate <code>view_related_record</code> action.</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">tables/publisher/relationships.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[podcasts]
+    publisher_podcasts.publisher_id=$publisher_id
+    list:link_to_domain_record=1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, each row of the <em>podcasts</em> relationship will link directly ot the corresponding record of the <em>publisher_podcasts</em> table.  If we did not add this, then clicking on a row would link to the <code>view_related_record</code> action for the related record, which will display the details of the related record, and will have a link to go to the domain record of the <em>publisher_podcasts</em> table.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since 3.0</em></p>
+</div>
+</dd>
 <dt class="hdlist1">list:type</dt>
 <dd>
 <p>Optional type of list to use for the related record list. Possible value: "treetable"</p>

@@ -62,6 +62,25 @@ Boolean value (0 or 1) indicating whether the action to remove existing records 
 +
 _Since: 0.1_
 
+list:link_to_domain_record::
+Specify that rows in the related list view should like directly to the domain record, rather than the intermediate `view_related_record` action.
++
+****
+*Example*
+
+.tables/publisher/relationships.ini file
+[source,ini]
+----
+[podcasts]
+    publisher_podcasts.publisher_id=$publisher_id
+    list:link_to_domain_record=1
+----
+
+In this example, each row of the _podcasts_ relationship will link directly ot the corresponding record of the _publisher_podcasts_ table.  If we did not add this, then clicking on a row would link to the `view_related_record` action for the related record, which will display the details of the related record, and will have a link to go to the domain record of the _publisher_podcasts_ table.
+****
++
+_Since 3.0_
+
 list:type::
 Optional type of list to use for the related record list. Possible value: "treetable"
 +
