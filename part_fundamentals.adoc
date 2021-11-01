@@ -250,20 +250,20 @@ To see how actions are rendered, you might find it helpful to look at the [Dataf
 
 Xataface supports inheritance with actions using the following syntax:
 
-~~~
+----
 [action_name > parent_action_name]
-~~~
+----
 
 The above creates an action named `action_name` with the same properties as the previously declared action `parent_action_name`.
 
 E.g. Suppose you wanted to create an action "filtered_list" that is the same as the "list" action, except that it filters the results to only show records with `approved=1`.  You would define something like the following:
 
-~~~
+----
 [approved_list > list]
     url="{$this->url('-action=list&approved=1')}"
     condition="$query['-table'] == 'mytable'"
     label="Approved List"
-~~~
+----
 
 ==== Overriding Existing Actions
 
@@ -275,13 +275,13 @@ Actions, in Xataface, are loaded from various actions.ini files in the following
 
 The *last* action loaded takes precedence in the case of a name conflict.  That means that you can override an action by simply defining an action with the same name in your app's *actions.ini* file.
 
-**WARNING: Overriding an action will replace ALL configuration properties of the action, including permissions.  Simply overriding a private action will cause it to be publicly accessible if you don't set the configuration directive.**
+WARNING: Overriding an action will replace ALL configuration properties of the action, including permissions.  Simply overriding a private action will cause it to be publicly accessible if you don't set the configuration directive.
 
 E.g. You *could* override the *list* action by adding the following to your `actions.ini` file:
 
-~~~
+----
 [list]
-~~~
+----
 
 This would have the following consequences:
 
@@ -292,26 +292,29 @@ This would have the following consequences:
 
 A better way to override the *list* action is to use inheritance.  E.g:
 
-~~~
+[source,ini]
+----
 [list > list]
-~~~
+----
 
 What this does is creates a new action named *list* that inherits all of the configuration directives from the existing action named *list*.  Overriding *list* in this manner would have no effect on program execution because it effectively replaces *list* with an exact duplicate of itself. Now we can override individual properties selectively.  E.g. If we wanted to change the label of the *list* action to "My List", we could do:
 
-~~~
+[source,ini]
+----
 [list > list]
    label="My List"
-~~~
+----
 
 
 ==== Hiding Actions
 
 The vanilla Xataface install includes lots of menus with useful functions - but some applications don't require all of these functions.  For example, the list view includes an *Export XML* action.  If you want to hide this so that it doesn't show up, you can easily do this by overriding the *export_xml* action, and changing the category to something that isn't used, like an empty string:
 
-~~~
+[source, ini]
+----
 [export_xml > export_xml]
    category=""
-~~~
+----
 
 **NOTE: Before using this approach to hide actions from your UI, take a moment to consider whether you want to prevent users from accessing this functionality or if you just want the button hidden.  Hiding the menu item won't actually block users from accessing this functionality because they can still access it with a well-crafted URL.  If you actually want to block access, then you should use permissions instead to deny access to the action.**
 
@@ -326,7 +329,8 @@ The `permission` directive specifies the name of a permission that must be grant
 
 You can see many examples of the `permission` directive inside Xataface's [actions.ini file](../actions.ini).  E.g. the *new* action:
 
-~~~
+[source,ini]
+----
 [new]
 	label = New Record
 	description = Create a new record
@@ -337,22 +341,23 @@ You can see many examples of the `permission` directive inside Xataface's [actio
 	mode = browse
 	permission = new
 	order=1
-~~~
+----
 
 The `permission` directive here specifies that users require the *new* permission in order to access the new record form.  This means that the "New Record" button won't appear in any menus for unauthorized users, and that cleverly crafted URLs for the *new* action will be blocked except for authorized users.
 
 If you require more precision in determination of whether the current user has authorization to perform an action, you may use logic inside the action itself.  E.g. The following snippet is from the [delete_file action](../actions/delete_file.php):
 
-~~~
+[source,php]
+----
 if ( !$record->checkPermission('edit', array('field'=>$fieldDef['Field'])) ){
 	return Dataface_Error::permissionDenied('You don\'t have permission to edit this field.');
 }
-~~~
+----
 
 This uses the Xataface API (particularly the `Dataface_Record::checkPermission()` method) to check whether the current record has the edit permission on a particular field.  If not, it returns a *permission denied* error, which Xataface knows how to handle.
 
-<a name="expressions"></a>
 
+[#expressions]
 === PHP Expressions in actions.ini Directives
 
 There are three types of directives that can be included in an action definition:

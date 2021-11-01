@@ -505,8 +505,6 @@ If you have email authentication enabled (i.e. `allow_email_login=1`), password 
 
 ====
 
-
-
 [#session-config]
 === Session Configuration
 
@@ -665,5 +663,244 @@ But replace `{TOKEN}` with your token received during login.
 
 To log out, simply perform a POST or GET request to `?-action=logout&--no-prompt=1`
 
+[#relationship-permissions]
+=== Relationship Permissions
+
+As relationships are a core feature of Xataface, it is helpful to understand how to handle permissions on related records. Even if you apply permissions to every table individually, you need to take into account the relationships that you have defined between tables, because they may open access to actions that you did not intend.
+
+For example, suppose we have two tables: _people_ and _publications_, and we have a relationship from _publications_ table to the people table called publication_authors.
+
+Suppose you give a user write access to a record of the _publications_ table, but no access to the _people_ table. If you are allowing the _add new related record_ permission on the _publications_ table record, then the user will still be able to add new people, via the "Add related people record" function of the database. This may or may not be desirable.
+
+This section discusses the issues that arise due to relationships and permissions, and how to deal with them.
+
+The Xataface <<permissionsini-file,permissions.ini file>> defines a handful of permissions that are related to the management of related records. These include:
+
+
+add new related record::
+Permission to add a new related record to a relationship.
++
+*Roles:* `EDIT`, `DELETE`, `OWNER`, `ADMIN`, `MANAGER`
+
+add existing related record::
+Permission to add an existing record to a relationship.
++
+*Roles:* `EDIT`, `DELETE`, `OWNER`, `ADMIN`, `MANAGER`
+
+remove related record::
+Permission to remove a record from a relationship. (This only allows removing a record from the relationship - not deleting the record from the database, so this is only really relevant in a many-to-many relationship).
+*Roles:* `EDIT`, `DELETE`, `OWNER`, `ADMIN`, `MANAGER`
+
+delete related record::
+Permission to delete a related record. This allows both removing the related record from the relationship, and deleting the record from the database. This permission is not included in any default roles. A combination of permission for remove related record? in the source table and delete? in the target table, are equivalent to access to this permission. Use this permission only when you need to override the ability to delete records from the database based on membership in a relationship.
+
+*Roles:* -
+
+view related records::
+Permission to view the records of a relationship.
++
+Roles: `READ ONLY`, `EDIT`, `DELETE`, `OWNER`, `ADMIN`, `MANAGER`
+
+related records feed::
+Permission to access the RSS feed of a relationship.
++
+*Roles:* `READ ONLY`, `EDIT`, `DELETE`, `OWNER`, `ADMIN`, `MANAGER`
+
+==== Fine-grained, Per-relationship Permissions
+
+You may often find that defining a flat set of permissions to all relationships on a record is insufficient for your purposes, because some relationships may demand different access levels than others. You can override the permissions for any particular relationship by implementing the `rel_relationshipname__permissions` method in the table's delegate class, where _relationshipname_ is the name of the relationship.
+
+e.g. Consider the relationship manufacturers:
+
+[source,php]
+----
+function rel_manufacturers__permissions($record){
+    // $record is a Dataface_Record object
+    return ['view related records' => 0];
+}
+----
+
+This will tell xataface that users should not be able to view related records on the _manufacturers_ relationship. This will override any permissions that were defined in the `getPermissions` method.
+
+==== More Complete Example
+
+In the following example, we design a products database. We use two relationships on our products table.  One to keep track of the parts that are used in our product. The other to keep track of the users that are allowed to edit our products.
+
+We want to make it so that only the product owner can manage the editors for a product, but anyone in the _product_editors_ relationship is allowed to edit the product or add/remove parts from the product.
+
+We don't want to give any users access directly to the _parts_, _product_parts_, or _product_editors_ tables. We want all access to go through the relationships on the products table.
+
+===== Database/Relationship Design
+
+Consider a database with five tables:
+
+. `products (product_id, product_name, owner_username)`
+. `parts (part_id, part_name)`
+. `product_parts (part_id, product_id)`
+. `product_editors (product_id, editor_username)`
+. `users (username, password, role)`
+
+And we have the following relationships on the _products_ table:
+
+----
+[parts]
+parts.part_id=product_parts.part_id
+product_parts.product_id="$product_id"
+
+[editors]
+product_editors.product_id="$product_id"
+----
+
+
+===== Application Permissions : Very Restrictive
+
+Like a good boyscout, we define our default permissions in the Application Delegate Class to be very restrictive: Don't let anyone do anything.
+
+[source,php]
+----
+class conf_ApplicationDelegate {
+    function getPermissions($record){
+        return Dataface_PermissionsTool::NO_ACCESS();
+    }
+}
+----
+
+===== Products Table Permissions: Less restrictive
+Now we open it up for our products table in the getPermissions() method of the products delegate class.
+
+.In tables/products/products.php:
+[source,php]
+----
+class tables_products {
+    function getPermissions(Dataface_Record $record = null){
+        $user = Dataface_AuthenticationTool::getInstance()
+                ->getLoggedInUser();
+        if ($user and $record and $record->val('owner_username') == $user->val('username')){
+            // Give the record owner Edit permissions on the product
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+        // Everybody else gets read only access to the products table.
+        return Dataface_PermissionsTool::READ_ONLY();
+    }
+}
+----
+
+===== Checking if the current User is an Editor
+
+So far we have given the product owner _edit_ permissions and everyone else _read only_ permissions. We still need to allow editors to edit the product. In order to do this we need to be able to _efficiently_ find out if the current user is an editor of a particular product. There are a few different ways to do this, but some are better than others. Some strategies include:
+
+Perform an SQL query inside the `getPermissions` method to see if the user is an editor for the product::
+*THIS IS VERY BAD!!!* The `getPermissions` method should not include any IO or database queries because it is called a large number of times per request... making expensive calls in this method will slow down your app dramatically.
+
+Create a function to load and cache all of the current user's products so that this can be easily checked at will.::
+This is fine if the user is expected be able to edit only a few products. If he could be an editor for thousands of products, this may not be practical as it will cause you to have to load thousands of records into memory on every page request.
+
+Use the `\\__sql__` method of the delegate class to create a grafted field on the products table indicating whether the current user is an editor for the product::
+This results in a very quick and accessible indicator variable that can be used in the `getPermissions` method to check to see if the current user is an editor for the current product. E.g. In the _tables/products/products.php_ file (delegate class):
++
+[source,php]
+----
+function __sql__(){
+    return sprintf("select p.*, pe.editor_username from products p
+            left join product_editors pe on p.product_id=pe.product_id
+            where pe.editor_username='%s'",
+            addslashes(Dataface_AuthenticationTool::getInstance()->getLoggedInUsername())
+    );
+}
+----
++
+This will result in a situation where product records will have an additional field editor_username which will either be blank if the current user is not an editor for the product; or will contain the current user's username if they are an editor for the product.
+
+===== Table Permissions for Product Editors
+
+Now that we have a reliable way to tell, for any given product, whether the current user is, in fact, an editor, we can ammend the `getPermissions` method of the products table to include our editor permissions.
+
+[source,php]
+----
+class tables_products {
+    function getPermissions($record){
+        $user = Dataface_AuthenticationTool::getInstance()->getLoggedInUser();
+        if ( $user and $record and $record->val('owner_username') == $user->val('username')){
+            // Give the record owner Edit permissions on the product
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+        if ( $user and $record and $record->val('editor_username') == $user->val('username') ){
+            // If the user is an editor, we give them edit permissions
+            // also
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+
+        if ( $user ){
+        // Other logged in users have read only access
+            $perms = Dataface_PermissionsTool::READ_ONLY();
+            $perms['new'] = 1; // We'll also let them add new products
+            return $perms;
+        }
+
+        // Regular users just get the default permissions as
+        // defined in the Application Delegate class
+        return null;
+    }
+}
+----
+
+=====Removing Editor Access to the Editor Relationship
+
+You'll notice that at this point, the product editor has exactly the same permission as the product owner. They both have permission to add and remove records from all relationships on the product. However, we don't want them to be able to access the editors relationship at all. We will use the `rel_relationshipname__permissions` method to override the permissions for the editors relationship.
+
+.In the tables/products/products.php delegate class:
+[source,php]
+----
+function rel_editors__permissions($record){
+    $user = Dataface_AuthenticationTool::getInstance()->getLoggedInUser();
+    if ($user and $record and $record->val('owner_username') == $user->val('username')) {
+        // Owners should just get their normal permissions
+        return null;
+    }
+
+    if ($user and $record and $record->val('editor_username') == $user->val('username')) {
+        // If the user is an editor, we give them edit permissions
+        // also
+        return [
+            'view related records' => 0,
+            'add new related record' => 0,
+            'add existing related record' => 0,
+            'remove related record' => 0,
+            'delete related record' => 0
+        ];
+    }
+
+    // Other users just get their normal permissions
+    return null;
+
+}
+----
+
+===== Assigning product owner by default
+
+With the current permissions, something funny would happen. Users have permission to add new records, but once the record is added they won't be able to edit it because they are neither an editor nor the owner of the product. We'll fix this by assigning the current user as the product's owner using the beforeSave trigger in the products delegate class:
+
+[source,php]
+----
+function beforeSave($record){
+    $user = Dataface_AuthenticationTool::getInstance()->getLoggedInUser();
+    if ( $user ){
+        $record->setValue('owner_username', $user->val('username'));
+    }
+}
+----
+
+===== Testing Out Our Solution
+
+In your testing of the solution, you should find the following:
+
+. Trying to access any table other than the products table should result in a permission denied error.
+. If you access the products table, you should be able to see a list of existing products, and the "Add New Record" action.
+. After you add a new product you should see that you are the product owner.
+. As a product owner you should see both the parts and editors tabs in your product record. You should be able to view and add new records to both of these relationships.
+. Add another user as an editor to your product, then log in as that user. You should be able to edit the product, but you shouldn't be able to see the editors tab for the product.
 
 

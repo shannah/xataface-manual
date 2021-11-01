@@ -1,0 +1,396 @@
+[#permissionsini-directives]
+== Permissions.ini Directives
+
+The _permissions.ini_ file stores custom permissions and roles that can be used by an application. It is an optional file that should be placed in the application root directory (i.e. the same directory where your conf.ini, and index.php files are located).
+
+The _permissions.ini_ file allows you to define two things:
+
+. Permissions
+. Roles (i.e. sets of permissions).
+
+Permissions and roles are used throughout Xataface to limit access to actions, records, fields, and relationships. For example, each action in your application can specify a permission that is necessary to perform the action. Your delegate classes may include `getPermissions()` methods to define what permissions a user gets when interacting with different records. This file (_permissions.ini_) simply defines the permissions that can be used by your application. It doesn't actually assign those permissions. Assigning permissions is the job of the `getPermissions()` (or `getRoles()`) method.
+
+=== Defining Permissions
+
+Permissions are defined by standalone properties in the beginning of the permissions.ini file. For example, if you were desiging a proof-reading application, you might need permissions for "submit_for_proof", or "approve_text" to correspond with the submitting a document to be proof-read, and approving a document's proof. In this case we would have the following at the beginning of our permissions.ini file:
+
+----
+submit_for_proof = Submit a document to be proofread
+approve_text = "Approve this document's proof"
+----
+
+The left side of the equals sign is the name of the permission. The right side contains a human readable description of the permission and what it is for.
+
+=== Limiting Access to Actions based on Permissions
+
+At this point these permissions don't do anything. In order to be useful we need reference these permissions from an action or a section. For example, let's create an action called "submit_for_proof" which displays a form for a user to submit a document record to be proofread.
+
+Our actions.ini file entry might look something like:
+
+----
+[submit_for_proof]
+url="{$this->url('-action=submit_for_proof')}"
+label="Submit document for proof"
+category=record_actions
+permission=submit_for_proof
+template=submit_for_proof.html
+----
+
+And for completeness, since this make-believe action specifies th "submit_for_proof.html" template, we'll create the "submit_for_proof.html" template in the templates directory:
+
+[source,html]
+----
+<html><body>You have permission to perform this action.</body></html>
+----
+
+=== Defining Who Get's Which Permissions
+
+Finally, in order to benefit from permissions, your application has to decide that it is going to use permissions (unless you define a `getPermissions()` method, users are granted ALL permissions by default. Hence if you try to access our submit_for_proof action, we'll see it without any problem. Regardless of who we are. So let's create a simple, but restrictive `getPermissions()` method in our application delegate class:
+
+[source,php]
+----
+<?php
+class conf_ApplicationDelegate {
+    function getPermissions(&$record){
+        return Dataface_PermissionsTool::READ_ONLY();
+    }
+}
+----
+
+Now if we try to access our _submit_for_proof_ action it will give us a "Permission Denied" message, because we are only granted `READ ONLY` permissions (which is a role that includes the view permission and some others - but not our custom "submit_for_proof" permission.
+
+Now we'll make a small modification to our `getPermissions()` method to provide us with our _submit_for_proof_ permission:
+
+[source,php]
+----
+<?php
+class conf_ApplicationDelegate {
+    function getPermissions(&$record){
+        $perms =  Dataface_PermissionsTool::READ_ONLY();
+        $perms['submit_for_proof'] = 1;
+        return $perms;
+    }
+}
+----
+
+Now if we try to access our submit_for_proof action, it will show us our template with no error messages (hopefully).
+
+=== Roles
+
+Roles are sets of permissions. They are defined in the permissions.ini file as sections with lists of included permissions. It might be handy to create roles such as `EDITOR` or `MANAGER` which contain sets of permissions that are meant to be assigned to users of those types. For example an `EDITOR` may have the view and edit permissions, but not the delete permission. A `MANAGER` might have the `view`, `edit`, and `delete` permissions. You can define these two roles in the _permissions.ini_ file as follows:
+
+----
+[EDITOR]
+view=1
+edit=1
+
+[MANAGER]
+view=1
+edit=1
+delete=1
+----
+
+Then we could assign these roles to users using the `Dataface_PermissionsTool::getRolePermissions()` method:
+
+[source,php]
+----
+function getPermissions(&$record){
+    $user =& Dataface_AuthenticationTool::getInstance()->getLoggedInUser();
+    if ( $user and $user->val('role') == 'EDITOR' ){
+        return Dataface_PermissionsTool::getRolePermissions('EDITOR');
+    } else if ( $user and $user->val('role') == 'MANAGER' ){
+        return Dataface_PermissionsTool::getRolePermissions('MANAGER');
+    }
+    return Dataface_PermissionsTool::READ_ONLY();
+}
+----
+
+Or equivalently we could use the `getRoles()` method of our delegate class instead of `getPermissions()`:
+
+[source,php]
+----
+function getRoles(&$record){
+    $user =& Dataface_AuthenticationTool::getInstance()->getLoggedInUser();
+    if ( $user and $user->val('role') == 'EDITOR' ){
+        return 'EDITOR';
+    } else if ( $user and $user->val('role') == 'MANAGER' ){
+        return 'MANAGER'
+    }
+    return 'READ ONLY';
+}
+----
+
+=== Xataface Core Permissions & Roles
+
+Xataface is distributed with its own _permissions.ini_ file that defines some core permissions and roles. You can look at this _permissions.ini_ file (located in the _xataface_ directory) to see what the format should look like. Any settings you place in your application's _permissions.ini_ file will augment or override settings in Xataface's file.
+
+==== Core Permissions
+
+view::
+Permission to view a record or field. This permission is required to access the view tab, and several other details tabs.
++
+_Since 0.6_
+
+list::
+Permission to access the list tab.
++
+_Since 0.6_
+
+calendar::
+Permission to access the calendar tab.
++
+_Since 0.6_
+
+edit::
+Permission to edit a record or field. This also gives access to the edit tab.
++
+_Since 0.6_
+
+new::
+Permission to edit a record or field for the purpose of creating a new record. This permission is required to access the new record form.
++
+_Since 0.6_
+
+_select_rows_	Permission to select rows in list view to perform actions on them.
++
+_Since 0.6_
+
+post::
+Permission to post a record using HTTP POST
++
+_Since 0.6_
+
+copy::
+Permission to copy a record.
++
+_Since 0.6_
+
+update_set::
+Permission to perform an update on a result set (i.e. access the update set action).
++
+_Since 0.8_
+
+add new related record::
+Permission to add a new record to a relationship. See Relationship Permissions
++
+_Since 0.6_
+
+add existing related record::
+Permission to add an existing record to a relationship. See Relationship Permissions
++
+_Since 0.6_
+
+view related records::
+Permission to view the records in a relationship. See Relationship Permissions
++
+_Since 1.0_
+
+delete::
+Permission to delete a record.
++
+_Since 0.6_
+
+delete found::
+Permission to access the delete found set action (to delete multiple records at a time).
+_Since 0.6_
+
+show all::
+Permission to access show all records action.
++
+_Since 0.6_
+
+remove related record::
+Permission to remove a record from a relationship. See Relationship Permissions
++
+_Since 0.6_
+
+delete related record::
+Permission to delete a record in a relationship. This is stronger than the remove related record permission in that it allows the user to delete the record from the database.
++
+*See Also* <<relationship-permissions,Relationship permissions>>
++
+_Since 0.6_
+
+find::
+Permission to perform the find action.
++
+_Since 0.6_
+
+import::
+Permission to perform the import action (to import records into the database).
++
+_Since 0.6_
+
+export_csv::
+Permission to perform the Export CSV action (to export the result set in comma-separated-value format).
++
+_Since 0.6_
+
+export_xml::
+Permission to perform the Export XML action (to export the result set as XML).
++
+_Since 0.8_
+
+translate::
+Permission to translate a record into another language. This permission provides access to the "translate" tab.
++
+_Since 0.8_
+
+history::
+Permission to view history information for a record (e.g. the history tab). This requires that history be enabled.
++
+_Since 0.8_
+
+edit_history::
+Permission to edit history information such as undo/redo support for a record.
++
+_Since 0.8_
+
+navigate::
+Permission to navigate through records of a table.
++
+_Since 0.6_
+
+reorder_related_records::
+Permission to reorder the records of a relationship (this is different than just sorting). It sets a default order for the records. Requires the metafields:order directive to be set for the relationship.
++
+_Since 0.6_
+
+ajax_save::
+Permission to save a record through AJAX.
++
+_Since 0.8_
+
+ajax_load::
+Permission to load a record through AJAX.
++
+_Since 0.8_
+
+ajax_form::
+Permission to access the inline editing ajax form for a record.
++
+_Since 0.8_
+
+find_list::
+Permission to search current table.
++
+_Since 0.6_
+
+find_multi_table::
+Permission to perform a site-wide search.
++
+_Since 0.8_
+
+register::
+Permission to register for an account.
++
+_Since 0.8_
+
+xml_view::
+Permission to view a result set as xml.
++
+_Since 0.8_
+
+view_xml::
+View the XML for an individual record.
++
+_Since 0.8_
+
+manage_output_cache::
+Management permission to clear the output cache.
++
+_Since 0.8_
+
+manage_migrate::
+Permission to access the migration tool to migrate between versions.
++
+_Since 0.8_
+
+manage::
+Permission to access the management control panel.
++
+_Since 0.8_
+
+manage_build_index::
+Permission to rebuild the search index.
++
+_Since 0.8_
+
+expandable::
+Whether the record can be expanded in the left nav menu	N/A
+
+==== Core Roles
+
+READ ONLY::
+*Permissions:* `view`, `list`, `calendar`, `view xml`, `show all`, `find`, `navigate`, `ajax_load`, `find_list`, `find_multi_table`, `rss`, `export_csv`, `export_xml`, and `export_json`
++
+_Since 0.6_
+
+EDIT::
+*Permissions:* All permissions in `READ ONLY`, and `edit`, `add new related record`, `add existing related record`, `add new record`, `remove related record`, `reorder_related_records`, `import`, `translate`, `new`, `ajax_save`, `ajax_form`, `history`, `edit_history`, `copy`, `update_set`, and `select_rows`
++
+_Since 0.6_
+
+DELETE::
+*Permissions:* All permissions in `EDIT`, and `delete` and `delete found`.
++
+_Since 0.6_
+
+OWNER::
+*Permissions:* All permissions in `DELETE` except `navigate`, `new`, and `delete found`.
++
+_Since 0.6_
+
+REVIEWER::
+*Permissions:* All permissions in `READ ONLY`, and `edit` and `translate`.
++
+_Since 0.6_
+
+USER::
+*Permissions:* All permissions in `READ ONLY`, and `add new related record`.
++
+_Since 0.6_
+
+ADMIN::
+*Permissions:* All permissions in `DELETE` and `xml_view`
++
+_Since 0.6_
+
+MANAGER::
+*Permissions:* All permissions in `ADMIN` and `manage`, `manage_output_cache`, `manage_migrate`, `manage_build_index`, and `install`.
++
+_Since 0.6_
+
+==== Extending and Overriding Roles
+
+The cleanest and easiest way to define a new role is to extend an existing role. Xataface allows you to extend roles via the `extends` keyword. For example, if you wanted to create a role `TEST ROLE` that contained all of the same permissions as the `READ ONLY` role, you could define it as follows in your application's _permissions.ini_ file:
+
+----
+[TEST ROLE extends READ ONLY]
+----
+
+If we wanted it to contain the same permissions as `READ ONLY` but to also allow the edit permission we would define it as:
+
+----
+[TEST ROLE extends READ ONLY]
+edit=1
+----
+
+If we wanted to disallow the `list` permission, we would do something like:
+
+----
+[TEST ROLE extends READ ONLY]
+edit=1
+list=0
+----
+
+==== Overriding Existing Roles
+
+You can also redefine existing roles:
+
+----
+[READ ONLY extends READ ONLY]
+my_permission=1
+----
+
+This is handy if you have added your own custom permissions that you feel should be included in a core role.

@@ -1,3 +1,43 @@
 [part_appendix_delegate_methods]
 = Appendix 2: Delegate Class Methods
 
+== Table Delegate Class
+
+=== Relationships Methods
+
+[#delegate-getChildren]
+==== `getChildren()`
+
+The `getChildren()` method can be implemented in a table's delegate class to specify the logical "child" records of a given record which can be used when creating hierarchical applications. This method will effectively override the output of the `Dataface_Record::getChildren()` method for records of this table.
+
+Signature::
+`function getChildren( Dataface_Record $record) : Dataface_Record[]`
+
+Parameters::
+. `$record` - The `Dataface_Record` that is the subject of the query
+
+Returns::
+This method should return an array of `Dataface_Record` objects that are considered to be children of the subject record.
+
+*Examples*
+
+[source,php]
+----
+function getChildren($record){
+    return df_get_records('webpages', [
+        'parent_id'=>'='.$record->val('webpage_id')
+    ]);
+}
+----
+
+*See Also* <<delegate-getParent>>
+
+[#delegate-getParent]
+==== `getParent()`
+
+A Delegate class method to return the logical parent of a given record.
+
+[#delegate-relationshipname__getAddableValues]
+==== `relationshipname__getAddableValues()`
+
+Returns array of addable values when adding existing records to relationships.

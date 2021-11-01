@@ -529,6 +529,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#auto-login">Auto-Login Support</a></li>
 <li><a href="#oauth2">OAuth2 Authentication</a></li>
 <li><a href="#api-authentication">API Authentication</a></li>
+<li><a href="#relationship-permissions">Relationship Permissions</a></li>
 </ul>
 </li>
 <li><a href="#theme_customization">Theme Customization</a>
@@ -631,6 +632,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#fieldsini-directives">Fields.ini Directives</a></li>
+<li><a href="#relationshipsini-directives">Relationships.ini Directives</a>
+<ul class="sectlevel2">
+<li><a href="#_overview_3">Overview</a></li>
+<li><a href="#_field_directives_2">Field Directives</a></li>
+<li><a href="#_glance_lists">Glance Lists</a></li>
+<li><a href="#_relationship_permissions">Relationship Permissions</a></li>
+</ul>
+</li>
 <li><a href="#actionsini-directives">Actions.ini Directives</a>
 <ul class="sectlevel2">
 <li><a href="#_syntax_2">Syntax</a></li>
@@ -639,6 +648,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#preference-directives">Preferences Directives</a></li>
+<li><a href="#permissionsini-directives">Permissions.ini Directives</a>
+<ul class="sectlevel2">
+<li><a href="#_defining_permissions">Defining Permissions</a></li>
+<li><a href="#_limiting_access_to_actions_based_on_permissions">Limiting Access to Actions based on Permissions</a></li>
+<li><a href="#_defining_who_gets_which_permissions">Defining Who Get&#8217;s Which Permissions</a></li>
+<li><a href="#_roles">Roles</a></li>
+<li><a href="#_xataface_core_permissions_roles">Xataface Core Permissions &amp; Roles</a></li>
+</ul>
+</li>
 <li><a href="#appendix-rss-config">RSS Configuration Directives</a>
 <ul class="sectlevel2">
 <li><a href="#rss-getfeed"><code>getFeed()</code> Delegate Method</a></li>
@@ -652,6 +670,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</a></li>
+<li><a href="#_table_delegate_class">Table Delegate Class</a>
+<ul class="sectlevel2">
+<li><a href="#_relationships_methods">Relationships Methods</a></li>
+</ul>
+</li>
 <li><a href="#_appendix_3_javascript_environment">Appendix 3: Javascript Environment</a></li>
 <li><a href="#_javascript_components">Javascript Components</a>
 <ul class="sectlevel2">
@@ -3985,6 +4008,329 @@ There are also modules built to provide Oauth support for specific services, suc
 <h4 id="_logging_out" class="discrete">Logging Out</h4>
 <div class="paragraph">
 <p>To log out, simply perform a POST or GET request to <code>?-action=logout&amp;--no-prompt=1</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="relationship-permissions">Relationship Permissions</h3>
+<div class="paragraph">
+<p>As relationships are a core feature of Xataface, it is helpful to understand how to handle permissions on related records. Even if you apply permissions to every table individually, you need to take into account the relationships that you have defined between tables, because they may open access to actions that you did not intend.</p>
+</div>
+<div class="paragraph">
+<p>For example, suppose we have two tables: <em>people</em> and <em>publications</em>, and we have a relationship from <em>publications</em> table to the people table called publication_authors.</p>
+</div>
+<div class="paragraph">
+<p>Suppose you give a user write access to a record of the <em>publications</em> table, but no access to the <em>people</em> table. If you are allowing the <em>add new related record</em> permission on the <em>publications</em> table record, then the user will still be able to add new people, via the "Add related people record" function of the database. This may or may not be desirable.</p>
+</div>
+<div class="paragraph">
+<p>This section discusses the issues that arise due to relationships and permissions, and how to deal with them.</p>
+</div>
+<div class="paragraph">
+<p>The Xataface <a href="#permissionsini-file">permissions.ini file</a> defines a handful of permissions that are related to the management of related records. These include:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">add new related record</dt>
+<dd>
+<p>Permission to add a new related record to a relationship.</p>
+<div class="paragraph">
+<p><strong>Roles:</strong> <code>EDIT</code>, <code>DELETE</code>, <code>OWNER</code>, <code>ADMIN</code>, <code>MANAGER</code></p>
+</div>
+</dd>
+<dt class="hdlist1">add existing related record</dt>
+<dd>
+<p>Permission to add an existing record to a relationship.</p>
+<div class="paragraph">
+<p><strong>Roles:</strong> <code>EDIT</code>, <code>DELETE</code>, <code>OWNER</code>, <code>ADMIN</code>, <code>MANAGER</code></p>
+</div>
+</dd>
+<dt class="hdlist1">remove related record</dt>
+<dd>
+<p>Permission to remove a record from a relationship. (This only allows removing a record from the relationship - not deleting the record from the database, so this is only really relevant in a many-to-many relationship).
+<strong>Roles:</strong> <code>EDIT</code>, <code>DELETE</code>, <code>OWNER</code>, <code>ADMIN</code>, <code>MANAGER</code></p>
+</dd>
+<dt class="hdlist1">delete related record</dt>
+<dd>
+<p>Permission to delete a related record. This allows both removing the related record from the relationship, and deleting the record from the database. This permission is not included in any default roles. A combination of permission for remove related record? in the source table and delete? in the target table, are equivalent to access to this permission. Use this permission only when you need to override the ability to delete records from the database based on membership in a relationship.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>Roles:</strong> -</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">view related records</dt>
+<dd>
+<p>Permission to view the records of a relationship.</p>
+<div class="paragraph">
+<p>Roles: <code>READ ONLY</code>, <code>EDIT</code>, <code>DELETE</code>, <code>OWNER</code>, <code>ADMIN</code>, <code>MANAGER</code></p>
+</div>
+</dd>
+<dt class="hdlist1">related records feed</dt>
+<dd>
+<p>Permission to access the RSS feed of a relationship.</p>
+<div class="paragraph">
+<p><strong>Roles:</strong> <code>READ ONLY</code>, <code>EDIT</code>, <code>DELETE</code>, <code>OWNER</code>, <code>ADMIN</code>, <code>MANAGER</code></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_fine_grained_per_relationship_permissions">Fine-grained, Per-relationship Permissions</h4>
+<div class="paragraph">
+<p>You may often find that defining a flat set of permissions to all relationships on a record is insufficient for your purposes, because some relationships may demand different access levels than others. You can override the permissions for any particular relationship by implementing the <code>rel_relationshipname__permissions</code> method in the table&#8217;s delegate class, where <em>relationshipname</em> is the name of the relationship.</p>
+</div>
+<div class="paragraph">
+<p>e.g. Consider the relationship manufacturers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function rel_manufacturers__permissions($record){
+    // $record is a Dataface_Record object
+    return ['view related records' =&gt; 0];
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will tell xataface that users should not be able to view related records on the <em>manufacturers</em> relationship. This will override any permissions that were defined in the <code>getPermissions</code> method.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_more_complete_example">More Complete Example</h4>
+<div class="paragraph">
+<p>In the following example, we design a products database. We use two relationships on our products table.  One to keep track of the parts that are used in our product. The other to keep track of the users that are allowed to edit our products.</p>
+</div>
+<div class="paragraph">
+<p>We want to make it so that only the product owner can manage the editors for a product, but anyone in the <em>product_editors</em> relationship is allowed to edit the product or add/remove parts from the product.</p>
+</div>
+<div class="paragraph">
+<p>We don&#8217;t want to give any users access directly to the <em>parts</em>, <em>product_parts</em>, or <em>product_editors</em> tables. We want all access to go through the relationships on the products table.</p>
+</div>
+<div class="sect4">
+<h5 id="_databaserelationship_design">Database/Relationship Design</h5>
+<div class="paragraph">
+<p>Consider a database with five tables:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>products (product_id, product_name, owner_username)</code></p>
+</li>
+<li>
+<p><code>parts (part_id, part_name)</code></p>
+</li>
+<li>
+<p><code>product_parts (part_id, product_id)</code></p>
+</li>
+<li>
+<p><code>product_editors (product_id, editor_username)</code></p>
+</li>
+<li>
+<p><code>users (username, password, role)</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>And we have the following relationships on the <em>products</em> table:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[parts]
+parts.part_id=product_parts.part_id
+product_parts.product_id="$product_id"
+
+[editors]
+product_editors.product_id="$product_id"</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_application_permissions_very_restrictive">Application Permissions : Very Restrictive</h5>
+<div class="paragraph">
+<p>Like a good boyscout, we define our default permissions in the Application Delegate Class to be very restrictive: Don&#8217;t let anyone do anything.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">class conf_ApplicationDelegate {
+    function getPermissions($record){
+        return Dataface_PermissionsTool::NO_ACCESS();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_products_table_permissions_less_restrictive">Products Table Permissions: Less restrictive</h5>
+<div class="paragraph">
+<p>Now we open it up for our products table in the getPermissions() method of the products delegate class.</p>
+</div>
+<div class="listingblock">
+<div class="title">In tables/products/products.php:</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">class tables_products {
+    function getPermissions(Dataface_Record $record = null){
+        $user = Dataface_AuthenticationTool::getInstance()
+                -&gt;getLoggedInUser();
+        if ($user and $record and $record-&gt;val('owner_username') == $user-&gt;val('username')){
+            // Give the record owner Edit permissions on the product
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+        // Everybody else gets read only access to the products table.
+        return Dataface_PermissionsTool::READ_ONLY();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_checking_if_the_current_user_is_an_editor">Checking if the current User is an Editor</h5>
+<div class="paragraph">
+<p>So far we have given the product owner <em>edit</em> permissions and everyone else <em>read only</em> permissions. We still need to allow editors to edit the product. In order to do this we need to be able to <em>efficiently</em> find out if the current user is an editor of a particular product. There are a few different ways to do this, but some are better than others. Some strategies include:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Perform an SQL query inside the <code>getPermissions</code> method to see if the user is an editor for the product</dt>
+<dd>
+<p><strong>THIS IS VERY BAD!!!</strong> The <code>getPermissions</code> method should not include any IO or database queries because it is called a large number of times per request&#8230;&#8203; making expensive calls in this method will slow down your app dramatically.</p>
+</dd>
+<dt class="hdlist1">Create a function to load and cache all of the current user&#8217;s products so that this can be easily checked at will.</dt>
+<dd>
+<p>This is fine if the user is expected be able to edit only a few products. If he could be an editor for thousands of products, this may not be practical as it will cause you to have to load thousands of records into memory on every page request.</p>
+</dd>
+<dt class="hdlist1">Use the <code>__sql__</code> method of the delegate class to create a grafted field on the products table indicating whether the current user is an editor for the product</dt>
+<dd>
+<p>This results in a very quick and accessible indicator variable that can be used in the <code>getPermissions</code> method to check to see if the current user is an editor for the current product. E.g. In the <em>tables/products/products.php</em> file (delegate class):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function __sql__(){
+    return sprintf("select p.*, pe.editor_username from products p
+            left join product_editors pe on p.product_id=pe.product_id
+            where pe.editor_username='%s'",
+            addslashes(Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUsername())
+    );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will result in a situation where product records will have an additional field editor_username which will either be blank if the current user is not an editor for the product; or will contain the current user&#8217;s username if they are an editor for the product.</p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_table_permissions_for_product_editors">Table Permissions for Product Editors</h5>
+<div class="paragraph">
+<p>Now that we have a reliable way to tell, for any given product, whether the current user is, in fact, an editor, we can ammend the <code>getPermissions</code> method of the products table to include our editor permissions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">class tables_products {
+    function getPermissions($record){
+        $user = Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUser();
+        if ( $user and $record and $record-&gt;val('owner_username') == $user-&gt;val('username')){
+            // Give the record owner Edit permissions on the product
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+        if ( $user and $record and $record-&gt;val('editor_username') == $user-&gt;val('username') ){
+            // If the user is an editor, we give them edit permissions
+            // also
+            return Dataface_PermissionsTool::getRolePermissions('EDIT');
+        }
+
+
+        if ( $user ){
+        // Other logged in users have read only access
+            $perms = Dataface_PermissionsTool::READ_ONLY();
+            $perms['new'] = 1; // We'll also let them add new products
+            return $perms;
+        }
+
+        // Regular users just get the default permissions as
+        // defined in the Application Delegate class
+        return null;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>=====Removing Editor Access to the Editor Relationship</p>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll notice that at this point, the product editor has exactly the same permission as the product owner. They both have permission to add and remove records from all relationships on the product. However, we don&#8217;t want them to be able to access the editors relationship at all. We will use the <code>rel_relationshipname__permissions</code> method to override the permissions for the editors relationship.</p>
+</div>
+<div class="listingblock">
+<div class="title">In the tables/products/products.php delegate class:</div>
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function rel_editors__permissions($record){
+    $user = Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUser();
+    if ($user and $record and $record-&gt;val('owner_username') == $user-&gt;val('username')) {
+        // Owners should just get their normal permissions
+        return null;
+    }
+
+    if ($user and $record and $record-&gt;val('editor_username') == $user-&gt;val('username')) {
+        // If the user is an editor, we give them edit permissions
+        // also
+        return [
+            'view related records' =&gt; 0,
+            'add new related record' =&gt; 0,
+            'add existing related record' =&gt; 0,
+            'remove related record' =&gt; 0,
+            'delete related record' =&gt; 0
+        ];
+    }
+
+    // Other users just get their normal permissions
+    return null;
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_assigning_product_owner_by_default">Assigning product owner by default</h5>
+<div class="paragraph">
+<p>With the current permissions, something funny would happen. Users have permission to add new records, but once the record is added they won&#8217;t be able to edit it because they are neither an editor nor the owner of the product. We&#8217;ll fix this by assigning the current user as the product&#8217;s owner using the beforeSave trigger in the products delegate class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function beforeSave($record){
+    $user = Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUser();
+    if ( $user ){
+        $record-&gt;setValue('owner_username', $user-&gt;val('username'));
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_testing_out_our_solution">Testing Out Our Solution</h5>
+<div class="paragraph">
+<p>In your testing of the solution, you should find the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Trying to access any table other than the products table should result in a permission denied error.</p>
+</li>
+<li>
+<p>If you access the products table, you should be able to see a list of existing products, and the "Add New Record" action.</p>
+</li>
+<li>
+<p>After you add a new product you should see that you are the product owner.</p>
+</li>
+<li>
+<p>As a product owner you should see both the parts and editors tabs in your product record. You should be able to view and add new records to both of these relationships.</p>
+</li>
+<li>
+<p>Add another user as an editor to your product, then log in as that user. You should be able to edit the product, but you shouldn&#8217;t be able to see the editors tab for the product.</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -8958,6 +9304,419 @@ If no columns in the table define the <code>sortable</code> property, then all c
 </div>
 </div>
 <div class="sect1">
+<h2 id="relationshipsini-directives">Relationships.ini Directives</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_overview_3">Overview</h3>
+<div class="paragraph">
+<p>The <em>relationship.ini</em> file is a configuration file which is associated with a single table of a database application. It provides metadata about the table&#8217;s relationships to other tables to help Xataface dictate how they should be included in the application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_field_directives_2">Field Directives</h3>
+<div class="paragraph">
+<p>The following directives may be added to a field&#8217;s section of the relationship.ini file to customize the field&#8217;s behavior. Some directives are not applicable to all fields.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><em>sql</em></dt>
+<dd>
+<p>The SQL query that defines this relationship.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:visible</dt>
+<dd>
+<p>A boolean value (0 or 1) that indicates whether this relationship should be visible in the record tabs.</p>
+<div class="paragraph">
+<p><em>Since 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:condition</dt>
+<dd>
+<p>An expression that evaluates to a boolean that determines at runtime whether the relationship&#8217;s tab should appear in the record tabs.</p>
+<div class="paragraph">
+<p><em>Since 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:permission</dt>
+<dd>
+<p>An array that determines at runtime whether the relationship&#8217;s tab should appear in the record tabs for the logged in user.</p>
+<div class="paragraph">
+<p>Also see: <a href="#relationship-permissions">Relationship Permissions</a></p>
+</div>
+<div class="paragraph">
+<p><em>Since 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:label</dt>
+<dd>
+<p>The label that appears in the relationship tab for this relationship. Default is to use the relationship name.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:order</dt>
+<dd>
+<p>An integer value that specifies the order of this relationship tab in relation to the other tabs.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">action:delegate</dt>
+<dd>
+<p>The name of an alternative action that can be used instead of the standard related records list. One possible value for this would be "related_records_checkboxes" which would provide the user with a checkbox group to select the records that should be part of the relationship rather than the usual related record list.</p>
+<div class="paragraph">
+<p><em>Since: 1.0</em></p>
+</div>
+</dd>
+<dt class="hdlist1">actions:addexisting</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the action to add existing records should exist in this relationship.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">actions:addnew</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the action to add new records should exist in this relationship.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">actions:remove</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the action to remove existing records should exist in this relationship.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">list:type</dt>
+<dd>
+<p>Optional type of list to use for the related record list. Possible value: "treetable"</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example: Setting <code>list:type=treetable</code></strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/treetable.png" alt="treetable">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Prerequisites</strong></p>
+</div>
+<div class="paragraph">
+<p>The TreeTable component needs to be able to figure out the logical children of each record in order to know what to show when a row is expanded. You can use either the <code>meta:class</code> directive of the <em>relationships.ini</em> file to specify a relationship as a "children" relationship, or you can implement the <a href="#delegate-getChildren">getChildren method</a> of the table delegate class to manually define a record&#8217;s child elements.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since:  0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">meta:class</dt>
+<dd>
+<p>An optional special class to assign to the relationship, e.g. "parent" or "children".</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>The meta:class directive allows you to ascribe special meaning to a relationship which Xataface can use in various parts of your application to provide enhanced capabilities.</p>
+</div>
+<div class="paragraph">
+<p>For example you can specify a relationship as a "parent" relationship, thereby using the relationship to obtain the "parent" of records of this table. This can be used to help build breadcrumbs.</p>
+</div>
+<div class="paragraph">
+<p>You can also specify a relationship as a "children" relationship which would treat records in the relationship as children of the current record. This can be used in conjunction with the <code>list:type=treetable</code> directive of the <em>relationships.ini</em> file to build a tree table that navigates all child records and subtrees.</p>
+</div>
+<div class="paragraph">
+<p>The <code>Dataface_Record</code> class contains some methods for retrieving the parent and children of records and these methods will take into account any settings you make here.</p>
+</div>
+<div class="paragraph">
+<p><strong>Allowed Values:</strong></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">parent</dt>
+<dd>
+<p>Designates the relationship as a 'parent' relationship, meaning that the first record in this relationship will be treated as the parent of the current record. This setting can be overridden by the getParent? method of the table delegate class if implemented.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">children</dt>
+<dd>
+<p>Designates the relationship as a 'children' relationship meaning that records of the the relationship will be treated as a children. This setting can be overridden by the getChildren method of the table delegate class if implemented.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>See Also</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#delegate-getChildren">getChildren()</a> delegate class method.</p>
+</li>
+<li>
+<p><a href="#delegate-getParent">getParent()</a> delegate class method.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">metafields:order</dt>
+<dd>
+<p>If the relationship should have a default order this specifies the field that should be used for this sort.</p>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">visibility:fieldName</dt>
+<dd>
+<p>If given the value hidden will make that particular fieldName disappear in the relationship. This will only be applied for that particular relationship.</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example: Hiding a Field</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[myrelationship]
+  conferences.ConferenceID = "$ConferenceID"
+  visibility:ConferenceID = hidden</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will make the <em>ConferenceID</em>  field in the relationship list view disappear.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example: Showing a Field</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[myrelationship]
+  conferences.ConferenceID = "$ConferenceID"
+  visibility:ConferenceID = visible</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will make the <em>ConferenceID</em> field in the relationship list view appear.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since: 0.1</em></p>
+</div>
+</dd>
+<dt class="hdlist1">visibility:find</dt>
+<dd>
+<p>If given the value hidden this will cause the related fields to not appear on the find form. Normally each relationship is provided a section of the find form to enable users to find records that contain at least one match in the related records.</p>
+<div class="paragraph">
+<p><em>Since 1.3rc4</em></p>
+</div>
+</dd>
+<dt class="hdlist1">vocabulary:existing</dt>
+<dd>
+<p>Specifies a valuelist that can be used to provide the set of records that can be added to this relationship. If target table has a single column primary key then the valuelist should use the primary key for the value. If it has a multi-column primary key, then the value should be in the form <code>key1=value1&amp;key2=value2</code> etc&#8230;&#8203;</p>
+<div class="paragraph">
+<p><strong>See also</strong> <a href="#delegate-relationshipname<em>getAddableValues">relationshipname</em>getAddableValues delegate class method</a> for a programatic solution.</p>
+</div>
+<div class="paragraph">
+<p><em>Since: 1.0</em></p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_glance_lists">Glance Lists</h3>
+<div class="paragraph">
+<p>In the <em>view</em> tab, related records are shown by default in the left column. These sections are called glance lists. The field directives below customize how the glance lists are displayed.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">section:visible</dt>
+<dd>
+<p>Boolean value (0 or 1) indicating whether the relationship information should appear as a section.</p>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:condition</dt>
+<dd>
+<p>An expression that evaluates to a boolean that determines at runtime whether the relationship information should appear as a section.</p>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:permission</dt>
+<dd>
+<p>An array that determines at runtime whether the relationship information should appear as a section for the logged in user.</p>
+<div class="paragraph">
+<p><strong>Also see</strong>: <a href="#relationship-permissions">Relationship Permissions</a></p>
+</div>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:class</dt>
+<dd>
+<p>An optional value (main) to specify that this section should be in the main column instead of the left sidebar. Default is <code>left</code>.</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example 1: A "Hello World" Section</strong></p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ll start by adding a simple section that simply displays "Hello World" to the user. In the delegate class for your table, add the following method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function section__hello(&amp;$record){
+    return [
+        'content' =&gt; 'Hello World!!!',
+        'class' =&gt; 'main'
+    ];
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you reload our application and click on the "View" tab for any of the records in the database, you&#8217;ll notice a section labelled hello with the text <em>Hello World!!!</em> in it.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s dissect the above code so that we can better understand what is going on here.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>function section<em>hello()</code> defines a section named hello. If you wanted to define a section named <code>foo</code> you would call the function <code>section</em>foo()</code></p>
+</li>
+<li>
+<p>This function returns an array with the keys <em>content</em>, and <em>class</em>.</p>
+</li>
+<li>
+<p>The content key points to the actual HTML content of the section. In this case it is simply the text <em>Hello World!!!</em>.</p>
+</li>
+<li>
+<p>The <em>class</em> key defines where the section should be displayed. It accepts values of "left" and "main" only. If it is set to "left", then the section will be displayed in the <em>left</em> column. A value of "main" indicates that it should be displayed in the <em>main</em> column.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Customizing the Section Label</strong></p>
+</div>
+<div class="paragraph">
+<p><em>hello</em> is a boring label, so let&#8217;s add our own custom label by adding the label key to the array returned by our method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function section__hello(&amp;$record){
+    return [
+        'content' =&gt; 'Hello World!!!',
+        'class' =&gt; 'main',
+        'label' =&gt; 'Message of the Day'
+    ];
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you load the view tab of your application, you&#8217;ll notice that the section has a heading "Message of the Day".</p>
+</div>
+<div class="paragraph">
+<p><strong>Customizing the Section Order</strong></p>
+</div>
+<div class="paragraph">
+<p>A section can also specify an order attribute to define the order in which this section should appear. It defaults to 0 which may cause the section to appear at the top of the view tab. You can push it to the bottom of the view tab by assiging a higher number to the order attribute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function section__hello(Dataface_Record $record = null){
+    return [
+        'content' =&gt; 'Hello World!!!',
+        'class' =&gt; 'main',
+        'label' =&gt; 'Message of the Day',
+        'order' =&gt; 10
+    ];
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if you reload the <em>view</em> tab you&#8217;ll notice that the section has moved to the bottom of the page.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Section 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:label</dt>
+<dd>
+<p>The label that appears in the header of this related record section. Default is to use the relationship name or action:label if defined as documented above.</p>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:order</dt>
+<dd>
+<p>Integer. The order of this related record section in relation to the other sections. Default is <code>0</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:limit</dt>
+<dd>
+<p>Integer. The number of records to show in this related record section. Default is <code>5</code>.
+<em>Since 0.7</em></p>
+</dd>
+<dt class="hdlist1">section:sort</dt>
+<dd>
+<p>A comma-delimited list of columns and optionally direction to use in sorting this related record section, similar to an ORDER BY clause in SQL. E.g.</p>
+<div class="listingblock">
+<div class="content">
+<pre>section:sort="some_column asc"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>section:sort="col1 asc,col2 desc,etc..."</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+<dt class="hdlist1">section:filter</dt>
+<dd>
+<p>A string SQL clause to be used to filter the results.</p>
+<div class="paragraph">
+<p><em>Since 0.7</em></p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_relationship_permissions">Relationship Permissions</h3>
+<div class="paragraph">
+<p>See <a href="#relationship-permissions">Relationship Permissions</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="actionsini-directives">Actions.ini Directives</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -9541,6 +10300,555 @@ order=0.75</code></pre>
 </div>
 </div>
 <div class="sect1">
+<h2 id="permissionsini-directives">Permissions.ini Directives</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <em>permissions.ini</em> file stores custom permissions and roles that can be used by an application. It is an optional file that should be placed in the application root directory (i.e. the same directory where your conf.ini, and index.php files are located).</p>
+</div>
+<div class="paragraph">
+<p>The <em>permissions.ini</em> file allows you to define two things:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Permissions</p>
+</li>
+<li>
+<p>Roles (i.e. sets of permissions).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Permissions and roles are used throughout Xataface to limit access to actions, records, fields, and relationships. For example, each action in your application can specify a permission that is necessary to perform the action. Your delegate classes may include <code>getPermissions()</code> methods to define what permissions a user gets when interacting with different records. This file (<em>permissions.ini</em>) simply defines the permissions that can be used by your application. It doesn&#8217;t actually assign those permissions. Assigning permissions is the job of the <code>getPermissions()</code> (or <code>getRoles()</code>) method.</p>
+</div>
+<div class="sect2">
+<h3 id="_defining_permissions">Defining Permissions</h3>
+<div class="paragraph">
+<p>Permissions are defined by standalone properties in the beginning of the permissions.ini file. For example, if you were desiging a proof-reading application, you might need permissions for "submit_for_proof", or "approve_text" to correspond with the submitting a document to be proof-read, and approving a document&#8217;s proof. In this case we would have the following at the beginning of our permissions.ini file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>submit_for_proof = Submit a document to be proofread
+approve_text = "Approve this document's proof"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The left side of the equals sign is the name of the permission. The right side contains a human readable description of the permission and what it is for.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_limiting_access_to_actions_based_on_permissions">Limiting Access to Actions based on Permissions</h3>
+<div class="paragraph">
+<p>At this point these permissions don&#8217;t do anything. In order to be useful we need reference these permissions from an action or a section. For example, let&#8217;s create an action called "submit_for_proof" which displays a form for a user to submit a document record to be proofread.</p>
+</div>
+<div class="paragraph">
+<p>Our actions.ini file entry might look something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[submit_for_proof]
+url="{$this-&gt;url('-action=submit_for_proof')}"
+label="Submit document for proof"
+category=record_actions
+permission=submit_for_proof
+template=submit_for_proof.html</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And for completeness, since this make-believe action specifies th "submit_for_proof.html" template, we&#8217;ll create the "submit_for_proof.html" template in the templates directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;html&gt;&lt;body&gt;You have permission to perform this action.&lt;/body&gt;&lt;/html&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_who_gets_which_permissions">Defining Who Get&#8217;s Which Permissions</h3>
+<div class="paragraph">
+<p>Finally, in order to benefit from permissions, your application has to decide that it is going to use permissions (unless you define a <code>getPermissions()</code> method, users are granted ALL permissions by default. Hence if you try to access our submit_for_proof action, we&#8217;ll see it without any problem. Regardless of who we are. So let&#8217;s create a simple, but restrictive <code>getPermissions()</code> method in our application delegate class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class conf_ApplicationDelegate {
+    function getPermissions(&amp;$record){
+        return Dataface_PermissionsTool::READ_ONLY();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if we try to access our <em>submit_for_proof</em> action it will give us a "Permission Denied" message, because we are only granted <code>READ ONLY</code> permissions (which is a role that includes the view permission and some others - but not our custom "submit_for_proof" permission.</p>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;ll make a small modification to our <code>getPermissions()</code> method to provide us with our <em>submit_for_proof</em> permission:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">&lt;?php
+class conf_ApplicationDelegate {
+    function getPermissions(&amp;$record){
+        $perms =  Dataface_PermissionsTool::READ_ONLY();
+        $perms['submit_for_proof'] = 1;
+        return $perms;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now if we try to access our submit_for_proof action, it will show us our template with no error messages (hopefully).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_roles">Roles</h3>
+<div class="paragraph">
+<p>Roles are sets of permissions. They are defined in the permissions.ini file as sections with lists of included permissions. It might be handy to create roles such as <code>EDITOR</code> or <code>MANAGER</code> which contain sets of permissions that are meant to be assigned to users of those types. For example an <code>EDITOR</code> may have the view and edit permissions, but not the delete permission. A <code>MANAGER</code> might have the <code>view</code>, <code>edit</code>, and <code>delete</code> permissions. You can define these two roles in the <em>permissions.ini</em> file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[EDITOR]
+view=1
+edit=1
+
+[MANAGER]
+view=1
+edit=1
+delete=1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then we could assign these roles to users using the <code>Dataface_PermissionsTool::getRolePermissions()</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getPermissions(&amp;$record){
+    $user =&amp; Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUser();
+    if ( $user and $user-&gt;val('role') == 'EDITOR' ){
+        return Dataface_PermissionsTool::getRolePermissions('EDITOR');
+    } else if ( $user and $user-&gt;val('role') == 'MANAGER' ){
+        return Dataface_PermissionsTool::getRolePermissions('MANAGER');
+    }
+    return Dataface_PermissionsTool::READ_ONLY();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or equivalently we could use the <code>getRoles()</code> method of our delegate class instead of <code>getPermissions()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getRoles(&amp;$record){
+    $user =&amp; Dataface_AuthenticationTool::getInstance()-&gt;getLoggedInUser();
+    if ( $user and $user-&gt;val('role') == 'EDITOR' ){
+        return 'EDITOR';
+    } else if ( $user and $user-&gt;val('role') == 'MANAGER' ){
+        return 'MANAGER'
+    }
+    return 'READ ONLY';
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_xataface_core_permissions_roles">Xataface Core Permissions &amp; Roles</h3>
+<div class="paragraph">
+<p>Xataface is distributed with its own <em>permissions.ini</em> file that defines some core permissions and roles. You can look at this <em>permissions.ini</em> file (located in the <em>xataface</em> directory) to see what the format should look like. Any settings you place in your application&#8217;s <em>permissions.ini</em> file will augment or override settings in Xataface&#8217;s file.</p>
+</div>
+<div class="sect3">
+<h4 id="_core_permissions">Core Permissions</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">view</dt>
+<dd>
+<p>Permission to view a record or field. This permission is required to access the view tab, and several other details tabs.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">list</dt>
+<dd>
+<p>Permission to access the list tab.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">calendar</dt>
+<dd>
+<p>Permission to access the calendar tab.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">edit</dt>
+<dd>
+<p>Permission to edit a record or field. This also gives access to the edit tab.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">new</dt>
+<dd>
+<p>Permission to edit a record or field for the purpose of creating a new record. This permission is required to access the new record form.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><em>select_rows</em>	Permission to select rows in list view to perform actions on them.</p>
+</div>
+<div class="paragraph">
+<p>+
+<em>Since 0.6</em></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">post</dt>
+<dd>
+<p>Permission to post a record using HTTP POST</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">copy</dt>
+<dd>
+<p>Permission to copy a record.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">update_set</dt>
+<dd>
+<p>Permission to perform an update on a result set (i.e. access the update set action).</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">add new related record</dt>
+<dd>
+<p>Permission to add a new record to a relationship. See Relationship Permissions</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">add existing related record</dt>
+<dd>
+<p>Permission to add an existing record to a relationship. See Relationship Permissions</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">view related records</dt>
+<dd>
+<p>Permission to view the records in a relationship. See Relationship Permissions</p>
+<div class="paragraph">
+<p><em>Since 1.0</em></p>
+</div>
+</dd>
+<dt class="hdlist1">delete</dt>
+<dd>
+<p>Permission to delete a record.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">delete found</dt>
+<dd>
+<p>Permission to access the delete found set action (to delete multiple records at a time).
+<em>Since 0.6</em></p>
+</dd>
+<dt class="hdlist1">show all</dt>
+<dd>
+<p>Permission to access show all records action.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">remove related record</dt>
+<dd>
+<p>Permission to remove a record from a relationship. See Relationship Permissions</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">delete related record</dt>
+<dd>
+<p>Permission to delete a record in a relationship. This is stronger than the remove related record permission in that it allows the user to delete the record from the database.</p>
+<div class="paragraph">
+<p><strong>See Also</strong> <a href="#relationship-permissions">Relationship permissions</a></p>
+</div>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">find</dt>
+<dd>
+<p>Permission to perform the find action.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">import</dt>
+<dd>
+<p>Permission to perform the import action (to import records into the database).</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">export_csv</dt>
+<dd>
+<p>Permission to perform the Export CSV action (to export the result set in comma-separated-value format).</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">export_xml</dt>
+<dd>
+<p>Permission to perform the Export XML action (to export the result set as XML).</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">translate</dt>
+<dd>
+<p>Permission to translate a record into another language. This permission provides access to the "translate" tab.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">history</dt>
+<dd>
+<p>Permission to view history information for a record (e.g. the history tab). This requires that history be enabled.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">edit_history</dt>
+<dd>
+<p>Permission to edit history information such as undo/redo support for a record.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">navigate</dt>
+<dd>
+<p>Permission to navigate through records of a table.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">reorder_related_records</dt>
+<dd>
+<p>Permission to reorder the records of a relationship (this is different than just sorting). It sets a default order for the records. Requires the metafields:order directive to be set for the relationship.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">ajax_save</dt>
+<dd>
+<p>Permission to save a record through AJAX.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">ajax_load</dt>
+<dd>
+<p>Permission to load a record through AJAX.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">ajax_form</dt>
+<dd>
+<p>Permission to access the inline editing ajax form for a record.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">find_list</dt>
+<dd>
+<p>Permission to search current table.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">find_multi_table</dt>
+<dd>
+<p>Permission to perform a site-wide search.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">register</dt>
+<dd>
+<p>Permission to register for an account.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">xml_view</dt>
+<dd>
+<p>Permission to view a result set as xml.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">view_xml</dt>
+<dd>
+<p>View the XML for an individual record.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">manage_output_cache</dt>
+<dd>
+<p>Management permission to clear the output cache.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">manage_migrate</dt>
+<dd>
+<p>Permission to access the migration tool to migrate between versions.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">manage</dt>
+<dd>
+<p>Permission to access the management control panel.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">manage_build_index</dt>
+<dd>
+<p>Permission to rebuild the search index.</p>
+<div class="paragraph">
+<p><em>Since 0.8</em></p>
+</div>
+</dd>
+<dt class="hdlist1">expandable</dt>
+<dd>
+<p>Whether the record can be expanded in the left nav menu	N/A</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_core_roles">Core Roles</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">READ ONLY</dt>
+<dd>
+<p><strong>Permissions:</strong> <code>view</code>, <code>list</code>, <code>calendar</code>, <code>view xml</code>, <code>show all</code>, <code>find</code>, <code>navigate</code>, <code>ajax_load</code>, <code>find_list</code>, <code>find_multi_table</code>, <code>rss</code>, <code>export_csv</code>, <code>export_xml</code>, and <code>export_json</code></p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">EDIT</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>READ ONLY</code>, and <code>edit</code>, <code>add new related record</code>, <code>add existing related record</code>, <code>add new record</code>, <code>remove related record</code>, <code>reorder_related_records</code>, <code>import</code>, <code>translate</code>, <code>new</code>, <code>ajax_save</code>, <code>ajax_form</code>, <code>history</code>, <code>edit_history</code>, <code>copy</code>, <code>update_set</code>, and <code>select_rows</code></p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">DELETE</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>EDIT</code>, and <code>delete</code> and <code>delete found</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">OWNER</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>DELETE</code> except <code>navigate</code>, <code>new</code>, and <code>delete found</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">REVIEWER</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>READ ONLY</code>, and <code>edit</code> and <code>translate</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">USER</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>READ ONLY</code>, and <code>add new related record</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">ADMIN</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>DELETE</code> and <code>xml_view</code></p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+<dt class="hdlist1">MANAGER</dt>
+<dd>
+<p><strong>Permissions:</strong> All permissions in <code>ADMIN</code> and <code>manage</code>, <code>manage_output_cache</code>, <code>manage_migrate</code>, <code>manage_build_index</code>, and <code>install</code>.</p>
+<div class="paragraph">
+<p><em>Since 0.6</em></p>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_extending_and_overriding_roles">Extending and Overriding Roles</h4>
+<div class="paragraph">
+<p>The cleanest and easiest way to define a new role is to extend an existing role. Xataface allows you to extend roles via the <code>extends</code> keyword. For example, if you wanted to create a role <code>TEST ROLE</code> that contained all of the same permissions as the <code>READ ONLY</code> role, you could define it as follows in your application&#8217;s <em>permissions.ini</em> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[TEST ROLE extends READ ONLY]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we wanted it to contain the same permissions as <code>READ ONLY</code> but to also allow the edit permission we would define it as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[TEST ROLE extends READ ONLY]
+edit=1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we wanted to disallow the <code>list</code> permission, we would do something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[TEST ROLE extends READ ONLY]
+edit=1
+list=0</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_overriding_existing_roles">Overriding Existing Roles</h4>
+<div class="paragraph">
+<p>You can also redefine existing roles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>[READ ONLY extends READ ONLY]
+my_permission=1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is handy if you have added your own custom permissions that you feel should be included in a core role.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="appendix-rss-config">RSS Configuration Directives</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -9821,7 +11129,7 @@ RSS feeds will work perfectly well without defining this method. This just allow
 <div class="sect1">
 <h2 id="_thumbnail_handling">Thumbnail Handling</h2>
 <div class="sectionbody">
-<h3 id="_overview_3" class="discrete">Overview</h3>
+<h3 id="_overview_4" class="discrete">Overview</h3>
 <div class="paragraph">
 <p>Xataface 3.0 includes automatic thumbnail generation for Container fields.  See the <a href="#generating-thumbnails">Generating Thumbnails</a> recipe for an example of how to use this feature.  You can also refer to the <a href="#fieldsini-directives">Fields.ini Directives</a> section to see the syntax of the  <code>transform</code> and <code>thumbnail.ACTIONAME</code> directives.</p>
 </div>
@@ -10060,6 +11368,69 @@ print_r($types);</code></pre>
 <h2 id="_appendix_2_delegate_class_methods">Appendix 2: Delegate Class Methods</h2>
 <div class="sectionbody">
 
+</div>
+</div>
+<div class="sect1">
+<h2 id="_table_delegate_class">Table Delegate Class</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_relationships_methods">Relationships Methods</h3>
+<div class="sect3">
+<h4 id="delegate-getChildren"><code>getChildren()</code></h4>
+<div class="paragraph">
+<p>The <code>getChildren()</code> method can be implemented in a table&#8217;s delegate class to specify the logical "child" records of a given record which can be used when creating hierarchical applications. This method will effectively override the output of the <code>Dataface_Record::getChildren()</code> method for records of this table.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Signature</dt>
+<dd>
+<p><code>function getChildren( Dataface_Record $record) : Dataface_Record[]</code></p>
+</dd>
+<dt class="hdlist1">Parameters</dt>
+<dd>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>$record</code> - The <code>Dataface_Record</code> that is the subject of the query</p>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>This method should return an array of <code>Dataface_Record</code> objects that are considered to be children of the subject record.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>Examples</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function getChildren($record){
+    return df_get_records('webpages', [
+        'parent_id'=&gt;'='.$record-&gt;val('webpage_id')
+    ]);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>See Also</strong> <a href="#delegate-getParent"><code>getParent()</code></a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delegate-getParent"><code>getParent()</code></h4>
+<div class="paragraph">
+<p>A Delegate class method to return the logical parent of a given record.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delegate-relationshipname__getAddableValues"><code>relationshipname__getAddableValues()</code></h4>
+<div class="paragraph">
+<p>Returns array of addable values when adding existing records to relationships.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
