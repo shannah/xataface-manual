@@ -89,6 +89,8 @@ The label to display if the action is used as a menu item.
 
 category::
 The name of the action's category which can be used to group this action together with other similar actions to be used in a menu in the user interface.
++
+*See* <<action-categories>>
 
 url::	If the action appears as a menu item, this is the URL that the menu item points to. This may contain PHP expressions inside curly braces.
 
@@ -175,3 +177,309 @@ If your action expression contains any fatal errors, you may find yourself in a 
 You can debug these issues by adding the `debug=1` directive to the beginning of your conf.ini file.  That will cause the action expressions to be evaluated "noisily", and you should see the the error either in your PHP error log or in the browser window when you reload the app.
 
 ====
+
+[#action-categories]
+=== Action Categories
+
+The `category` directive of the _actions.ini_ file is used to specify _where_ an action should be displayed in the UI.  Xataface includes a number of built-in categories that you can leverage to inject menu items and buttons into various parts of the UI.  Some of these are:
+
+==== Global Menus
+
+find_actions::
+Actions that are rendered as a drop-down selector in the search field, and allow you to create custom "find" actions.
+
+personal_tools::
+Actions that are rendered in the personal tools menu.  E.g. Login, Logout, Change Password, etc...
+
+status_bar_right::
+Actions rendered on the right side of the top status bar.  Currently this includes only the "Login" action and the "Personal Tools" menu, which loads items from the `personal_tools` category.
+
+
+table_tabs::
+Actions added as the root level tabs within a table.  E.g. `list`, `view`, `find`.
+
+
+
+==== Record Details View Menus
+
+record_actions::
+Actions that can be performed on the current record.  This category is used for the overflow menu of the `record_actions_menu` category, which is the <<page-actions-category,Page actions category>> for the `view` action, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile in the _record`details_ views.
++
+.Items in the overflow menu come from `record_actions` category.
+image::images/record_actions-screenshot.png[]
+
+record_actions_menu::
+Actions that can be performed on the current record.  This category is the  <<page-actions-category,Page actions category>> for the `view` action, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile in the `details` view.
++
+*See also* The `record_actions` category, which is used for the menu items of the overflow menu.
+
+record_nav_actions::
+Menu in the record view that is displayed just below the record title and description.  Useful for providing quick navigation links to related records.
++
+****
+*Example: Adding link to parent record*
+
+.actions.ini file
+[source,ini]
+----
+
+
+[up_to_podcast]
+    ;Link to the parent "Podcast" record from a podcast episode
+    category=record_nav_actions
+    condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    url="?-table=publisher_podcasts&publisher_podcast_id={$record->val('publisher_podcast_id')}&-action=view"
+    url_condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    label="{$record->val('podcast_title')}"
+    label_condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    materialIcon=arrow_upward
+
+[up_to_podcast_episodes]
+    category=record_nav_actions
+    condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    url="?-table=publisher_podcasts&publisher_podcast_id={$record->val('publisher_podcast_id')}&-action=related_records_list&-relationship=episodes"
+    url_condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    label="Other Episodes"
+    label_condition="$record and $record->_table->tablename == 'publisher_podcast_episodes'"
+    materialIcon=list
+    order=2
+----
+
+*Result:*
+
+."Steve Hannah's Blog" and "Other Episodes" links inserted into the record header using the `record_nav_actions` category.
+image::images/record_nav_menu-links.png[]
+
+****
++
+_Since 3.0_
+
+record_tabs::
+Tabs in the detail record view.  This is where the _view_ tab is rendered, as well as related lists.
+
+==== List View Menus
+
+list_settings::
+Actions for managing list settings.  E.g. "Sort" and "Filter" options.
+
+
+result_list_actions::
+The actions related to a result list.
+
+selected_result_actions::
+Actions that operate on the currently selected rows in list view.
+
+summary_actions::
+Actions that operate on a row in the summary list view.
+
+table_actions::
+Actions that can be performed on the current table.  This category is used for the overflow menu of the `table_actions_menu` category, which is the default <<page-actions-category,Page actions category>>, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile, throughout most of the app - specifically in the `list` view.
++
+Actions in this category include `rss`, `export_xml`, `export_csv`, `delete_set`, `copy_set`, and `update_set`.  These actions are displayed only when in list view.  The `record_actions`, `edit_record_actions`, `new_record_actions`, and `new_related_record_actions` categories
++
+TIP: Actions in this category may use the `class=featured-action` to take on a "Featured" look.   In the default theme featured actions are rendered green with an inner shadow, in contrast to regular action buttons that are rendered white with a gray border.
++
+****
+*Example: Default Actions in table_actions category*
+
+The core Xataface actions.ini file defines several actions in the `table_actions` category.  These actions are shown in the screenshot below:
+
+.table_actions overflow menu on desktop.  Note that the "New Record" button uses the `table_actions_menu` category.  The menu items in the overflow menu use the `table_actions` category.
+image::images/table_actions.png[]
+
+The above screenshot is from a stock install.  Notice that the _New Record_ button makes use of the `class=featured-action` directive to appear as a featured button.
+
+.On Mobile, the table actions are included in the FAB (floating action button) in the lower right.
+image::images/table_actions_mobile.png[]
+
+.Expanding the FAB reveals the actions in the table_actions category.
+image::images/table_actions_fab_expanded.png[]
+****
+
+table_actions_menu::
+Used for the default <<page-actions-category, page actions category>>.  Used in most actions, notably "list".  Includes an overflow menu whose menu items come from the `table_actions` category.  Rendered in top right on desktop, and in the FAB (floating action button) on  mobile.
+
+
+==== Related List Menus
+
+related_export_actions::
+Actions available on the export related records form.
+
+related_list_actions::
+Actions that operate on a related list.
+
+related_list_settings::
+Actions for managing related list settings.  E.g. "Sort" and "Filter" options.
+
+relationship_actions::
+Actions which operate on a particular related list.  E.g. `new_related_record`.
+
+selected_related_result_actions::
+Actions that operate on the currently selected rows in a related list.
+
+
+==== Edit Form Menus
+
+edit_record_actions_menu::
+The default <<page-actions-category>> for the `edit` action.
+
+new_related_record_actions_menu::
+The default <<page-actions-category>> for the `new_related_record` action.
+
+
+==== New Form Menus
+
+new_record_actions_menu::
+The default <<page-actions-category>> for the `new` action.
+
+==== View Related record Menus
+
+view_related_record_actions::
+Default <<page-actions-category>> for the view_related_record action.
+
+
+==== Edit Related Record Menus
+
+existing_related_record_actions_menu::
+The default <<page-actions-category>> for the `add_existing_related_record` action.  Overflow menu items from the `edit_related_record_actions` category.
+
+edit_related_record_actions::
+Actions appearing in the `edit_related_record` action.  By default there is only a "Cancel" action.
+
+==== Login Menus
+
+login_actions::
+Actions rendered on the login page.  E.g. `forgot_password`.
+
+==== Management Menus
+
+management_actions::
+Actions that are available in the "Manage" section.
+
+==== Other Menus
+
+ajax_actions::
+Actions for saving and loading records over AJAX. These don't appear in any menu.
+
+event_actions::
+Actions that operate on an event.  These are used in the calendar view.
+
+history_record_actions::
+Actions related to a history record.
+
+password_changed_actions::
+Actions that appear after the user has changed their password.
+
+
+[#page-actions-category]
+==== Page Actions Category
+
+Xataface 3.0's default theme has attempted to consolidate actions into fewer menus that are shown contextually.  Typically on any given "page", there are a set of actions that the user can perform on the subject of that page.  On desktop these actions are rendered in the upper right in a "more" menu, and on mobile, they are rendered in a FAB menu (floating action button menu).
+
+.Page actions on desktop displayed in upper right.
+image::images/table_actions.png[]
+
+.On Mobile, the table actions are included in the FAB (floating action button) in the lower right.
+image::images/table_actions_mobile.png[]
+
+.Expanding the FAB reveals the actions in the table_actions category.
+image::images/table_actions_fab_expanded.png[]
+
+When in list view, these "page actions" come from the `table_actions` category.  When in the _details_ view for a record, they come from the `record_actions` category.  Some special actions, such as `edit` and `new` define their own categories for the actions that should be displayed in this spot: `edit_record_actions` and `new_record_actions` respectively.
+
+If you create a custom action, you can specify the category that should be used for the "page menu" via the `page_menu_category` directive of the actions.ini file.
+
+===== Example: View Action
+
+The `view` action uses the `record_actions` category for its page actions.  Its action definition is as follows:
+
+.The `view` action definition from the xataface actions.ini file.  It uses the `page_menu_category` directive to specify that the "page actions" should be populated from actions in the `record_actions_menu` category.
+[source,ini]
+----
+[view]
+    label = View
+    url = "{$this->url('-action=view&-relationship=')}"
+    template = Dataface_View_Record.html
+    permission = view
+    mode = browse
+    category = record_tabs
+    selected_condition = "$query['-action'] == 'view'"
+    order=-2
+    page_menu_category=record_actions_menu
+    rel=sibling
+----
+
+Above is the full action definition, but our interest in this example is the `page_menu_category` directive, which says that the "page menu" should be populated using actions in the `record_actions_menu` category.
+
+===== Creating an Overflow Menu
+
+Generally the "page actions" will display one or two buttons directly, and additional actions will be placed in an overflow menu.  If you are creating your own "page actions category", and you want to achieve this kind of grouping, you can achieve it by creating two categories:
+
+1. A category for the top-level items.
+2. A category for the overflow menu.
+
+Then create an action in the top level category with `subcategory` set to the category of the overflow menu.
+
+*Example: The View Action*
+
+The `view` action uses the `record_actions_menu` category for its page actions, and the `record_actions` category for its overflow menu.
+
+So the `view` action is defined as follows:
+
+.The view action (some directives omitted for clarity)
+[source,ini]
+----
+[view]
+  page_menu_category=record_actions_menu
+----
+
+It then defines the `record_actions` action in the `record_actions_menu` category, which will be manifested as the overflow menu button.  Defined as follows:
+
+.The `record_actions` action creates an overflow button.
+[source,ini]
+----
+[record_actions]
+	label=""
+	materialIcon="more_vert"
+	subcategory=record_actions
+	category="record_actions_menu"
+----
+
+The secret sauce of this action is the `category` directive, which adds this action to the `record_actions_menu` category, combined with the `subcategory` directive, which specifies the category that is used for its menu items.  It is the `subcategory` directive that turns this button into a menu.
+
+Finally, there are a few actions that are registered to the overflow menu, by assigning them to the `record_actions` category.  E.g.
+
+E.g. The `view_xml` action.
+[source,ini]
+----
+[view_xml]
+	label = Export XML
+	description = "Export an XML representation of this record"
+	url = "{$record->getURL('-action=export_xml')}&--single-record-only=1"
+	url_condition="$record"
+	permission=view xml
+	mode=browse
+	category=record_actions
+	materialIcon=code
+	condition="$record"
+----
+
+.The  `record_actions_menu` menu.
+image::images/record_actions_menu.png[]
+
+.The `record_actions_menu` menu with the overflow menu showing.  The actions in the overflow menu come from the `record_actions` category.
+image::images/record_actions_menu_overflow.png[]
+
+On mobile the page actions are shown in the FAB (floating action button) in the lower right.
+
+.The `record_actions_menu` FAB in the mobile theme.
+image::images/record_actions_menu_fab.png[]
+
+.The `record_actions_menu` FAB expanded.  The "More..." menu item is where the overflow menu items from the `record_actions` category are located.
+image::images/record_actions_menu-fab-expanded.png[]
+
+.The `record_actions` category (the overflow menu).
+image::images/record_actions_menu-fab-overflow.png[]
+
+
+

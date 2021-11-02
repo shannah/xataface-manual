@@ -645,6 +645,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_syntax_2">Syntax</a></li>
 <li><a href="#_directives">Directives</a></li>
 <li><a href="#_php_expression_context">PHP Expression Context</a></li>
+<li><a href="#action-categories">Action Categories</a></li>
 </ul>
 </li>
 <li><a href="#preference-directives">Preferences Directives</a></li>
@@ -9863,6 +9864,9 @@ order=0.75</code></pre>
 <dt class="hdlist1">category</dt>
 <dd>
 <p>The name of the action&#8217;s category which can be used to group this action together with other similar actions to be used in a menu in the user interface.</p>
+<div class="paragraph">
+<p><strong>See</strong> <a href="#action-categories">Action Categories</a></p>
+</div>
 </dd>
 <dt class="hdlist1">url</dt>
 <dd>
@@ -10009,6 +10013,470 @@ order=0.75</code></pre>
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="action-categories">Action Categories</h3>
+<div class="paragraph">
+<p>The <code>category</code> directive of the <em>actions.ini</em> file is used to specify <em>where</em> an action should be displayed in the UI.  Xataface includes a number of built-in categories that you can leverage to inject menu items and buttons into various parts of the UI.  Some of these are:</p>
+</div>
+<div class="sect3">
+<h4 id="_global_menus">Global Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">find_actions</dt>
+<dd>
+<p>Actions that are rendered as a drop-down selector in the search field, and allow you to create custom "find" actions.</p>
+</dd>
+<dt class="hdlist1">personal_tools</dt>
+<dd>
+<p>Actions that are rendered in the personal tools menu.  E.g. Login, Logout, Change Password, etc&#8230;&#8203;</p>
+</dd>
+<dt class="hdlist1">status_bar_right</dt>
+<dd>
+<p>Actions rendered on the right side of the top status bar.  Currently this includes only the "Login" action and the "Personal Tools" menu, which loads items from the <code>personal_tools</code> category.</p>
+</dd>
+<dt class="hdlist1">table_tabs</dt>
+<dd>
+<p>Actions added as the root level tabs within a table.  E.g. <code>list</code>, <code>view</code>, <code>find</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_record_details_view_menus">Record Details View Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">record_actions</dt>
+<dd>
+<p>Actions that can be performed on the current record.  This category is used for the overflow menu of the <code>record_actions_menu</code> category, which is the <a href="#page-actions-category">Page actions category</a> for the <code>view</code> action, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile in the <em>record`details</em> views.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions-screenshot.png" alt="record actions screenshot">
+</div>
+<div class="title">Figure 58. Items in the overflow menu come from <code>record_actions</code> category.</div>
+</div>
+</dd>
+<dt class="hdlist1">record_actions_menu</dt>
+<dd>
+<p>Actions that can be performed on the current record.  This category is the  <a href="#page-actions-category">Page actions category</a> for the <code>view</code> action, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile in the <code>details</code> view.</p>
+<div class="paragraph">
+<p><strong>See also</strong> The <code>record_actions</code> category, which is used for the menu items of the overflow menu.</p>
+</div>
+</dd>
+<dt class="hdlist1">record_nav_actions</dt>
+<dd>
+<p>Menu in the record view that is displayed just below the record title and description.  Useful for providing quick navigation links to related records.</p>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example: Adding link to parent record</strong></p>
+</div>
+<div class="listingblock">
+<div class="title">actions.ini file</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[up_to_podcast]
+    ;Link to the parent "Podcast" record from a podcast episode
+    category=record_nav_actions
+    condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    url="?-table=publisher_podcasts&amp;publisher_podcast_id={$record-&gt;val('publisher_podcast_id')}&amp;-action=view"
+    url_condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    label="{$record-&gt;val('podcast_title')}"
+    label_condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    materialIcon=arrow_upward
+
+[up_to_podcast_episodes]
+    category=record_nav_actions
+    condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    url="?-table=publisher_podcasts&amp;publisher_podcast_id={$record-&gt;val('publisher_podcast_id')}&amp;-action=related_records_list&amp;-relationship=episodes"
+    url_condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    label="Other Episodes"
+    label_condition="$record and $record-&gt;_table-&gt;tablename == 'publisher_podcast_episodes'"
+    materialIcon=list
+    order=2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Result:</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_nav_menu-links.png" alt="record nav menu links">
+</div>
+<div class="title">Figure 59. "Steve Hannah&#8217;s Blog" and "Other Episodes" links inserted into the record header using the <code>record_nav_actions</code> category.</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Since 3.0</em></p>
+</div>
+</dd>
+<dt class="hdlist1">record_tabs</dt>
+<dd>
+<p>Tabs in the detail record view.  This is where the <em>view</em> tab is rendered, as well as related lists.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_list_view_menus">List View Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">list_settings</dt>
+<dd>
+<p>Actions for managing list settings.  E.g. "Sort" and "Filter" options.</p>
+</dd>
+<dt class="hdlist1">result_list_actions</dt>
+<dd>
+<p>The actions related to a result list.</p>
+</dd>
+<dt class="hdlist1">selected_result_actions</dt>
+<dd>
+<p>Actions that operate on the currently selected rows in list view.</p>
+</dd>
+<dt class="hdlist1">summary_actions</dt>
+<dd>
+<p>Actions that operate on a row in the summary list view.</p>
+</dd>
+<dt class="hdlist1">table_actions</dt>
+<dd>
+<p>Actions that can be performed on the current table.  This category is used for the overflow menu of the <code>table_actions_menu</code> category, which is the default <a href="#page-actions-category">Page actions category</a>, so it is rendered as an overflow menu in the upper right in the desktop theme, and in the FAB (floating action button menu) on mobile, throughout most of the app - specifically in the <code>list</code> view.</p>
+<div class="paragraph">
+<p>Actions in this category include <code>rss</code>, <code>export_xml</code>, <code>export_csv</code>, <code>delete_set</code>, <code>copy_set</code>, and <code>update_set</code>.  These actions are displayed only when in list view.  The <code>record_actions</code>, <code>edit_record_actions</code>, <code>new_record_actions</code>, and <code>new_related_record_actions</code> categories</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Actions in this category may use the <code>class=featured-action</code> to take on a "Featured" look.   In the default theme featured actions are rendered green with an inner shadow, in contrast to regular action buttons that are rendered white with a gray border.
+</td>
+</tr>
+</table>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><strong>Example: Default Actions in table_actions category</strong></p>
+</div>
+<div class="paragraph">
+<p>The core Xataface actions.ini file defines several actions in the <code>table_actions</code> category.  These actions are shown in the screenshot below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions.png" alt="table actions">
+</div>
+<div class="title">Figure 60. table_actions overflow menu on desktop.  Note that the "New Record" button uses the <code>table_actions_menu</code> category.  The menu items in the overflow menu use the <code>table_actions</code> category.</div>
+</div>
+<div class="paragraph">
+<p>The above screenshot is from a stock install.  Notice that the <em>New Record</em> button makes use of the <code>class=featured-action</code> directive to appear as a featured button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions_mobile.png" alt="table actions mobile">
+</div>
+<div class="title">Figure 61. On Mobile, the table actions are included in the FAB (floating action button) in the lower right.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions_fab_expanded.png" alt="table actions fab expanded">
+</div>
+<div class="title">Figure 62. Expanding the FAB reveals the actions in the table_actions category.</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">table_actions_menu</dt>
+<dd>
+<p>Used for the default <a href="#page-actions-category">page actions category</a>.  Used in most actions, notably "list".  Includes an overflow menu whose menu items come from the <code>table_actions</code> category.  Rendered in top right on desktop, and in the FAB (floating action button) on  mobile.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_related_list_menus">Related List Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">related_export_actions</dt>
+<dd>
+<p>Actions available on the export related records form.</p>
+</dd>
+<dt class="hdlist1">related_list_actions</dt>
+<dd>
+<p>Actions that operate on a related list.</p>
+</dd>
+<dt class="hdlist1">related_list_settings</dt>
+<dd>
+<p>Actions for managing related list settings.  E.g. "Sort" and "Filter" options.</p>
+</dd>
+<dt class="hdlist1">relationship_actions</dt>
+<dd>
+<p>Actions which operate on a particular related list.  E.g. <code>new_related_record</code>.</p>
+</dd>
+<dt class="hdlist1">selected_related_result_actions</dt>
+<dd>
+<p>Actions that operate on the currently selected rows in a related list.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_edit_form_menus">Edit Form Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">edit_record_actions_menu</dt>
+<dd>
+<p>The default <a href="#page-actions-category">Page Actions Category</a> for the <code>edit</code> action.</p>
+</dd>
+<dt class="hdlist1">new_related_record_actions_menu</dt>
+<dd>
+<p>The default <a href="#page-actions-category">Page Actions Category</a> for the <code>new_related_record</code> action.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_new_form_menus">New Form Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">new_record_actions_menu</dt>
+<dd>
+<p>The default <a href="#page-actions-category">Page Actions Category</a> for the <code>new</code> action.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_view_related_record_menus">View Related record Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">view_related_record_actions</dt>
+<dd>
+<p>Default <a href="#page-actions-category">Page Actions Category</a> for the view_related_record action.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_edit_related_record_menus">Edit Related Record Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">existing_related_record_actions_menu</dt>
+<dd>
+<p>The default <a href="#page-actions-category">Page Actions Category</a> for the <code>add_existing_related_record</code> action.  Overflow menu items from the <code>edit_related_record_actions</code> category.</p>
+</dd>
+<dt class="hdlist1">edit_related_record_actions</dt>
+<dd>
+<p>Actions appearing in the <code>edit_related_record</code> action.  By default there is only a "Cancel" action.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_login_menus">Login Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">login_actions</dt>
+<dd>
+<p>Actions rendered on the login page.  E.g. <code>forgot_password</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_management_menus">Management Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">management_actions</dt>
+<dd>
+<p>Actions that are available in the "Manage" section.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_other_menus">Other Menus</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">ajax_actions</dt>
+<dd>
+<p>Actions for saving and loading records over AJAX. These don&#8217;t appear in any menu.</p>
+</dd>
+<dt class="hdlist1">event_actions</dt>
+<dd>
+<p>Actions that operate on an event.  These are used in the calendar view.</p>
+</dd>
+<dt class="hdlist1">history_record_actions</dt>
+<dd>
+<p>Actions related to a history record.</p>
+</dd>
+<dt class="hdlist1">password_changed_actions</dt>
+<dd>
+<p>Actions that appear after the user has changed their password.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="page-actions-category">Page Actions Category</h4>
+<div class="paragraph">
+<p>Xataface 3.0&#8217;s default theme has attempted to consolidate actions into fewer menus that are shown contextually.  Typically on any given "page", there are a set of actions that the user can perform on the subject of that page.  On desktop these actions are rendered in the upper right in a "more" menu, and on mobile, they are rendered in a FAB menu (floating action button menu).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions.png" alt="table actions">
+</div>
+<div class="title">Figure 63. Page actions on desktop displayed in upper right.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions_mobile.png" alt="table actions mobile">
+</div>
+<div class="title">Figure 64. On Mobile, the table actions are included in the FAB (floating action button) in the lower right.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/table_actions_fab_expanded.png" alt="table actions fab expanded">
+</div>
+<div class="title">Figure 65. Expanding the FAB reveals the actions in the table_actions category.</div>
+</div>
+<div class="paragraph">
+<p>When in list view, these "page actions" come from the <code>table_actions</code> category.  When in the <em>details</em> view for a record, they come from the <code>record_actions</code> category.  Some special actions, such as <code>edit</code> and <code>new</code> define their own categories for the actions that should be displayed in this spot: <code>edit_record_actions</code> and <code>new_record_actions</code> respectively.</p>
+</div>
+<div class="paragraph">
+<p>If you create a custom action, you can specify the category that should be used for the "page menu" via the <code>page_menu_category</code> directive of the actions.ini file.</p>
+</div>
+<div class="sect4">
+<h5 id="_example_view_action">Example: View Action</h5>
+<div class="paragraph">
+<p>The <code>view</code> action uses the <code>record_actions</code> category for its page actions.  Its action definition is as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">The <code>view</code> action definition from the xataface actions.ini file.  It uses the <code>page_menu_category</code> directive to specify that the "page actions" should be populated from actions in the <code>record_actions_menu</code> category.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[view]
+    label = View
+    url = "{$this-&gt;url('-action=view&amp;-relationship=')}"
+    template = Dataface_View_Record.html
+    permission = view
+    mode = browse
+    category = record_tabs
+    selected_condition = "$query['-action'] == 'view'"
+    order=-2
+    page_menu_category=record_actions_menu
+    rel=sibling</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Above is the full action definition, but our interest in this example is the <code>page_menu_category</code> directive, which says that the "page menu" should be populated using actions in the <code>record_actions_menu</code> category.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_creating_an_overflow_menu">Creating an Overflow Menu</h5>
+<div class="paragraph">
+<p>Generally the "page actions" will display one or two buttons directly, and additional actions will be placed in an overflow menu.  If you are creating your own "page actions category", and you want to achieve this kind of grouping, you can achieve it by creating two categories:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A category for the top-level items.</p>
+</li>
+<li>
+<p>A category for the overflow menu.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Then create an action in the top level category with <code>subcategory</code> set to the category of the overflow menu.</p>
+</div>
+<div class="paragraph">
+<p><strong>Example: The View Action</strong></p>
+</div>
+<div class="paragraph">
+<p>The <code>view</code> action uses the <code>record_actions_menu</code> category for its page actions, and the <code>record_actions</code> category for its overflow menu.</p>
+</div>
+<div class="paragraph">
+<p>So the <code>view</code> action is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">The view action (some directives omitted for clarity)</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[view]
+  page_menu_category=record_actions_menu</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It then defines the <code>record_actions</code> action in the <code>record_actions_menu</code> category, which will be manifested as the overflow menu button.  Defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">The <code>record_actions</code> action creates an overflow button.</div>
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[record_actions]
+	label=""
+	materialIcon="more_vert"
+	subcategory=record_actions
+	category="record_actions_menu"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The secret sauce of this action is the <code>category</code> directive, which adds this action to the <code>record_actions_menu</code> category, combined with the <code>subcategory</code> directive, which specifies the category that is used for its menu items.  It is the <code>subcategory</code> directive that turns this button into a menu.</p>
+</div>
+<div class="paragraph">
+<p>Finally, there are a few actions that are registered to the overflow menu, by assigning them to the <code>record_actions</code> category.  E.g.</p>
+</div>
+<div class="paragraph">
+<p>E.g. The <code>view_xml</code> action.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[view_xml]
+	label = Export XML
+	description = "Export an XML representation of this record"
+	url = "{$record-&gt;getURL('-action=export_xml')}&amp;--single-record-only=1"
+	url_condition="$record"
+	permission=view xml
+	mode=browse
+	category=record_actions
+	materialIcon=code
+	condition="$record"</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions_menu.png" alt="record actions menu">
+</div>
+<div class="title">Figure 66. The  <code>record_actions_menu</code> menu.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions_menu_overflow.png" alt="record actions menu overflow">
+</div>
+<div class="title">Figure 67. The <code>record_actions_menu</code> menu with the overflow menu showing.  The actions in the overflow menu come from the <code>record_actions</code> category.</div>
+</div>
+<div class="paragraph">
+<p>On mobile the page actions are shown in the FAB (floating action button) in the lower right.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions_menu_fab.png" alt="record actions menu fab">
+</div>
+<div class="title">Figure 68. The <code>record_actions_menu</code> FAB in the mobile theme.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions_menu-fab-expanded.png" alt="record actions menu fab expanded">
+</div>
+<div class="title">Figure 69. The <code>record_actions_menu</code> FAB expanded.  The "More&#8230;&#8203;" menu item is where the overflow menu items from the <code>record_actions</code> category are located.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/record_actions_menu-fab-overflow.png" alt="record actions menu fab overflow">
+</div>
+<div class="title">Figure 70. The <code>record_actions</code> category (the overflow menu).</div>
+</div>
+</div>
 </div>
 </div>
 </div>
