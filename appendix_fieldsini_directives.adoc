@@ -467,6 +467,10 @@ Marks the field as containing a username, which corresponds to the username of t
 +
 *Since 3.0*
 
+uuid::
+Marks a field as storing a UUID (universal unique identifier).  This works similar to the `timestamp` and `ownerstamp` directives, in that it will automatically generate a UUID at the time the record is inserted if one is not supplied.  It will also apply appropriate defaults to hide this field on the edit form.
++
+*Since 3.0.1*
 validators:VALIDATOR_NAME::	
 A prefix for a validation type on the current field. (Replace "VALIDATOR_NAME" with the name of the validator to be used. e.g. required). There are many validators available to be used.	
 +

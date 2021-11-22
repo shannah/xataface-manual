@@ -8884,6 +8884,13 @@ If no columns in the table define the <code>sortable</code> property, then all c
 <p><strong>Since 3.0</strong></p>
 </div>
 </dd>
+<dt class="hdlist1">uuid</dt>
+<dd>
+<p>Marks a field as storing a UUID (universal unique identifier).  This works similar to the <code>timestamp</code> and <code>ownerstamp</code> directives, in that it will automatically generate a UUID at the time the record is inserted if one is not supplied.  It will also apply appropriate defaults to hide this field on the edit form.</p>
+<div class="paragraph">
+<p><strong>Since 3.0.1</strong></p>
+</div>
+</dd>
 <dt class="hdlist1">validators:VALIDATOR_NAME</dt>
 <dd>
 <p>A prefix for a validation type on the current field. (Replace "VALIDATOR_NAME" with the name of the validator to be used. e.g. required). There are many validators available to be used.</p>
