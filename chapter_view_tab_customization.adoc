@@ -1,0 +1,67 @@
+[#view_tab_customization]
+== _View_ Tab Customization
+
+The following sections form a sort of cook book with recipes for customizing the _view_ tab, also known as the _Details_ tab.  This is the tab in the UI that shows the details of a single record.
+
+=== Displaying Synthetic/Calculated Field
+
+[discrete]
+==== Problem
+
+You want to create a _synthetic_ field, and display it in the _view_ tab just as you would with all of the regular fields.
+
+[discrete]
+==== Solution
+
+. Define your synthetic field in your table's delegate class using the `field__` prefix.  E.g.
++
+[source,php]
+----
+function field__mycustomfield(Dataface_Record $record) {
+    return "My custom field value";
+}
+----
+. Add an entry to the _fields.ini_ file for this field, and set `visibility:browse=visible`:
++
+[source,ini]
+----
+[mycustomfield]
+    visibility:browse=visible
+----
+
+[discrete]
+==== Example
+
+https://www.tuxpin.com[Tuxpin] includes a _podcasts_ table that allows users to create their own podcast.  Each podcast has a unique ID, which is stored in the _podcast_uuid_ column.  It also provides a website for the podcast, which is located at a URL of the form:
+
+_https://podcasts.tuxpin.com/{podcast_uuid}_
+
+Beause the website URL can be derived from the _podcast_uuid_, we don't need to actually store it in the database.  However, we would like to display this URL in the View tab.
+
+To achieve this, we first define the _website_url_ field in the delegate class as follows:
+
+[source,php]
+----
+function field__website_url(Dataface_Record $record) {
+    return 'https://podcasts.tuxpin.com/' . $record->val('podcast_uuid').'/';
+}
+----
+
+By default synthetic (or calculated) fields are not displayed in the view tab (or anywhere in the UI, for that matter).  You need to set the `visibility:browse` property of the field to `visible`, in order to have it appear in the view tab.
+
+So, in the table's _fields.ini_ file we add:
+
+[source,ini]
+----
+[website_url]
+    visibility:browse=visible
+    group=website    ; Tell it to display this field in the website fieldgroup
+
+----
+
+
+And the result:
+
+image::images/calculated-field-view-tab.png[]
+
+We can now treat this field like any other field in our view tab.  We can further customize using configuration options and delegate class methods, just as we would with a _real_ field.

@@ -579,6 +579,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#row-style-external-link">Rendering Row as Link to External URL</a></li>
 </ul>
 </li>
+<li><a href="#view_tab_customization"><em>View</em> Tab Customization</a>
+<ul class="sectlevel2">
+<li><a href="#_displaying_syntheticcalculated_field">Displaying Synthetic/Calculated Field</a></li>
+</ul>
+</li>
 <li><a href="#searching">Searching</a>
 <ul class="sectlevel2">
 <li><a href="#_case_sensitive_searches">Case-Sensitive Searches</a></li>
@@ -6591,6 +6596,89 @@ table.row_style=external-link <b class="conum">(2)</b></code></pre>
 </div>
 </div>
 <div class="sect1">
+<h2 id="view_tab_customization"><em>View</em> Tab Customization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following sections form a sort of cook book with recipes for customizing the <em>view</em> tab, also known as the <em>Details</em> tab.  This is the tab in the UI that shows the details of a single record.</p>
+</div>
+<div class="sect2">
+<h3 id="_displaying_syntheticcalculated_field">Displaying Synthetic/Calculated Field</h3>
+<h4 id="_problem_39" class="discrete">Problem</h4>
+<div class="paragraph">
+<p>You want to create a <em>synthetic</em> field, and display it in the <em>view</em> tab just as you would with all of the regular fields.</p>
+</div>
+<h4 id="_solution_37" class="discrete">Solution</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Define your synthetic field in your table&#8217;s delegate class using the <code>field__</code> prefix.  E.g.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function field__mycustomfield(Dataface_Record $record) {
+    return "My custom field value";
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add an entry to the <em>fields.ini</em> file for this field, and set <code>visibility:browse=visible</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[mycustomfield]
+    visibility:browse=visible</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<h4 id="_example" class="discrete">Example</h4>
+<div class="paragraph">
+<p><a href="https://www.tuxpin.com">Tuxpin</a> includes a <em>podcasts</em> table that allows users to create their own podcast.  Each podcast has a unique ID, which is stored in the <em>podcast_uuid</em> column.  It also provides a website for the podcast, which is located at a URL of the form:</p>
+</div>
+<div class="paragraph">
+<p><em><a href="https://podcasts.tuxpin.com/{podcast_uuid}" class="bare">https://podcasts.tuxpin.com/{podcast_uuid}</a></em></p>
+</div>
+<div class="paragraph">
+<p>Beause the website URL can be derived from the <em>podcast_uuid</em>, we don&#8217;t need to actually store it in the database.  However, we would like to display this URL in the View tab.</p>
+</div>
+<div class="paragraph">
+<p>To achieve this, we first define the <em>website_url</em> field in the delegate class as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">function field__website_url(Dataface_Record $record) {
+    return 'https://podcasts.tuxpin.com/' . $record-&gt;val('podcast_uuid').'/';
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default synthetic (or calculated) fields are not displayed in the view tab (or anywhere in the UI, for that matter).  You need to set the <code>visibility:browse</code> property of the field to <code>visible</code>, in order to have it appear in the view tab.</p>
+</div>
+<div class="paragraph">
+<p>So, in the table&#8217;s <em>fields.ini</em> file we add:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[website_url]
+    visibility:browse=visible
+    group=website    ; Tell it to display this field in the website fieldgroup</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the result:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/calculated-field-view-tab.png" alt="calculated field view tab">
+</div>
+</div>
+<div class="paragraph">
+<p>We can now treat this field like any other field in our view tab.  We can further customize using configuration options and delegate class methods, just as we would with a <em>real</em> field.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="searching">Searching</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -6598,11 +6686,11 @@ table.row_style=external-link <b class="conum">(2)</b></code></pre>
 </div>
 <div class="sect2">
 <h3 id="_case_sensitive_searches">Case-Sensitive Searches</h3>
-<h4 id="_problem_39" class="discrete">Problem</h4>
+<h4 id="_problem_40" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You searches on a particular column to be case-sensitive.  (E.g. If the user searches for "Bob", it should match "Bob" but not "bob").</p>
 </div>
-<h4 id="_solution_37" class="discrete">Solution</h4>
+<h4 id="_solution_38" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>collate</code> fields.ini directive to "utf8_general_cs" (or any other supported collation that is case-sensitive.</p>
 </div>
@@ -6626,11 +6714,11 @@ table.row_style=external-link <b class="conum">(2)</b></code></pre>
 </div>
 <div class="sect2">
 <h3 id="_explicitly_specifying_case_sensitivity_of_a_search">Explicitly Specifying Case-sensitivity of a Search</h3>
-<h4 id="_problem_40" class="discrete">Problem</h4>
+<h4 id="_problem_41" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to perform a case-sensitive search on a field that has a case-insensitive collation.</p>
 </div>
-<h4 id="_solution_38" class="discrete">Solution</h4>
+<h4 id="_solution_39" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Wrap the query value in a command wrapper, and use the "cs" command to specify "case-sensitive" (or "ci" to specify case-insensitive").</p>
 </div>
@@ -6656,12 +6744,12 @@ table.row_style=external-link <b class="conum">(2)</b></code></pre>
 </div>
 <div class="sect2">
 <h3 id="_making_columns_not_searchable">Making Columns Not-Searchable</h3>
-<h4 id="_problem_41" class="discrete">Problem</h4>
+<h4 id="_problem_42" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>The main search box at the top of the application searches for matches in all of the char, varchar, and text fields by default.  What if you want to only match against specific fields?</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_39">Solution</h4>
+<h4 id="_solution_40">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>not_searchable</code> fields.ini directive on any field cause searches <strong>not</strong> to match using that column.</p>
 </div>
@@ -6723,11 +6811,11 @@ table.row_style=external-link <b class="conum">(2)</b></code></pre>
 </div>
 <div class="sect2">
 <h3 id="_specifying_content_disposition_of_file_download">Specifying Content Disposition of File Download</h3>
-<h4 id="_problem_42" class="discrete">Problem</h4>
+<h4 id="_problem_43" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default the contents of <code>blob</code> fields and container fields are downloaded as a file download in the browser.  You want the browser to navigate to the file instead of downloading it.</p>
 </div>
-<h4 id="_solution_40" class="discrete">Solution</h4>
+<h4 id="_solution_41" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>contentDisposition=inline</code> fields.ini directive.</p>
 </div>
@@ -6755,11 +6843,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="generating-thumbnails">Generating Thumbnails</h3>
-<h4 id="_problem_43" class="discrete">Problem</h4>
+<h4 id="_problem_44" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>I want to automatically resize uploaded images to specific dimensions.</p>
 </div>
-<h4 id="_solution_41" class="discrete">Solution</h4>
+<h4 id="_solution_42" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>transform</code> property on the Container field in the fields.ini file.</p>
 </div>
@@ -6814,11 +6902,11 @@ The <code>contentDisposition</code> directive will be used to set the <code>Cont
 </div>
 <div class="sect2">
 <h3 id="_storing_files_on_amazon_s3">Storing Files on Amazon S3</h3>
-<h4 id="_problem_44" class="discrete">Problem</h4>
+<h4 id="_problem_45" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>Rather than storing uploaded files directly on the server file system, you want to store them on Amazon S3 for scalability purposes.</p>
 </div>
-<h4 id="_solution_42" class="discrete">Solution</h4>
+<h4 id="_solution_43" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="https://github.com/shannah/xataface-module-s3">s3 module</a>.</p>
 </div>
@@ -6910,11 +6998,11 @@ The S3 module fully supports Xataface&#8217;s <a href="#generating-thumbnails">t
 </div>
 <div class="sect2">
 <h3 id="_specifying_a_default_action">Specifying a Default Action</h3>
-<h4 id="_problem_45" class="discrete">Problem</h4>
+<h4 id="_problem_46" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your application to use a default action other than the Xataface default, if the user doesn&#8217;t explicitly provide an "-action" parameter.</p>
 </div>
-<h4 id="_solution_43" class="discrete">Solution</h4>
+<h4 id="_solution_44" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action</code> conf.ini directive.</p>
 </div>
@@ -6945,11 +7033,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_using_different_default_action_depending_on_table">Using Different Default Action Depending on Table</h3>
-<h4 id="_problem_46" class="discrete">Problem</h4>
+<h4 id="_problem_47" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to specify a default action only for one table in your application.  The "default_action" conf.ini directive sets the default action application-wide.</p>
 </div>
-<h4 id="_solution_44" class="discrete">Solution</h4>
+<h4 id="_solution_45" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_action.tablename</code> directive in your conf.ini file.  (<code>tablename</code> should be replaced with your desired table name.  For example, suppose I want to make the "view" action the default action for the "posts" table, then I would define the following at the beginning of the conf.ini file:</p>
 </div>
@@ -6961,11 +7049,11 @@ If "default_action" is not specified, then Xataface will use the "list" action a
 </div>
 <div class="sect2">
 <h3 id="_specifying_default_query_parameters_for_default_actions">Specifying Default Query Parameters for Default Actions</h3>
-<h4 id="_problem_47" class="discrete">Problem</h4>
+<h4 id="_problem_48" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to supply additional query parameters for your default actions.  These parameters should only be applied when the default action is used.</p>
 </div>
-<h4 id="_solution_45" class="discrete">Solution</h4>
+<h4 id="_solution_46" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_params.tablename</code> directive.  E.g.</p>
 </div>
@@ -7038,11 +7126,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_showing_the_edit_tab_by_default_for_record_details">Showing the "Edit" Tab By Default for Record Details</h3>
-<h4 id="_problem_48" class="discrete">Problem</h4>
+<h4 id="_problem_49" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>By default, when the user clicks on a record to see its details, they will be shown the "View" tab.  You want to show them the "Edit" tab instead.</p>
 </div>
-<h4 id="_solution_46" class="discrete">Solution</h4>
+<h4 id="_solution_47" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_action</code> directive of the conf.ini file. This directive is analagous to the <code>default_action</code> directive, except it is only applied when the user requests the "browse" action, which is the default action used for displaying record details.</p>
 </div>
@@ -7077,11 +7165,11 @@ default_params.posts="post_id=2&amp;foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_default_query_parameters_for_the_browse_action">Setting Default Query Parameters for the <code>browse</code> Action</h3>
-<h4 id="_problem_49" class="discrete">Problem</h4>
+<h4 id="_problem_50" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You have specified a custom action that you are using as the default "browse" action for your table via the <code>default_browse_action.mytable=myaction</code> directive.  However your action requires some additional query parameters to work correctly.  You need to add these default parameters somehow.</p>
 </div>
-<h4 id="_solution_47" class="discrete">Solution</h4>
+<h4 id="_solution_48" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Use the <code>default_browse_params.tablename</code> directive to add parameters to the <code>browse</code> action. This directive works similarly to the <code>default_params.tablename</code> directive.  E.g. Let&#8217;s add a "foo" query parameter by default when the user accesses the "browse" action on the "posts" table.</p>
 </div>
@@ -7126,11 +7214,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_setting_a_related_records_tab_as_the_default_browse_action">Setting a Related Records Tab as the Default Browse Action</h3>
-<h4 id="_problem_50" class="discrete">Problem</h4>
+<h4 id="_problem_51" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>When the user clicks on a record in the "list" view, you want them to see a related record tab instead of the "View" tab by default.</p>
 </div>
-<h4 id="_solution_48" class="discrete">Solution</h4>
+<h4 id="_solution_49" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>We can achieve this by way of the <code>default_browse_params.tablename</code> conf.ini directives.  For example, suppose we wanted to show the "authors" relationship of the "posts" table by default when a post&#8217;s details are shown:</p>
 </div>
@@ -7154,11 +7242,11 @@ default_browse_params.posts="foo=bar"</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_accessing_an_sql_query_like_a_table">Accessing an SQL query like a Table</h3>
-<h4 id="_problem_51" class="discrete">Problem</h4>
+<h4 id="_problem_52" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to create a user-specific SQL query and navigate its results as if it were a proper table.  You want the results of this table to be different for different users.</p>
 </div>
-<h4 id="_solution_49" class="discrete">Solution</h4>
+<h4 id="_solution_50" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>There are a few strategies that you could use for this.  You could simply use a MySQL view, and set up a security filter on the table.  In some cases, this may not be flexible enough, though.  In such cases you can use a dynamic query.</p>
 </div>
@@ -7251,11 +7339,11 @@ Dynamic query tables are ephemeral, so any changes you make to is will disappear
 </div>
 <div class="sect2">
 <h3 id="whereis-phpini">Where is my php.ini file?</h3>
-<h3 id="_problem_52" class="discrete">Problem</h3>
+<h3 id="_problem_53" class="discrete">Problem</h3>
 <div class="paragraph">
 <p>You need to change a setting in your php.ini file but you don&#8217;t know where it is, or your server has multiple php.ini files and you don&#8217;t know which one is the correct one.</p>
 </div>
-<h3 id="_solution_50" class="discrete">Solution</h3>
+<h3 id="_solution_51" class="discrete">Solution</h3>
 <div class="paragraph">
 <p>Create a file inside your application directory named "phpinfo.php" with the following contents:</p>
 </div>
@@ -7279,12 +7367,12 @@ phpinfo();</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_using_different_config_files_on_different_servers">Using Different Config Files on Different Servers</h3>
-<h4 id="_problem_53" class="discrete">Problem</h4>
+<h4 id="_problem_54" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want your production server to use different configuration options than your development server.  For example, perhaps you want to enable the output cache on the production server, but not on the development server.</p>
 </div>
 <div class="sect3">
-<h4 id="_solution_51">Solution</h4>
+<h4 id="_solution_52">Solution</h4>
 <div class="paragraph">
 <p>Use the <a href="#confini-include-directive"><code>__include__</code></a> directive in your conf.ini file to load your server-specific configuration options from a different config file.  Use the <code>{host}</code> placeholder to specify a different config file depending on the host name of the current request.</p>
 </div>
@@ -7336,11 +7424,11 @@ __include__=hosts/{host}/{host}.conf.ini.php
 </div>
 <div class="sect2">
 <h3 id="_application_versioning_and_synchronization">Application Versioning and Synchronization</h3>
-<h4 id="_problem_54" class="discrete">Problem</h4>
+<h4 id="_problem_55" class="discrete">Problem</h4>
 <div class="paragraph">
 <p>You want to deploy the changes in the development version of your app to the production server, including database changes.</p>
 </div>
-<h4 id="_solution_52" class="discrete">Solution</h4>
+<h4 id="_solution_53" class="discrete">Solution</h4>
 <div class="paragraph">
 <p>Increment the build number in your app&#8217;s version.txt file, and implement corresponding <code>update_xxx()</code> methods in your <code>conf/Installer.php</code> file.</p>
 </div>
@@ -11473,7 +11561,7 @@ my_permission=1</pre>
 </li>
 </ol>
 </div>
-<h4 id="_example" class="discrete">Example</h4>
+<h4 id="_example_2" class="discrete">Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-php" data-lang="php">function getFeed(&amp;$query){
@@ -11591,7 +11679,7 @@ RSS feeds will work perfectly well without defining this method. This just allow
 </tr>
 </tbody>
 </table>
-<h4 id="_example_2" class="discrete">Example</h4>
+<h4 id="_example_3" class="discrete">Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-php" data-lang="php">function getFeedItem(&amp;$record){

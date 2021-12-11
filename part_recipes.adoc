@@ -17,6 +17,8 @@ include::chapter_form_customization.adoc[]
 
 include::chapter_list_customization.adoc[]
 
+include::chapter_view_tab_customization.adoc[]
+
 include::chapter_searching.adoc[]
 
 include::chapter_file_uploads.adoc[]
