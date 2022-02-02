@@ -227,6 +227,11 @@ Boolean value (0 or 1) indicating whether this field should be filterable? in li
 +
 *Since 0.8*
 
+filter.multiple::
+Boolean value (0 or 1) that sets a filter select list to allow multiple options to be selected.  Currently this only works with the older Xataface 2-style filters (i.e. when the `use_xataface2_result_filters` preference is active).
++
+Since 3.1
+
 filter.type::
 The type of filter to use.  Options include "text", "range", "min", "max", and "filter".  See <<filter_types>>.
 +
