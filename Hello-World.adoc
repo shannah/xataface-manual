@@ -73,6 +73,19 @@ Did start apache server
 
 Now, point your web browser to "http://localhost:9090"
 
+[TIP]
+====
+The default port for Apache to run on is 9090, but you can specify an alternate port via the `XFServerPort` directive in the conf.ini file.
+
+.Setting Apache's port to 8079 in the conf.ini file.
+[source,ini]
+----
+...
+XFServerPort=8079
+...
+----
+====
+
 You should see something like:
 
 .A vanilla Xataface application created with the "xataface create" command. 
